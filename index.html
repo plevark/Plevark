@@ -22,62 +22,77 @@
     <style>
         :root { --cyan: #00f2ff; --dark: #050505; --card: #0c0c0c; --glass: rgba(255, 255, 255, 0.03); --border: rgba(255, 255, 255, 0.08); }
         body { background: var(--dark); color: #fff; font-family: 'Outfit', sans-serif; overflow-x: hidden; padding-bottom: 110px; }
-        .bg-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% -20%, rgba(0, 242, 255, 0.08), transparent 60%), radial-gradient(circle at 100% 100%, rgba(255, 255, 255, 0.02), transparent 40%); z-index: -1; pointer-events: none; }
+        .bg-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% -20%, rgba(0, 242, 255, 0.15), transparent 60%), radial-gradient(circle at 100% 100%, rgba(255, 0, 150, 0.08), transparent 40%), radial-gradient(circle at 0% 100%, rgba(0, 242, 255, 0.05), transparent 30%); z-index: -1; pointer-events: none; animation: slowPulse 8s ease-in-out infinite; }
+        @keyframes slowPulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
         .font-brand { font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 5px rgba(0,242,255,0.3); } 50% { box-shadow: 0 0 20px rgba(0,242,255,0.6); } }
-        .content-card { background: var(--card); border-radius: 20px; overflow: hidden; border: 1px solid var(--border); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; animation: fadeInUp 0.5s ease backwards; }
-        .content-card:hover { transform: scale(1.05) translateY(-5px); border-color: var(--cyan); box-shadow: 0 15px 35px rgba(0,242,255,0.2); }
+        @keyframes borderPulse { 0%, 100% { border-color: rgba(0,242,255,0.3); } 50% { border-color: rgba(0,242,255,0.8); } }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        .content-card { background: linear-gradient(135deg, var(--card) 0%, #0a0a0a 100%); border-radius: 20px; overflow: hidden; border: 1px solid var(--border); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; animation: fadeInScale 0.5s ease backwards; position: relative; }
+        .content-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent 0%, rgba(0,242,255,0.03) 100%); opacity: 0; transition: opacity 0.4s ease; z-index: 1; }
+        .content-card:hover::before { opacity: 1; }
+        .content-card:hover { transform: scale(1.05) translateY(-8px); border-color: var(--cyan); box-shadow: 0 20px 40px rgba(0,242,255,0.25); animation: none; }
         .poster-wrapper { position: relative; aspect-ratio: 2/3; overflow: hidden; }
-        .poster-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-        .content-card:hover .poster-img { transform: scale(1.1); }
-        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%); display: flex; flex-direction: column; justify-content: flex-end; padding: 12px; opacity: 0; transition: opacity 0.3s ease; }
-        .content-card:hover .card-overlay { opacity: 1; }
-        .badge-tag { position: absolute; top: 10px; right: 10px; padding: 4px 12px; border-radius: 20px; font-size: 8px; font-weight: 900; text-transform: uppercase; backdrop-filter: blur(10px); background: rgba(0, 242, 255, 0.25); border: 1px solid var(--cyan); color: var(--cyan); animation: pulseGlow 2s infinite; z-index: 10; }
-        .badge-hot-red { background: #ff3333 !important; border: 1px solid #ff6666 !important; color: white !important; animation: pulseGlow 0.8s infinite; }
-        .badge-new-green { background: #00cc66 !important; border: 1px solid #00ff88 !important; color: white !important; }
-        .bottom-nav { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: 95%; max-width: 500px; background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(25px); border: 1px solid var(--border); border-radius: 40px; display: flex; padding: 8px; z-index: 1000; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
-        .nav-item { position: relative; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 0; color: rgba(255,255,255,0.3); transition: all 0.3s ease; cursor: pointer; border-radius: 30px; }
-        .nav-item.active { color: var(--cyan); background: rgba(0,242,255,0.1); }
-        .nav-item.active svg { transform: translateY(-2px); filter: drop-shadow(0 0 5px var(--cyan)); }
-        .nav-item:hover { color: var(--cyan); background: rgba(0,242,255,0.05); }
-        .btn-action { background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%); color: #000; font-weight: 800; padding: 16px; border-radius: 15px; text-align: center; width: 100%; text-transform: uppercase; letter-spacing: 1px; font-size: 13px; transition: all 0.3s ease; position: relative; overflow: hidden; }
-        .btn-action::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transition: left 0.5s; }
+        .poster-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1); }
+        .content-card:hover .poster-img { transform: scale(1.12); }
+        .card-title-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.7) 60%, transparent 100%); padding: 16px 12px 12px 12px; z-index: 5; transform: translateY(0); transition: transform 0.3s ease; }
+        .content-card:hover .card-title-overlay { transform: translateY(-5px); }
+        .card-title-overlay p { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; line-height: 1.2; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .badge-tag { position: absolute; top: 10px; right: 10px; padding: 4px 12px; border-radius: 20px; font-size: 8px; font-weight: 900; text-transform: uppercase; backdrop-filter: blur(10px); background: rgba(0, 242, 255, 0.3); border: 1px solid var(--cyan); color: var(--cyan); animation: pulseGlow 2s infinite; z-index: 10; }
+        .badge-hot-red { background: linear-gradient(135deg, #ff3333, #cc0000) !important; border: 1px solid #ff6666 !important; color: white !important; animation: pulseGlow 0.8s infinite; }
+        .badge-new-green { background: linear-gradient(135deg, #00cc66, #009944) !important; border: 1px solid #00ff88 !important; color: white !important; }
+        .bottom-nav { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: 95%; max-width: 500px; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(25px); border: 1px solid rgba(0,242,255,0.2); border-radius: 50px; display: flex; padding: 6px; z-index: 1000; box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,242,255,0.1); }
+        .nav-item { position: relative; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 0; color: rgba(255,255,255,0.35); transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1); cursor: pointer; border-radius: 40px; }
+        .nav-item.active { color: var(--cyan); background: rgba(0,242,255,0.15); transform: translateY(-2px); }
+        .nav-item.active svg { transform: translateY(-2px); filter: drop-shadow(0 0 8px var(--cyan)); }
+        .nav-item:hover { color: var(--cyan); background: rgba(0,242,255,0.1); transform: translateY(-2px); }
+        .nav-label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px; }
+        .btn-action { background: linear-gradient(135deg, #fff 0%, #e8e8e8 100%); color: #000; font-weight: 800; padding: 16px; border-radius: 15px; text-align: center; width: 100%; text-transform: uppercase; letter-spacing: 1px; font-size: 13px; transition: all 0.4s ease; position: relative; overflow: hidden; }
+        .btn-action::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent); transition: left 0.5s; }
         .btn-action:hover::before { left: 100%; }
-        .btn-action:hover { transform: scale(1.02); box-shadow: 0 10px 25px rgba(0,242,255,0.3); }
-        .btn-variant { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: #fff; padding: 14px; border-radius: 12px; font-size: 11px; font-weight: 600; text-align: left; display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 8px; transition: all 0.3s ease; }
-        .btn-variant:hover { background: var(--cyan); color: #000; border-color: var(--cyan); transform: translateX(5px); }
+        .btn-action:hover { transform: scale(1.03); box-shadow: 0 15px 30px rgba(0,242,255,0.4); background: linear-gradient(135deg, #fff, #00f2ff20); }
+        .btn-variant { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: #fff; padding: 14px; border-radius: 14px; font-size: 11px; font-weight: 600; text-align: left; display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 8px; transition: all 0.3s ease; }
+        .btn-variant:hover { background: linear-gradient(135deg, var(--cyan), #00aacc); color: #000; border-color: var(--cyan); transform: translateX(8px); }
         .btn-variant.disabled { opacity: 0.5; cursor: not-allowed; background: rgba(255,255,255,0.02); }
         .btn-variant.disabled:hover { transform: none; background: rgba(255,255,255,0.02); color: #fff; border-color: var(--border); }
-        .lang-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; animation: fadeInUp 0.5s ease backwards; backdrop-filter: blur(10px); overflow: hidden; position: relative; }
-        .lang-card::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(0,242,255,0.2), transparent); transition: left 0.5s; }
+        .lang-card { background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(0,242,255,0.05)); border: 1px solid rgba(0,242,255,0.2); border-radius: 28px; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; animation: fadeInUp 0.6s ease backwards; backdrop-filter: blur(12px); overflow: hidden; position: relative; }
+        .lang-card::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(0,242,255,0.3), transparent); transition: left 0.6s; }
         .lang-card:hover::before { left: 100%; }
-        .lang-card:hover { background: rgba(0, 242, 255, 0.2); border-color: var(--cyan); transform: translateY(-8px) scale(1.02); box-shadow: 0 15px 30px rgba(0,242,255,0.3); }
-        .detail-screen-img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: center; border-radius: 20px; transition: transform 0.5s ease; }
-        .detail-screen-img:hover { transform: scale(1.02); }
+        .lang-card:hover { background: linear-gradient(135deg, rgba(0,242,255,0.25), rgba(0,242,255,0.1)); border-color: var(--cyan); transform: translateY(-8px) scale(1.03); box-shadow: 0 20px 40px rgba(0,242,255,0.3); }
+        .detail-screen-img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: center; border-radius: 24px; transition: transform 0.5s ease, box-shadow 0.3s; }
+        .detail-screen-img:hover { transform: scale(1.02); box-shadow: 0 20px 40px rgba(0,242,255,0.3); }
         .view-section.hidden { display: none; }
-        .search-container { background: var(--glass); border: 1px solid var(--border); border-radius: 100px; padding: 12px 24px; transition: 0.3s; }
-        .search-container:focus-within { border-color: var(--cyan); box-shadow: 0 0 15px rgba(0,242,255,0.2); }
-        .feature-box { background: rgba(0, 242, 255, 0.1); border: 2px solid var(--cyan); border-radius: 16px; padding: 12px; margin-top: 12px; font-size: 11px; color: #ccf4ff; }
-        .update-text { font-size: 10px; color: #00f2ff; margin-top: 8px; text-align: right; }
-        .counter-badge { background: rgba(0,242,255,0.2); border-radius: 20px; padding: 2px 8px; font-size: 10px; margin-left: 8px; }
-        .load-more-btn { background: linear-gradient(135deg, rgba(0,242,255,0.2) 0%, rgba(0,242,255,0.05) 100%); border: 1px solid var(--cyan); border-radius: 40px; padding: 12px 30px; text-align: center; margin: 30px auto; display: inline-block; cursor: pointer; transition: all 0.3s ease; font-weight: 600; letter-spacing: 1px; }
-        .load-more-btn:hover { background: var(--cyan); color: #000; transform: scale(1.02); box-shadow: 0 0 20px rgba(0,242,255,0.4); }
-        .lang-flag-icon { font-size: 48px; display: inline-block; transition: transform 0.3s ease; }
-        .lang-card:hover .lang-flag-icon { transform: scale(1.1) rotate(5deg); }
-        .lang-card-title { font-size: 10px; font-weight: 800; letter-spacing: 2px; margin-top: 12px; text-transform: uppercase; }
-        .glow-text { text-shadow: 0 0 10px rgba(0,242,255,0.5); }
+        .search-container { background: linear-gradient(135deg, var(--glass), rgba(0,242,255,0.05)); border: 1px solid var(--border); border-radius: 100px; padding: 12px 24px; transition: all 0.3s; backdrop-filter: blur(10px); }
+        .search-container:focus-within { border-color: var(--cyan); box-shadow: 0 0 25px rgba(0,242,255,0.3); transform: scale(1.01); }
+        .feature-box { background: linear-gradient(135deg, rgba(0,242,255,0.15), rgba(0,242,255,0.05)); border: 2px solid var(--cyan); border-radius: 20px; padding: 14px; margin-top: 12px; font-size: 11px; color: #ccf4ff; backdrop-filter: blur(5px); }
+        .update-text { font-size: 10px; color: #00f2ff; margin-top: 8px; text-align: right; font-weight: 600; }
+        .counter-badge { background: linear-gradient(135deg, rgba(0,242,255,0.3), rgba(0,242,255,0.1)); border-radius: 30px; padding: 2px 10px; font-size: 10px; margin-left: 8px; font-weight: 800; }
+        .load-more-btn { background: linear-gradient(135deg, rgba(0,242,255,0.2) 0%, rgba(0,242,255,0.05) 100%); border: 2px solid var(--cyan); border-radius: 50px; padding: 14px 40px; text-align: center; margin: 40px auto; display: inline-block; cursor: pointer; transition: all 0.3s ease; font-weight: 700; letter-spacing: 2px; backdrop-filter: blur(10px); }
+        .load-more-btn:hover { background: var(--cyan); color: #000; transform: scale(1.05); box-shadow: 0 0 35px rgba(0,242,255,0.5); }
+        .lang-flag-icon { font-size: 52px; display: inline-block; transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1); }
+        .lang-card:hover .lang-flag-icon { transform: scale(1.15) rotate(8deg); }
+        .lang-card-title { font-size: 12px; font-weight: 800; letter-spacing: 2.5px; margin-top: 12px; text-transform: uppercase; background: linear-gradient(135deg, #fff, var(--cyan)); background-clip: text; -webkit-background-clip: text; color: transparent; }
+        .glow-text { text-shadow: 0 0 20px rgba(0,242,255,0.6); }
+        .season-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+        .season-btn { background: linear-gradient(135deg, rgba(0,242,255,0.15), rgba(0,242,255,0.05)); border: 1px solid var(--cyan); border-radius: 30px; padding: 8px 18px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; letter-spacing: 1px; }
+        .season-btn:hover { background: var(--cyan); color: #000; transform: scale(1.05); border-color: white; }
+        .season-active { background: var(--cyan); color: #000; border-color: white; box-shadow: 0 0 15px rgba(0,242,255,0.5); }
+        @keyframes titleGlow { 0%, 100% { text-shadow: 0 0 5px rgba(0,242,255,0.3); } 50% { text-shadow: 0 0 20px rgba(0,242,255,0.6); } }
+        .gradient-text { background: linear-gradient(135deg, #fff 0%, var(--cyan) 100%); background-clip: text; -webkit-background-clip: text; color: transparent; animation: titleGlow 3s infinite; }
     </style>
 </head>
 <body>
     <div class="bg-glow"></div>
 
-    <div id="language-overlay" class="fixed inset-0 z-[10000] bg-[#050505] flex items-center justify-center p-6 transition-all duration-700" style="backdrop-filter: blur(12px);">
+    <div id="language-overlay" class="fixed inset-0 z-[10000] bg-[#050505] flex items-center justify-center p-6 transition-all duration-700" style="backdrop-filter: blur(16px);">
         <div class="max-w-3xl w-full text-center" data-aos="zoom-in" data-aos-duration="600">
             <h2 class="font-brand text-6xl md:text-7xl mb-6 tracking-widest text-white glow-text">SELECT REGION</h2>
             <p class="text-white/40 text-xs uppercase tracking-wider mb-12">Choose your language / Elige tu idioma</p>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-5 mb-10" id="langGrid"></div>
-            <label class="flex items-center justify-center gap-3 cursor-pointer opacity-60 hover:opacity-100 transition-all duration-300 group">
+            <label class="flex items-center justify-center gap-3 cursor-pointer opacity-70 hover:opacity-100 transition-all duration-300 group">
                 <input type="checkbox" id="rememberLang" class="hidden peer">
                 <div class="w-4 h-4 border-2 border-white/40 rounded peer-checked:bg-cyan-400 peer-checked:border-cyan-400 transition-all group-hover:border-cyan-400"></div>
                 <span id="label-no-ask" class="text-[10px] uppercase font-bold tracking-widest text-white/60 group-hover:text-white transition-all"></span>
@@ -85,21 +100,21 @@
         </div>
     </div>
 
-    <header class="px-6 py-6 flex items-center justify-between sticky top-0 z-[900] bg-dark/30 backdrop-blur-md">
+    <header class="px-6 py-6 flex items-center justify-between sticky top-0 z-[900] bg-dark/40 backdrop-blur-xl border-b border-white/5">
         <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
-            <img src="https://i.ibb.co/ZRJzrLqr/image.png" alt="Logo" class="w-8 h-8 rounded-lg object-contain transition-transform group-hover:scale-110">
-            <span class="font-brand text-2xl bg-gradient-to-r from-white to-cyan-400 bg-clip-text text-transparent">NOVARK</span>
+            <img src="https://i.ibb.co/ZRJzrLqr/image.png" alt="Logo" class="w-9 h-9 rounded-xl object-contain transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
+            <span class="font-brand text-3xl gradient-text">NOVARK</span>
         </div>
-        <div id="current-lang-display" onclick="resetLanguage()" class="bg-white/5 px-3 py-1.5 rounded-full border border-white/10 flex items-center gap-2 cursor-pointer hover:bg-white/10 transition-all hover:scale-105">
+        <div id="current-lang-display" onclick="resetLanguage()" class="bg-white/10 px-3 py-1.5 rounded-full border border-white/20 flex items-center gap-2 cursor-pointer hover:bg-white/20 transition-all hover:scale-105 backdrop-blur-sm">
             <span id="header-flag" class="text-lg"></span>
         </div>
     </header>
 
     <main class="px-6 max-w-7xl mx-auto pb-20">
-        <section id="home-view" class="view-section">
-            <div class="search-container flex items-center gap-4 mb-8 bg-white/5">
-                <svg class="opacity-50" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                <input type="text" id="catalogSearch" class="bg-transparent border-none outline-none w-full text-sm font-medium" placeholder="Buscar..." oninput="render()">
+        <section id="home-view" class="view-section" data-aos="fade-up">
+            <div class="search-container flex items-center gap-4 mb-8">
+                <svg class="opacity-60" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <input type="text" id="catalogSearch" class="bg-transparent border-none outline-none w-full text-sm font-medium text-white/90" placeholder="Buscar..." oninput="render()">
             </div>
             <div id="gameGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6"></div>
             <div id="loadMoreContainer" class="flex justify-center w-full">
@@ -108,33 +123,34 @@
         </section>
 
         <section id="detail-view" class="view-section hidden pt-4">
-            <button onclick="navigate('home')" class="mb-8 flex items-center gap-2 text-white/40 hover:text-cyan-400 transition-all uppercase text-[10px] font-black tracking-widest group">
+            <button onclick="navigate('home')" class="mb-8 flex items-center gap-2 text-white/50 hover:text-cyan-400 transition-all uppercase text-[10px] font-black tracking-widest group">
                 <svg class="group-hover:-translate-x-1 transition-transform" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m15 18-6-6 6-6"/></svg>
                 <span id="btn-back-text">Volver</span>
             </button>
             <div class="grid lg:grid-cols-2 gap-12">
-                <div class="rounded-[30px] overflow-hidden border border-white/10 shadow-2xl" data-aos="fade-right">
+                <div class="rounded-[32px] overflow-hidden border border-white/15 shadow-2xl" data-aos="fade-right">
                     <img id="detailImg" class="detail-screen-img" loading="lazy">
                 </div>
                 <div data-aos="fade-left">
-                    <h2 id="detailTitle" class="text-5xl font-brand mb-4 leading-tight bg-gradient-to-r from-white to-cyan-400 bg-clip-text text-transparent"></h2>
-                    <p id="detailDesc" class="text-white/50 text-sm leading-relaxed mb-8 font-light"></p>
+                    <h2 id="detailTitle" class="text-5xl font-brand mb-4 leading-tight gradient-text"></h2>
+                    <p id="detailDesc" class="text-white/60 text-sm leading-relaxed mb-8 font-light"></p>
                     <div class="mb-10">
-                        <p class="text-[9px] uppercase tracking-widest font-bold text-cyan-400/60 mb-4">⚡ SPECS & DATA</p>
+                        <p class="text-[9px] uppercase tracking-widest font-bold text-cyan-400/80 mb-4">⚡ SPECS & DATA</p>
                         <div id="reqsContainer" class="flex flex-wrap gap-2"></div>
                     </div>
                     <div id="downloadArea" class="space-y-3"></div>
                     <div id="specialFeatures" class="feature-box hidden"></div>
                     <div id="updateInfo" class="update-text hidden"></div>
+                    <div id="seasonSelector" class="season-buttons hidden"></div>
                 </div>
             </div>
         </section>
 
-        <section id="request-view" class="view-section hidden py-16 text-center">
+        <section id="request-view" class="view-section hidden py-20 text-center">
             <div class="max-w-xl mx-auto" data-aos="zoom-in">
-                <h1 class="text-6xl font-brand mb-4 bg-gradient-to-r from-white to-cyan-400 bg-clip-text text-transparent" id="req-view-title"></h1>
+                <h1 class="text-7xl font-brand mb-4 gradient-text" id="req-view-title"></h1>
                 <p class="text-white/30 text-[10px] uppercase tracking-widest mb-12">Novark Media Delivery System</p>
-                <input type="text" id="requestInput" class="w-full bg-transparent border-b border-white/10 py-4 text-center text-xl font-light outline-none focus:border-cyan-400 transition-all mb-10" placeholder="Escribe tu petición...">
+                <input type="text" id="requestInput" class="w-full bg-transparent border-b border-white/15 py-4 text-center text-xl font-light outline-none focus:border-cyan-400 transition-all mb-10 placeholder-white/30" placeholder="Escribe tu petición...">
                 <button onclick="sendRequest()" class="btn-action" id="req-btn"></button>
             </div>
         </section>
@@ -145,11 +161,11 @@
         <div id="nav-btn-games" onclick="switchCategory('games')" class="nav-item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4m7-2h.01m2.99-2h.01"/></svg><span class="nav-label" id="lbl-games"></span></div>
         <div id="nav-btn-movies" onclick="switchCategory('movies')" class="nav-item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19.82 2H4.18C2.97 2 2 2.97 2 4.18v15.64C2 21.03 2.97 22 4.18 22h15.64c1.21 0 2.18-.97 2.18-2.18V4.18C22 2.97 21.03 2 19.82 2zM7 2v20M17 2v20M2 12h20M2 7h5M2 17h5M17 17h5M17 7h5"/></svg><span class="nav-label" id="lbl-movies"></span></div>
         <div id="nav-btn-req" onclick="navigate('request')" class="nav-item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span class="nav-label" id="lbl-req"></span></div>
-        <div id="nav-btn-ai" onclick="handleAIClick()" class="nav-item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><circle cx="12" cy="12" r="3"/><path d="M12 7v2m0 6v2m-5-5h2m6 0h2"/></svg><span class="nav-label">AI</span></div>
+        <div id="nav-btn-ai" onclick="handleAIClick()" class="nav-item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><circle cx="12" cy="12" r="3"/><path d="M12 7v2m0 6v2m-5-5h2m6 0h2"/></svg><span class="nav-label" id="lbl-ai"></span></div>
     </nav>
 
     <script>
-        // ==================== WEBHOOKS CORREGIDOS ====================
+        // ==================== WEBHOOKS ====================
         const WEBHOOK_DOWNLOADS_IA_PELIS = "https://discord.com/api/webhooks/1498103534795755554/euR5SIeFJmzNvusuJ9es2t_WY7RvVU7DHdqdcAzH_vQREkSq2Ou80HZW8rsIjxTfIdbG";
         const WEBHOOK_REPORTS_JUEGOS = "https://discord.com/api/webhooks/1498105804275060778/nVdgoLqeQDpnEGlR-ny3NrujHF_v79gobHO_9S357ONmtcixgKYec553mGfC72RUsSmJ";
         const WEBHOOK_PETICIONES = "https://discord.com/api/webhooks/1493029753462984724/W92Go_ww0kgsfZYXh-JBoo9MSJpVIXaoZTnqf61n5kRKGhnLGtTPOEtca9iVA8mzy44k";
@@ -176,13 +192,13 @@
             await sendToWebhook(WEBHOOK_REPORTS_JUEGOS, embed, "https://i.ibb.co/ZRJzrLqr/image.png");
         }
 
-        async function handleAIClick() { await logAI(); window.open('https://novark-ai-flow.base44.app/?is_new_user=true', '_blank'); }
+        async function handleAIClick() { await logAI(); window.open('https://novark-nova-core.base44.app', '_blank'); }
 
         const i18n = {
-            es: { search: "Buscar...", request: "Peticiones", download: "Descargar APK", play: "Reproducir ahora", back: "Atrás", send: "Enviar", noAsk: "Recordar región", new: "Nuevo", hot: "Top", games: "Juegos", movies: "Cine", all: "De Todo", flag: "🇪🇸" },
-            en: { search: "Search...", request: "Requests", download: "Download APK", play: "Watch Now", back: "Back", send: "Send", noAsk: "Remember choice", new: "New", hot: "Hot", games: "Games", movies: "Movies", all: "Everything", flag: "🇺🇸" },
-            pt: { search: "Buscar...", request: "Pedidos", download: "Instalar APK", play: "Assistir", back: "Voltar", send: "Enviar", noAsk: "Lembrar", new: "Novo", hot: "Popular", games: "Jogos", movies: "Cine", all: "Tudo", flag: "🇧🇷" },
-            fr: { search: "Chercher...", request: "Requêtes", download: "Installer APK", play: "Regarder", back: "Retour", send: "Envoyer", noAsk: "Retenir", new: "Nouveau", hot: "Top", games: "Jeux", movies: "Films", all: "Tout", flag: "🇫🇷" }
+            es: { search: "Buscar...", request: "Peticiones", download: "Descargar APK", play: "Reproducir ahora", back: "Atrás", send: "Enviar", noAsk: "Recordar región", new: "Nuevo", hot: "Top", games: "Juegos", movies: "Cine", all: "Todo", ai: "AI", flag: "🇪🇸" },
+            en: { search: "Search...", request: "Requests", download: "Download APK", play: "Watch Now", back: "Back", send: "Send", noAsk: "Remember choice", new: "New", hot: "Hot", games: "Games", movies: "Movies", all: "All", ai: "AI", flag: "🇺🇸" },
+            pt: { search: "Buscar...", request: "Pedidos", download: "Instalar APK", play: "Assistir", back: "Voltar", send: "Enviar", noAsk: "Lembrar", new: "Novo", hot: "Popular", games: "Jogos", movies: "Cinema", all: "Tudo", ai: "IA", flag: "🇧🇷" },
+            fr: { search: "Chercher...", request: "Requêtes", download: "Installer APK", play: "Regarder", back: "Retour", send: "Envoyer", noAsk: "Retenir", new: "Nouveau", hot: "Top", games: "Jeux", movies: "Films", all: "Tout", ai: "IA", flag: "🇫🇷" }
         };
 
         const languages = [
@@ -197,7 +213,15 @@
         let currentDisplayCount = 30;
         let filteredItems = [];
 
-        // ==================== PELÍCULAS COMPLETAS ====================
+        // Serie FROM unificada con temporadas
+        const fromSeasons = [
+            { season: 1, title: { es: 'From (T1)', en: 'From (S1)', pt: 'From (T1)', fr: 'From (S1)' }, links: { mex: 'https://latino.solo-latino.com/es/detail/drama/v3HBgSbGMGBfDZO6EzXza-From-Season-1', usa: 'https://ww1.123flmsfree.com/es/detail/drama/nRRZcrKnaBBl0le9LW69P-From' } },
+            { season: 2, title: { es: 'From (T2)', en: 'From (S2)', pt: 'From (T2)', fr: 'From (S2)' }, links: { mex: 'https://video.playspelis.com/es/detail/drama/5D00Ra6GMcEITfE8DfE2d-From-Season-2', usa: 'https://flixlat.com/es/detail/drama/IYfjCSGuPosNxUVOF7CPj-From-Season-2' } },
+            { season: 3, title: { es: 'From (T3)', en: 'From (S3)', pt: 'From (T3)', fr: 'From (S3)' }, links: { mex: 'https://play.cuevana.life/es/detail/drama/wsUcgDlN09vM0f3AUIoJD-From-Season-3', usa: 'https://ww1.123flmsfree.com/es/detail/drama/RoyoESMsFueh9DeKl2ycd-From-Season-3' } },
+            { season: 4, title: { es: 'From (T4)', en: 'From (S4)', pt: 'From (T4)', fr: 'From (S4)' }, links: { mex: 'https://ww20.321moviesfree.com/es/detail/drama/8JsoLCi6DNWXexKol4WnR-From-Season-4', usa: 'https://ww20.321moviesfree.com/es/detail/drama/MKkK0ZMtYN54vJuysYznp-From-Season-4' } }
+        ];
+
+        // PELÍCULAS COMPLETAS
         const movies = [
             { id: 'fnaf_movie', title: { es: 'Five Nights at Freddy\'s (2023)', en: 'Five Nights at Freddy\'s (2023)', pt: 'Five Nights at Freddy\'s (2023)', fr: 'Five Nights at Freddy\'s (2023)' }, poster: 'https://sm.ign.com/ign_latam/movie/f/five-night/five-nights-at-freddys-theater_j7c6.jpg', screen: 'https://www.billboard.com/wp-content/uploads/2023/10/five-nights-at-freddys-2023-billboard-1548.jpg', links: { mex: 'https://play.cuevana.life/es/detail/movie/UYbywBL7C14A5zAr5AzcS-Five-Nights-At-Freddys', usa: 'https://latino.solo-latino.com/es/detail/movie/O7syQYn4QhsdCbYVAHo8T-Five-Nights-At-Freddys' }, desc: { es: 'Un guardia de seguridad comienza a trabajar en Freddy Fazbear\'s Pizza.', en: 'A troubled security guard begins working at Freddy Fazbear\'s Pizza.' }, reqs: ["1080p", "Lat/Eng", "Multi", "2023"], showNewBadge: false, type: 'movie', multiVersion: true },
             { id: 'fnaf2_movie', title: { es: 'Five Nights at Freddy\'s 2', en: 'Five Nights at Freddy\'s 2', pt: 'Five Nights at Freddy\'s 2', fr: 'Five Nights at Freddy\'s 2' }, poster: 'https://upload.wikimedia.org/wikipedia/en/1/11/Five_Nights_At_Freddy%27s_2_Movie_Poster.png', screen: 'https://m.media-amazon.com/images/M/MV5BM2E0NjViODYtZjk3ZS00MzI5LTk1NTctNWQ3MDZjNWNiY2E3XkEyXkFqcGc@._V1_.jpg', links: { mex: 'https://latino.solo-latino.com/es/detail/movie/QyFLAM7pTw8mzvuli420k-Five-Nights-At-Freddys-2', usa: 'https://ver.123pelicula.com/es/detail/movie/1TqlJllmAswrwSmrzHacI-Five-Nights-at-Freddys-2' }, desc: { es: 'Secuela del terrorífico éxito de 2023.', en: 'Sequel to the terrifying 2023 hit.' }, reqs: ["1080p", "Lat/Eng", "2025"], showNewBadge: false, type: 'movie', multiVersion: true },
@@ -218,16 +242,22 @@
             { id: 'hoppers', title: { es: 'Hoppers', en: 'Hoppers', pt: 'Hoppers', fr: 'Hoppers' }, poster: 'https://lumiere-a.akamaihd.net/v1/images/image_eec56fad.jpeg?region=0%2C0%2C540%2C810&width=320', screen: 'https://m.media-amazon.com/images/M/MV5BZjY0N2FmYmEtMGZjNC00MTBjLTkyY2ItNjgwMjE5ZDUwYjdlXkEyXkFqcGdeQVRoaXJkUGFydHlJbmdlc3Rpb25Xb3JrZmxvdw@@._V1_QL75_UX500_CR0,0,500,281_.jpg', links: { mex: 'https://www3.dramasfree.com/es/detail/movie/drHHSEoReio5Ntozg0p3I-Hoppers', usa: 'https://ww1.123flmsfree.com/es/detail/movie/cJ4ztYW8oxFk2uEUW9RrU-Hoppers' }, desc: { es: 'Aventura animada llena de saltos.', en: 'An animated adventure full of jumps.' }, reqs: ["1080p", "Lat/Eng", "Animación", "2025"], showNewBadge: false, type: 'movie', multiVersion: true },
             { id: 'moana', title: { es: 'Moana', en: 'Moana', pt: 'Moana', fr: 'Moana' }, poster: 'https://lumiere-a.akamaihd.net/v1/images/p_moana_20530_214883e3.jpeg', screen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKTYKHDsGiIUsr8XHLdxxMFtU3DpOzSHseroC6XA7_SMe4ry5Vvb0Ree8&s=10', links: { mex: 'https://latino.solo-latino.com/es/detail/movie/Wt0CMHAnaGOZ7RxIiqdcY-Moana', usa: 'https://www3.dramasfree.com/es/detail/movie/7mGcqtHl8EPawrtTwNYl0-Moana' }, desc: { es: 'Una valiente joven se embarca en una misión para salvar a su pueblo.', en: 'A brave young girl embarks on a mission to save her people.' }, reqs: ["4K", "Lat/Eng", "Animación", "2016"], showNewBadge: false, type: 'movie', multiVersion: true },
             { id: 'thepurge', title: { es: 'The Purge (T1)', en: 'The Purge (S1)', pt: 'The Purge (T1)', fr: 'The Purge (S1)' }, poster: 'https://images.justwatch.com/poster/196446122/s718/temporada-1.jpg', screen: 'https://s3.amazonaws.com/dam.smashmexico.com.mx/wp-content/uploads/2024/01/la-purga-the-purge-como-ver-orden-cronologico.jpg', links: { mex: 'https://es.cuevana4br.com/es/detail/drama/cq2m20AetGXe4dgXn54YJ-The-Purge-Season-1', usa: 'https://ver.123pelicula.com/es/detail/drama/H1eBCBxaX831EMpkli4Oz-The-Purge-Season-1' }, desc: { es: 'Serie basada en la franquicia de terror.', en: 'Series based on the horror franchise.' }, reqs: ["1080p", "Lat/Eng", "Serie", "2018"], showNewBadge: false, type: 'movie', multiVersion: true },
-            { id: 'fastfurious1', title: { es: 'Fast And Furious 1', en: 'Fast And Furious 1', pt: 'Fast And Furious 1', fr: 'Fast And Furious 1' }, poster: 'https://static.wikia.nocookie.net/fastandfurious/images/8/87/Fast_One_Poster.jpg/revision/latest?cb=20200205060103', screen: 'https://m.media-amazon.com/images/M/MV5BMTQ2NDczNzAwNF5BMl5BanBnXkFtZTgwMTA2NzUwOTE@._V1_.jpg', links: { mex: 'https://es.cuevana4br.com/es/detail/movie/XADcAL21CyH6QcPuLjnSV-The-Fast-and-the-Furious', usa: null }, desc: { es: 'La primera película de la saga de velocidad.', en: 'The first movie of the speed saga.' }, reqs: ["1080p", "Latino", "Acción", "2001"], showNewBadge: true, type: 'movie', multiVersion: true, noEnglish: true },
-            { id: 'supermariogalaxy', title: { es: 'Super Mario Galaxy', en: 'Super Mario Galaxy', pt: 'Super Mario Galaxy', fr: 'Super Mario Galaxy' }, poster: 'https://resizing.flixster.com/HAAN4N8Iq2P5RWAU3LpQeP3Rp1k=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzhjZWE4M2NjLWIxYjItNGVhNC04YTc0LTliN2FjZDA1NzI2Mi5qcGc=', screen: 'https://www.denofgeek.com/wp-content/uploads/2025/11/Rosalina-Super-Mario-Galaxy-Movie.png?resize=768%2C432', links: { mex: 'https://ww20.321moviesfree.com/es/detail/movie/WontRDJoNb9FigkbJWBUq-The-Super-Mario-Galaxy-Movie', usa: 'https://www3.dramasfree.com/es/detail/movie/0SDwWjF4nJZP3wZYAwTYW-The-Super-Mario-Galaxy-Movie' }, desc: { es: 'Mario viaja por el espacio para salvar a la Princesa Peach.', en: 'Mario travels through space to save Princess Peach.' }, reqs: ["4K", "Lat/Eng", "Animación", "2025"], showNewBadge: true, type: 'movie', multiVersion: true },
-            { id: 'zootopia2', title: { es: 'Zootopia 2', en: 'Zootopia 2', pt: 'Zootopia 2', fr: 'Zootopia 2' }, poster: 'https://m.media-amazon.com/images/M/MV5BYjg1Mjc3MjQtMTZjNy00YWVlLWFhMWEtMWI3ZTgxYjJmNmRlXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg', screen: 'https://statcdn.fandango.com/MPX/image/NBCU_Fandango/514/639/thumb_74C7AB2A-1E02-4104-AA36-6D7FCFC2046C.jpg', links: { mex: 'https://es.cuevana4br.com/es/detail/movie/OmKA0o94bf16x4RsPNud1-Zootopia-2', usa: 'https://video.playspelis.com/es/detail/movie/EHhZNJJL3NZ0VwGiSQgOH-Zootopia-2' }, desc: { es: 'Judy y Nick regresan en una nueva aventura.', en: 'Judy and Nick return in a new adventure.' }, reqs: ["1080p", "Lat/Eng", "Animación", "2025"], showNewBadge: true, type: 'movie', multiVersion: true },
-            { id: 'kpopdemon', title: { es: 'Kpop Demon Hunters', en: 'Kpop Demon Hunters', pt: 'Kpop Demon Hunters', fr: 'Kpop Demon Hunters' }, poster: 'https://lcmspantherpress.com/wp-content/uploads/2025/10/kpdh.webp', screen: 'https://es.hollywoodreporter.com/wp-content/uploads/2025/07/El-fenomeno-global-de-KPop-Demon-Hunters-trasciende-la-pantalla.jpg', links: { mex: 'https://ver.123pelicula.com/es/detail/movie/dUcNtPZ10VrGovtl6Ei4Q-KPop-Demon-Hunters', usa: 'https://ver.123pelicula.com/es/detail/movie/FT74btLlY2aETlrOS3D8g-K-Pop-Demon-Hunters' }, desc: { es: 'Un grupo de idols cazadores de demonios.', en: 'A group of idol demon hunters.' }, reqs: ["1080p", "Lat/Eng", "Acción", "2025"], showNewBadge: true, type: 'movie', multiVersion: true }
+            { id: 'fastfurious1', title: { es: 'Fast And Furious 1', en: 'Fast And Furious 1', pt: 'Fast And Furious 1', fr: 'Fast And Furious 1' }, poster: 'https://static.wikia.nocookie.net/fastandfurious/images/8/87/Fast_One_Poster.jpg/revision/latest?cb=20200205060103', screen: 'https://m.media-amazon.com/images/M/MV5BMTQ2NDczNzAwNF5BMl5BanBnXkFtZTgwMTA2NzUwOTE@._V1_.jpg', links: { mex: 'https://es.cuevana4br.com/es/detail/movie/XADcAL21CyH6QcPuLjnSV-The-Fast-and-the-Furious', usa: null }, desc: { es: 'La primera película de la saga de velocidad.', en: 'The first movie of the speed saga.' }, reqs: ["1080p", "Latino", "Acción", "2001"], showNewBadge: false, type: 'movie', multiVersion: true, noEnglish: true },
+            { id: 'supermariogalaxy', title: { es: 'Super Mario Galaxy', en: 'Super Mario Galaxy', pt: 'Super Mario Galaxy', fr: 'Super Mario Galaxy' }, poster: 'https://resizing.flixster.com/HAAN4N8Iq2P5RWAU3LpQeP3Rp1k=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzhjZWE4M2NjLWIxYjItNGVhNC04YTc0LTliN2FjZDA1NzI2Mi5qcGc=', screen: 'https://www.denofgeek.com/wp-content/uploads/2025/11/Rosalina-Super-Mario-Galaxy-Movie.png?resize=768%2C432', links: { mex: 'https://ww20.321moviesfree.com/es/detail/movie/WontRDJoNb9FigkbJWBUq-The-Super-Mario-Galaxy-Movie', usa: 'https://www3.dramasfree.com/es/detail/movie/0SDwWjF4nJZP3wZYAwTYW-The-Super-Mario-Galaxy-Movie' }, desc: { es: 'Mario viaja por el espacio para salvar a la Princesa Peach.', en: 'Mario travels through space to save Princess Peach.' }, reqs: ["4K", "Lat/Eng", "Animación", "2025"], showNewBadge: false, type: 'movie', multiVersion: true },
+            { id: 'zootopia2', title: { es: 'Zootopia 2', en: 'Zootopia 2', pt: 'Zootopia 2', fr: 'Zootopia 2' }, poster: 'https://m.media-amazon.com/images/M/MV5BYjg1Mjc3MjQtMTZjNy00YWVlLWFhMWEtMWI3ZTgxYjJmNmRlXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg', screen: 'https://statcdn.fandango.com/MPX/image/NBCU_Fandango/514/639/thumb_74C7AB2A-1E02-4104-AA36-6D7FCFC2046C.jpg', links: { mex: 'https://es.cuevana4br.com/es/detail/movie/OmKA0o94bf16x4RsPNud1-Zootopia-2', usa: 'https://video.playspelis.com/es/detail/movie/EHhZNJJL3NZ0VwGiSQgOH-Zootopia-2' }, desc: { es: 'Judy y Nick regresan en una nueva aventura.', en: 'Judy and Nick return in a new adventure.' }, reqs: ["1080p", "Lat/Eng", "Animación", "2025"], showNewBadge: false, type: 'movie', multiVersion: true },
+            { id: 'kpopdemon', title: { es: 'Kpop Demon Hunters', en: 'Kpop Demon Hunters', pt: 'Kpop Demon Hunters', fr: 'Kpop Demon Hunters' }, poster: 'https://lcmspantherpress.com/wp-content/uploads/2025/10/kpdh.webp', screen: 'https://es.hollywoodreporter.com/wp-content/uploads/2025/07/El-fenomeno-global-de-KPop-Demon-Hunters-trasciende-la-pantalla.jpg', links: { mex: 'https://ver.123pelicula.com/es/detail/movie/dUcNtPZ10VrGovtl6Ei4Q-KPop-Demon-Hunters', usa: 'https://ver.123pelicula.com/es/detail/movie/FT74btLlY2aETlrOS3D8g-K-Pop-Demon-Hunters' }, desc: { es: 'Un grupo de idols cazadores de demonios.', en: 'A group of idol demon hunters.' }, reqs: ["1080p", "Lat/Eng", "Acción", "2025"], showNewBadge: false, type: 'movie', multiVersion: true },
+            // NUEVAS PELÍCULAS CON BADGE NUEVO
+            { id: 'garfield2', title: { es: 'Garfield 2', en: 'Garfield 2', pt: 'Garfield 2', fr: 'Garfield 2' }, poster: 'https://play-lh.googleusercontent.com/bV6A4ze48XefmpT7wqbVSacZ7RVerGwljS2oGP6YT6EIqVvtc6mJRK-Q1I5Iv2UA17ULPg', screen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwAPaBt8lhwbTtC5Ly12rqPjOQOCwC06pUa4B9d5juP2sv_0VLFNVKMqo&s=10', links: { mex: 'https://ww20.321moviesfree.com/es/detail/movie/IEG509OTPzI4AhsH7dVhM-Garfield-A-Tail-of-Two-Kitties', usa: 'https://video.playspelis.com/es/detail/movie/ReG26oNCFsLzFQNlavaq7-Garfield-A-Tail-of-Two-Kitties' }, desc: { es: 'Garfield viaja a Londres y se encuentra con su doble real.', en: 'Garfield travels to London and meets his royal double.' }, reqs: ["1080p", "Lat/Eng", "Animación", "2006"], showNewBadge: true, type: 'movie', multiVersion: true },
+            { id: 'us', title: { es: 'Us', en: 'Us', pt: 'Us', fr: 'Us' }, poster: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyHi1Mlkncd_qMgrEanZTikrsgok7DXfnrLCIdn1sY1o5AI2IT9Rlph-um&s=10', screen: 'https://media.gq.com.mx/photos/5c992ecccb60c0d1f9ade41e/master/pass/us.jpg', links: { mex: 'https://es.cuevana4br.com/es/detail/movie/rmjuxLx8jiLuyWv0FJMdV-Us', usa: 'https://www3.dramasfree.com/es/detail/movie/URzczuIn46Kqg7PWoR8sL-Us' }, desc: { es: 'Una familia se enfrenta a sus propios doppelgängers.', en: 'A family faces their own doppelgängers.' }, reqs: ["4K", "Lat/Eng", "Terror", "2019"], showNewBadge: true, type: 'movie', multiVersion: true },
+            { id: 'michaeljackson', title: { es: 'Michael Jackson', en: 'Michael', pt: 'Michael', fr: 'Michael' }, poster: 'https://m.media-amazon.com/images/M/MV5BNzllNmRlN2EtMDQyOC00ODJjLTg4OWQtZDNmNGU3YzlkNjc1XkEyXkFqcGc@._V1_.jpg', screen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpZRMEXjHdwi4FsMpyPLkiBHVeuMltqUv8mnS7gjC8BxkNgf_uK751222S&s=10', links: { mex: 'https://ww20.321moviesfree.com/es/detail/movie/qztQ1T9u5SsDb7fkzVD3D-Michael', usa: 'https://peliculaplay.com/es/detail/movie/JEg8jBK5ztJgZO1GrVd6e-Michael' }, desc: { es: 'Biopic del Rey del Pop, Michael Jackson.', en: 'Biopic of the King of Pop, Michael Jackson.' }, reqs: ["4K", "Lat/Eng", "Biopic", "2025"], showNewBadge: true, type: 'movie', multiVersion: true },
+            // Serie FROM unificada (una sola tarjeta)
+            { id: 'from_series', title: { es: 'From (Serie Completa)', en: 'From (Complete Series)', pt: 'From (Série Completa)', fr: 'From (Série Complète)' }, poster: 'https://es.web.img3.acsta.net/img/7f/5b/7f5b275c23162a85b46befa8bba36176.jpg', screen: 'https://hips.hearstapps.com/hmg-prod/images/from-temporada-2-649ec0a7cb33a.jpg?crop=1xw:0.845427435387674xh;center,top&resize=1200:*', desc: { es: 'Serie de terror y misterio. Selecciona la temporada abajo.', en: 'Horror and mystery series. Select season below.' }, reqs: ["1080p", "Lat/Eng", "Serie", "2022-2025"], showNewBadge: true, type: 'movie', isSeries: true, seasons: fromSeasons }
         ];
 
-        // ==================== JUEGOS COMPLETOS (TODOS RESTAURADOS) ====================
+        // JUEGOS - Todos los juegos restaurados (solo mostramos los primeros para no alargar, pero son todos)
         const games = [
-            { id: 'minecraft', title: { es: 'Minecraft', en: 'Minecraft', pt: 'Minecraft', fr: 'Minecraft' }, poster: 'https://store-images.s-microsoft.com/image/apps.17382.13510798885735219.9735d495-578c-4a4c-b892-3eb3a780b3a0.d3792486-cf98-40c0-a2c1-d6443f0e2b70', screen: 'https://apktodo.io/uploads/2026/4/minecraft-pe-1263021-thumbnail.jpg', link: 'https://dl.minecrfapkmod.com/minecraft-mod-menu-1.26.30.21-.apk', desc: { es: 'V1.26.30: Explora mundos infinitos y construye cualquier cosa.', en: 'V1.26.30: Explore infinite worlds and build anything.' }, reqs: ["4GB RAM", "Octa-Core 2.0GHz", "1GB", "8.0+"], showNewBadge: false, isMostWanted: false, type: 'game' },
-            { id: 'p5', title: { es: 'Poppy Playtime 5', en: 'Poppy Playtime 5', pt: 'Poppy Playtime 5', fr: 'Poppy Playtime 5' }, poster: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6NCirZXspnRehiwpdhsRa4wQ_ecXusChoiDMJ2oVLablQGCWjCBLlfG1Z&s=10', screen: 'https://img.itch.zone/aW1hZ2UvNDM5NDI0NS8yNzAwNzkzNy5wbmc=/original/5fnT2b.png', link: 'https://piro775.itch.io/toy-factory-chapter-5-fangame-unity', desc: { es: 'V1.7: Capítulo más aterrador en la fábrica de juguetes.', en: 'V1.7: Scariest chapter in the toy factory.' }, reqs: ["6GB RAM", "Octa-Core 2.6", "2.5GB", "10+"], showNewBadge: false, isMostWanted: true, type: 'game', specialFeatures: "Poppy playtime chapter 5 fangame unity\nV1.7\nAdded multiple maps\nAdded the Huggy wuggy memories\nAdded New SFX\nAdded New Mechanics\nFixed Some Bugs", updateInfo: "Actualizado hace: 1 dia | Updated: 1 day ago" },
+            { id: 'minecraft', title: { es: 'Minecraft', en: 'Minecraft', pt: 'Minecraft', fr: 'Minecraft' }, poster: 'https://store-images.s-microsoft.com/image/apps.17382.13510798885735219.9735d495-578c-4a4c-b892-3eb3a780b3a0.d3792486-cf98-40c0-a2c1-d6443f0e2b70', screen: 'https://apktodo.io/uploads/2026/4/minecraft-pe-1263021-thumbnail.jpg', link: 'https://mcpedl.org/uploads_files/30-04-2026/minecraft-26-30-25-music.apk', desc: { es: 'V1.26.30: Explora mundos infinitos y construye cualquier cosa.', en: 'V1.26.30: Explore infinite worlds and build anything.' }, reqs: ["4GB RAM", "Octa-Core 2.0GHz", "1GB", "8.0+"], showNewBadge: false, isMostWanted: false, type: 'game' },
+            { id: 'p5', title: { es: 'Poppy Playtime 5', en: 'Poppy Playtime 5', pt: 'Poppy Playtime 5', fr: 'Poppy Playtime 5' }, poster: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6NCirZXspnRehiwpdhsRa4wQ_ecXusChoiDMJ2oVLablQGCWjCBLlfG1Z&s=10', screen: 'https://img.itch.zone/aW1hZ2UvNDM5NDI0NS8yNzE3ODkwMy5wbmc=/794x1000/f5t1mH.png', link: 'https://piro775.itch.io/toy-factory-chapter-5-fangame-unity', desc: { es: 'V1.8: Capítulo más aterrador en la fábrica de juguetes.', en: 'V1.8: Scariest chapter in the toy factory.' }, reqs: ["6GB RAM", "Octa-Core 2.6", "2.5GB", "10+"], showNewBadge: false, isMostWanted: true, type: 'game', specialFeatures: "Poppy playtime chapter 5 fangame unity\nV1.8\nAdded multiple maps\nAdded the Huggy wuggy fight 2\nAdded New SFX\nAdded New Cutscenes\nFixed Some Bugs\n\nV1.8.1 - Fixed a major bug with huggy memories\n\nV1.8.2- Fixed another major bug with huggy memories\n\nAnd More...", updateInfo: "Actualizado hace: 2 dias | Updated: 2 days ago" },
             { id: 'bendy', title: { es: 'Bendy and the Ink Machine', en: 'Bendy and the Ink Machine', pt: 'Bendy and the Ink Machine', fr: 'Bendy and the Ink Machine' }, poster: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQp-5QUDSuNnhIBjdpZvrsbhNCFcat16zPc3_lA3D1yGgSV1YTDSmFuAx78&s=10', screen: 'https://imgcdn.latestmodapks.com/api/resize?url=https://www.latestmodapks.com/wp-content/uploads/2022/12/2.-Bendy-and-The-Ink-Machine-APK.jpg', link: 'https://cdn600.onehost.io/2023/Bendy_1.0.909_1765602812_latestmodapks.com.apk', desc: { es: 'Terror en primera persona años 30.', en: 'Horror game 1930s style.' }, reqs: ["3GB RAM", "Octa-Core 2.0GHz", "1.5GB", "8.0+"], showNewBadge: false, type: 'game' },
             { id: 'incredibox', title: { es: 'Incredibox', en: 'Incredibox', pt: 'Incredibox', fr: 'Incredibox' }, poster: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSSEIcLZM8hsrMdgXb9z4mKfRAVYIz4A6-0ZrhVgwTzMB5O5NDgWSM5Emj&s=10', screen: 'https://images.sftcdn.net/images/t_app-cover-s,f_auto/p/ff8f5102-802a-4360-94ec-0b3da3efaa01/2195587113/incredibox-2.png', link: 'https://files.an1.net/incrediboxs_1.0.0-an1.com.apk', desc: { es: 'Crea música con beatboxers.', en: 'Create music with beatboxers.' }, reqs: ["2GB RAM", "Quad-Core 1.8GHz", "280MB", "6.0+"], type: 'game' },
             { id: 'rfs', title: { es: 'RFS Real Flight Simulator', en: 'RFS Real Flight Simulator', pt: 'RFS Real Flight Simulator', fr: 'RFS Real Flight Simulator' }, poster: 'https://cdn-bgp.bluestacks.com/BGP/latam/gametiles_it.rortos.realflightsimulator.jpg', screen: 'https://i.ytimg.com/vi/v5q2W0jK3w8/maxresdefault.jpg', link: 'https://download2389.mediafire.com/uffcmelytmmg3doulF1GPmYDmxjxmB7UxzNw0Q4NNB1D8QHRNJr7nSNqdo-mJDfvGSNR6N7WeBCVAO5VHga1PNguj_pGDZD9RglAMSCN9dZ7_mQFvtUyf56qujefbYULuSD0Cbz4jy6eiXEP_DsfuG6uLWydYlR2wiFZs4J7MVI0prs/736nkkeurfhfncx/real-flight-simulator_3.1.3+-+espacioapk.com.apk', desc: { es: 'Simulador de vuelo real.', en: 'Flight simulator.' }, reqs: ["3GB RAM", "Octa-Core 2.2GHz", "500MB", "8.0+"], type: 'game' },
@@ -259,11 +289,12 @@
             { id: 'p1', title: { es: 'Poppy Playtime 1', en: 'Poppy Playtime 1', pt: 'Poppy Playtime 1', fr: 'Poppy Playtime 1' }, poster: 'https://plusgami.store/cdn/shop/files/Poppy-Playtime-Chapter-1-Juego-Digital-600x748.webp?v=1755981188', screen: 'https://i.ytimg.com/vi/R2u5n-eX_xY/maxresdefault.jpg', link: 'https://download2441.mediafire.com/igmoapc1gtwgA-0TiHJ97w7lu_cCjFWdCe9UNvEtG0VjznLDpeUmlMdXWtKXi-MA8OUaT48VL8nPaWKlyfmepiGF8PILQsX1kaHSBCOnwBsQv5_XKqY6HFVBfK_Qz6n8nFbHHxUamAEqfsw3rbFKhCpcSdldZHtwdKTaEz9u_F9fCck/cc1338960hyor1h/poppy+playtime+v1.0.18+-+espacioapk.com.apk', desc: { es: 'Terror en la fábrica de juguetes.', en: 'Toy factory.' }, reqs: ["3GB RAM", "2.0GHz", "1.5GB", "9.0+"], type: 'game' },
             { id: 'fnaf2_lat', title: { es: 'FNaF 2 Latino', en: 'FNaF 2 Latino', pt: 'FNaF 2 Latino', fr: 'FNaF 2 Latino' }, poster: 'https://es.pickgamer.com/media/3888/Five-Nights-at-Freddy%27s-2-285x380.jpg', screen: 'https://i.ytimg.com/vi/aC896jZ-yK0/maxresdefault.jpg', link: 'https://download2443.mediafire.com/7yhnowyobazg12rakflefBZyxiYZw7oFyVsSFWTDlABYDmTtHtnDBday11_cNW22Can6iYDDGygPlX98cbsgGwQ8fQUt_QO1VEjEntucQYTSSne94csxl43JtmaAVirQ5zkrgSJCmwyMYsl3Dw8FSXoJilrqCEue6mYOL_yWvVFML0k/qxuqjfb86v0d5kd/Five+Nights+at+Freddys+2+%28Spanish%29+-+espacioapk.com.apk', desc: { es: 'FNaF 2 con voces latinas.', en: 'Latin voices.' }, reqs: ["2GB RAM", "1.5GHz", "400MB", "8.0+"], type: 'game' },
             { id: 'gta4', title: { es: 'Grand Theft Auto IV', en: 'Grand Theft Auto IV', pt: 'Grand Theft Auto IV', fr: 'Grand Theft Auto IV' }, poster: 'https://upload.wikimedia.org/wikipedia/en/b/b7/Grand_Theft_Auto_IV_cover.jpg', screen: 'https://root-nation.com/wp-content/uploads/2021/09/GTA-4-Mobile-01.jpg', link: 'https://download2437.mediafire.com/uoxh6nolgbmgmy22EJxRGPTZiGORGcZC0YoPkArAI1EXvSZ46HIs3u0V-TgybrgHCjqZMT482qR36qAXujwldZVUOs3hmKAQaPz1_CejN2TOSHL4Vj9uqwUL97HQnmXy_w7NQoc1g495fx3pOWsgHtD5qaJufFTwHPPsNGtU7Atdwt16/eq042b72t11in8z/GTA+4+Mobile+%28Fanmade%29+v1.0+-+espacioapk.com.apk', desc: { es: 'Fanmade GTA IV para Android. Pesa 400MB.', en: 'Fanmade GTA IV for Android.' }, reqs: ["400MB", "Android 8.0+", "3GB RAM"], showNewBadge: false, type: 'game' },
-            { id: 'fnaf4', title: { es: 'Five Nights at Freddy\'s 4', en: 'Five Nights at Freddy\'s 4', pt: 'Five Nights at Freddy\'s 4', fr: 'Five Nights at Freddy\'s 4' }, poster: 'https://m.media-amazon.com/images/M/MV5BMWJmMjQ0MmEtNjI5ZS00YjVhLTkxMGEtZmIzOTcxOGI4MGNkXkEyXkFqcGc@._V1_.jpg', screen: 'https://m.gjcdn.net/game-screenshot/500/2712840-ujbrdn2q-v4.webp', link: 'https://download2390.mediafire.com/ooyqn5qm7ilgE0FME6VoTCto3j_yNoN7sZJdIvTiR37KRsZadr7QYLhfPjmrL5MHu5dB5DFagCXwMFsAt_HbFN3uUBHrGf-DSfUU4elvzS7OpnPskLAP0gFXLggHohVg_30uLxECZIfdfy9Jb5JccwBHmLdAQLG1knRAAbrP4z2P_EKF/ik1rahsd8yzcps6/Five+Nights+at+Freddy%C2%B4s+4+%28Spanish%29+-+espacioapk.com.apk', desc: { es: 'Terror en tu propia habitación. Pesa 500MB.', en: 'Horror in your bedroom. Size 500MB.' }, reqs: ["500MB", "Android 8.0+", "2GB RAM"], showNewBadge: false, type: 'game' },
-            { id: 'terraria', title: { es: 'Terraria', en: 'Terraria', pt: 'Terraria', fr: 'Terraria' }, poster: 'https://upload.wikimedia.org/wikipedia/en/thumb/1/1a/Terraria_Steam_artwork.jpg/250px-Terraria_Steam_artwork.jpg', screen: 'https://play-lh.googleusercontent.com/NpMliVjbQx0qLgZHLk0YHaxdjTaLEzxbCxoAOsGJbzYmsCN7ZFBSBWHDHF4tqCqsx84=w526-h296-rw', link: 'https://download.terariaapk.com/Terraria-v1.4.5.6.4terariaapk.com.apk', desc: { es: 'Aventura y construcción en un mundo pixelado. Pesa 300MB.', en: 'Adventure and building in a pixelated world. Size 300MB.' }, reqs: ["300MB", "Android 8.0+", "2GB RAM"], showNewBadge: false, type: 'game' },
+            { id: 'fnaf4', title: { es: 'Five Nights at Freddy\'s 4', en: 'Five Nights at Freddy\'s 4', pt: 'Five Nights at Freddy\'s 4', fr: 'Five Nights at Freddy\'s 4' }, poster: 'https://m.media-amazon.com/images/M/MV5BMWJmMjQ0MmEtNjI5ZS00YjVhLTkxMGEtZmIzOTcxOGI4MGNkXkEyXkFqcGc@._V1_.jpg', screen: 'https://m.gjcdn.net/game-screenshot/500/2712840-ujbrdn2q-v4.webp', link: 'https://download2390.mediafire.com/ooyqn5qm7ilgE0FME6VoTCto3j_yNoN7sZJdIvTiR37KRsZadr7QYLhfPjmrL5MHu5dB5DFagCXwMFsAt_HbFN3uUBHrGf-DSfUU4elvzS7OpnPskLAP0gFXLggHohVg_30uLxECZIfdfy9Jb5JccwBHmLdAQLG1knRAAbrP4z2P_EKF/ik1rahsd8yzcps6/Five+Nights+at+Freddy%C2%B4s+4+%28Spanish%29+-+espacioapk.com.apk', desc: { es: 'Terror en tu propia habitación. Pesa 500MB.', en: 'Horror in your bedroom.' }, reqs: ["500MB", "Android 8.0+", "2GB RAM"], showNewBadge: false, type: 'game' },
+            { id: 'terraria', title: { es: 'Terraria', en: 'Terraria', pt: 'Terraria', fr: 'Terraria' }, poster: 'https://upload.wikimedia.org/wikipedia/en/thumb/1/1a/Terraria_Steam_artwork.jpg/250px-Terraria_Steam_artwork.jpg', screen: 'https://play-lh.googleusercontent.com/NpMliVjbQx0qLgZHLk0YHaxdjTaLEzxbCxoAOsGJbzYmsCN7ZFBSBWHDHF4tqCqsx84=w526-h296-rw', link: 'https://download.terariaapk.com/Terraria-v1.4.5.6.4terariaapk.com.apk', desc: { es: 'Aventura y construcción en un mundo pixelado. Pesa 300MB.', en: 'Adventure and building in a pixelated world.' }, reqs: ["300MB", "Android 8.0+", "2GB RAM"], showNewBadge: false, type: 'game' },
             { id: 'theroom', title: { es: 'The Room', en: 'The Room', pt: 'The Room', fr: 'The Room' }, poster: 'https://play-lh.googleusercontent.com/5nc0gBE_3fxx0nPKjTjF3O-l53tDiNaDGJjCGHqwXvb1Imsno1MDhcpYZYNEgC3vqs0', screen: 'https://play-lh.googleusercontent.com/rScxTE1cFaTKXHD5IgV-MgPS5qG4LRGbdd_L9pNhMP2ilp_XmfI7EzcgTvyYqWO8JNw=w526-h296-rw', link: 'https://dl.apkvision.org/the-room/The-Room-v1.11-full-apkvision.apk', desc: { es: 'Resuelve misteriosos puzzles en 3D.', en: 'Solve mysterious 3D puzzles.' }, reqs: ["200MB", "Android 6.0+", "1.5GB RAM"], showNewBadge: false, type: 'game' },
             { id: 'geometrydash', title: { es: 'Geometry Dash', en: 'Geometry Dash', pt: 'Geometry Dash', fr: 'Geometry Dash' }, poster: 'https://play-lh.googleusercontent.com/ixHXzBWPmmKWIBxDMfjbIXK10UQCTDvIYOcs_uLXHCRbdsz2siJFYfb7MqckU8eC3Ks', screen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReBcdqRIGU8Y0KgQWZSyU69DFvS8cclyXznBeZv0KDzYBth2ODHtuxXMU&s=10', link: 'https://vexfile.com/d_bucket/rIASsd4uhd', desc: { es: 'Ritmo y habilidad en un juego desafiante.', en: 'Rhythm and skill in a challenging game.' }, reqs: ["150MB", "Android 5.0+", "1GB RAM"], showNewBadge: false, type: 'game' },
-            { id: 'arknova', title: { es: 'Ark Nova', en: 'Ark Nova', pt: 'Ark Nova', fr: 'Ark Nova' }, poster: 'https://www.malditogames.com/wp-content/uploads/FT_ArkNova-1.jpg', screen: 'https://img.apkvision.org/Ark-Nova/Ark-Nova-2.webp', link: 'https://dl.apkvision.org/ark-nova/Ark-Nova-v1.0.4-full-apkvision.apk', desc: { es: 'Construye el mejor zoológico moderno del mundo.', en: 'Build the best modern zoo in the world.' }, reqs: ["400MB", "Android 8.0+", "3GB RAM"], showNewBadge: true, type: 'game' }
+            { id: 'arknova', title: { es: 'Ark Nova', en: 'Ark Nova', pt: 'Ark Nova', fr: 'Ark Nova' }, poster: 'https://www.malditogames.com/wp-content/uploads/FT_ArkNova-1.jpg', screen: 'https://img.apkvision.org/Ark-Nova/Ark-Nova-2.webp', link: 'https://dl.apkvision.org/ark-nova/Ark-Nova-v1.0.4-full-apkvision.apk', desc: { es: 'Construye el mejor zoológico moderno del mundo.', en: 'Build the best modern zoo in the world.' }, reqs: ["400MB", "Android 8.0+", "3GB RAM"], showNewBadge: false, type: 'game' },
+            { id: 'rushrally3', title: { es: 'Rush Rally 3', en: 'Rush Rally 3', pt: 'Rush Rally 3', fr: 'Rush Rally 3' }, poster: 'https://content-assets.eneba.games/clp/ce15ef81-de2a-4824-9ff6-2055e4a5d4b5.jpg', screen: 'https://minireview.io/common/uploads/cache/review/1-900-506-asddadasda-0579361.webp', link: 'https://download2388.mediafire.com/5vho76y1jnbgVhgAvP7JG6uZBeBPH1H9aZ5nusVXECFSu3WfGD9EeLDMEMus4bvuGpk0zc7ferSVbCUD072I8zReuuCtXbsZzlX4UqJnI944wW3LIR0HXzhkUyNmLpX8TWEmJjJrE_rMmtTWrhKVRVdyo6xai7d4biaA0Z1aUn4ARdM/6pyz6jsm47qrxk5/rush+rally+3+mod+v1.157+-+espacioapk.com.apk', desc: { es: 'Juego de rally extremo con gráficos impresionantes.', en: 'Extreme rally game with stunning graphics.' }, reqs: ["300MB", "Android 8.0+", "2GB RAM"], showNewBadge: true, type: 'game' }
         ];
 
         function sortItems(pool) {
@@ -274,13 +305,16 @@
             return [...newItems, ...otherItems];
         }
 
-        function updateCounters() {
+        function updateCountersAndLabels() {
+            const t = i18n[curLang];
             const gamesCount = games.length;
             const moviesCount = movies.length;
             const allCount = gamesCount + moviesCount;
-            document.getElementById('lbl-all').innerHTML = `Todo <span class="counter-badge">${allCount}</span>`;
-            document.getElementById('lbl-games').innerHTML = `Juegos <span class="counter-badge">${gamesCount}</span>`;
-            document.getElementById('lbl-movies').innerHTML = `Cine <span class="counter-badge">${moviesCount}</span>`;
+            document.getElementById('lbl-all').innerHTML = `${t.all} <span class="counter-badge">${allCount}</span>`;
+            document.getElementById('lbl-games').innerHTML = `${t.games} <span class="counter-badge">${gamesCount}</span>`;
+            document.getElementById('lbl-movies').innerHTML = `${t.movies} <span class="counter-badge">${moviesCount}</span>`;
+            document.getElementById('lbl-req').innerHTML = t.request;
+            document.getElementById('lbl-ai').innerHTML = t.ai;
         }
 
         function init() {
@@ -297,7 +331,7 @@
             });
             applyTranslations();
             AOS.init({ duration: 600, once: true, offset: 30 });
-            updateCounters();
+            updateCountersAndLabels();
         }
 
         function setLang(c) {
@@ -317,7 +351,7 @@
             document.getElementById('req-btn').innerText = t.send;
             document.getElementById('label-no-ask').innerText = t.noAsk;
             document.getElementById('header-flag').innerText = t.flag;
-            updateCounters();
+            updateCountersAndLabels();
             render();
         }
 
@@ -329,6 +363,9 @@
             currentDisplayCount = 30;
             displayItems(sorted);
         }
+
+        let currentSeriesItem = null;
+        let currentSeasonIndex = 0;
 
         function displayItems(items) {
             const t = i18n[curLang];
@@ -342,8 +379,8 @@
                         ${g.showNewBadge ? `<div class="badge-tag badge-new-green">${t.new}</div>` : ''}
                         ${g.isMostWanted ? `<div class="badge-tag badge-hot-red">${t.hot}</div>` : ''}
                         <img src="${g.poster}" class="poster-img" loading="lazy">
-                        <div class="card-overlay">
-                            <p class="font-brand text-lg leading-tight uppercase text-white">${g.title[curLang]}</p>
+                        <div class="card-title-overlay">
+                            <p class="font-brand text-base leading-tight uppercase">${g.title[curLang] || g.title.en}</p>
                         </div>
                     </div>
                 </div>`).join('');
@@ -358,14 +395,17 @@
 
         async function openItem(id) {
             const g = [...games, ...movies].find(x => x.id === id);
+            if (!g) return;
             const t = i18n[curLang];
             document.getElementById('detailImg').src = g.screen || g.poster;
-            document.getElementById('detailTitle').innerText = g.title[curLang];
-            document.getElementById('detailDesc').innerText = g.desc[curLang] || g.desc.en;
-            document.getElementById('reqsContainer').innerHTML = g.reqs.map(r => `<div class="bg-white/5 px-3 py-1.5 rounded-lg border border-white/5 text-[9px] font-bold text-cyan-400/80 uppercase">${r}</div>`).join('');
+            document.getElementById('detailTitle').innerText = g.title[curLang] || g.title.en;
+            document.getElementById('detailDesc').innerText = (g.desc && g.desc[curLang]) ? g.desc[curLang] : (g.desc ? g.desc.en : '');
+            document.getElementById('reqsContainer').innerHTML = g.reqs ? g.reqs.map(r => `<div class="bg-white/5 px-3 py-1.5 rounded-lg border border-white/5 text-[9px] font-bold text-cyan-400/80 uppercase">${r}</div>`).join('') : '';
             
             const specialDiv = document.getElementById('specialFeatures');
             const updateDiv = document.getElementById('updateInfo');
+            const seasonDiv = document.getElementById('seasonSelector');
+            
             if (g.specialFeatures) {
                 specialDiv.innerHTML = g.specialFeatures.split('\n').map(line => `<div>${line}</div>`).join('');
                 specialDiv.classList.remove('hidden');
@@ -376,31 +416,65 @@
                 updateDiv.classList.add('hidden');
             }
 
-            let htmlArea = '';
-            if (g.multiVersion) {
-                if (g.noEnglish || !g.links.usa) {
-                    htmlArea = `
-                        <button onclick="handleDownload('${g.links.mex}', '${g.title[curLang]}', '${g.type}', '${g.poster}', '🌎 Español (Latino)')" class="btn-variant">
-                            <span>🌎 Español (Latino)</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
-                        </button>
-                        <button class="btn-variant disabled" disabled>
-                            <span>🇺🇸 English (No disponible)</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
-                        </button>`;
-                } else {
-                    htmlArea = `
-                        <button onclick="handleDownload('${g.links.mex}', '${g.title[curLang]}', '${g.type}', '${g.poster}', '🌎 Español (Latino)')" class="btn-variant">
-                            <span>🌎 Español (Latino)</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
-                        </button>
-                        <button onclick="handleDownload('${g.links.usa}', '${g.title[curLang]}', '${g.type}', '${g.poster}', '🇺🇸 English')" class="btn-variant">
-                            <span>🇺🇸 English</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
-                        </button>`;
-                }
+            if (g.isSeries && g.seasons) {
+                currentSeriesItem = g;
+                currentSeasonIndex = 0;
+                seasonDiv.innerHTML = g.seasons.map((s, i) => `<button class="season-btn ${i === 0 ? 'season-active' : ''}" onclick="selectSeason(${i})">Temporada ${s.season}</button>`).join('');
+                seasonDiv.classList.remove('hidden');
+                await loadSeasonContent(0);
             } else {
-                const actionText = g.type === 'movie' ? t.play : t.download;
-                htmlArea = `<button onclick="handleDownload('${g.link}', '${g.title[curLang]}', '${g.type}', '${g.poster}', '${t.flag}')" class="btn-action">${actionText}</button>`;
+                seasonDiv.classList.add('hidden');
+                let htmlArea = '';
+                if (g.multiVersion) {
+                    if (g.noEnglish || !g.links.usa) {
+                        htmlArea = `
+                            <button onclick="handleDownload('${g.links.mex}', '${g.title[curLang] || g.title.en}', '${g.type}', '${g.poster}', '🌎 Español (Latino)')" class="btn-variant">
+                                <span>🌎 Español (Latino)</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                            </button>
+                            <button class="btn-variant disabled" disabled>
+                                <span>🇺🇸 English (No disponible)</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                            </button>`;
+                    } else {
+                        htmlArea = `
+                            <button onclick="handleDownload('${g.links.mex}', '${g.title[curLang] || g.title.en}', '${g.type}', '${g.poster}', '🌎 Español (Latino)')" class="btn-variant">
+                                <span>🌎 Español (Latino)</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                            </button>
+                            <button onclick="handleDownload('${g.links.usa}', '${g.title[curLang] || g.title.en}', '${g.type}', '${g.poster}', '🇺🇸 English')" class="btn-variant">
+                                <span>🇺🇸 English</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                            </button>`;
+                    }
+                } else {
+                    const actionText = g.type === 'movie' ? t.play : t.download;
+                    htmlArea = `<button onclick="handleDownload('${g.link}', '${g.title[curLang] || g.title.en}', '${g.type}', '${g.poster}', '${t.flag}')" class="btn-action">${actionText}</button>`;
+                }
+                document.getElementById('downloadArea').innerHTML = htmlArea;
             }
-            document.getElementById('downloadArea').innerHTML = htmlArea;
             navigate('detail');
+        }
+
+        async function loadSeasonContent(seasonIdx) {
+            if (!currentSeriesItem || !currentSeriesItem.seasons[seasonIdx]) return;
+            const season = currentSeriesItem.seasons[seasonIdx];
+            const t = i18n[curLang];
+            const htmlArea = `
+                <button onclick="handleDownload('${season.links.mex}', '${season.title[curLang] || season.title.en}', 'movie', '${currentSeriesItem.poster}', '🌎 Español (Latino)')" class="btn-variant">
+                    <span>🌎 Español (Latino) - ${season.title[curLang] || season.title.en}</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                </button>
+                <button onclick="handleDownload('${season.links.usa}', '${season.title[curLang] || season.title.en} (English)', 'movie', '${currentSeriesItem.poster}', '🇺🇸 English')" class="btn-variant">
+                    <span>🇺🇸 English - ${season.title[curLang] || season.title.en}</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                </button>`;
+            document.getElementById('downloadArea').innerHTML = htmlArea;
+            
+            const btns = document.querySelectorAll('.season-btn');
+            btns.forEach((btn, i) => {
+                if (i === seasonIdx) btn.classList.add('season-active');
+                else btn.classList.remove('season-active');
+            });
+        }
+
+        async function selectSeason(seasonIdx) {
+            currentSeasonIndex = seasonIdx;
+            await loadSeasonContent(seasonIdx);
         }
 
         async function handleDownload(url, title, type, poster, langLabel) {
