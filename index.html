@@ -20,7 +20,7 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        :root { --cyan: #00f2ff; --dark: #050505; --card: #0c0c0c; --glass: rgba(255, 255, 255, 0.03); --border: rgba(255, 255, 255, 0.08); --purple: #bf00ff; --pink: #ff00aa; --orange: #ff6600; }
+        :root { --cyan: #00f2ff; --dark: #050505; --card: #0c0c0c; --glass: rgba(255, 255, 255, 0.03); --border: rgba(255, 255, 255, 0.08); --purple: #bf00ff; --pink: #ff00aa; --orange: #ff6600; --black-secret: #000000; }
         body { background: var(--dark); color: #fff; font-family: 'Outfit', sans-serif; overflow-x: hidden; padding-bottom: 20px; }
         .bg-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 20% 30%, rgba(0, 242, 255, 0.2), transparent 50%), radial-gradient(circle at 80% 70%, rgba(191, 0, 255, 0.15), transparent 50%), radial-gradient(circle at 50% 100%, rgba(255, 0, 170, 0.1), transparent 40%), radial-gradient(circle at 0% 50%, rgba(255, 102, 0, 0.08), transparent 30%); z-index: -1; pointer-events: none; animation: floatBg 20s ease-in-out infinite; }
         @keyframes floatBg { 0%, 100% { transform: translate(0, 0); } 25% { transform: translate(-1%, 1%); } 50% { transform: translate(1%, -1%); } 75% { transform: translate(-0.5%, -0.5%); } }
@@ -40,8 +40,8 @@
         .badge-tag { position: absolute; top: 12px; right: 12px; padding: 4px 14px; border-radius: 30px; font-size: 8px; font-weight: 900; text-transform: uppercase; backdrop-filter: blur(12px); background: linear-gradient(135deg, rgba(0,242,255,0.4), rgba(191,0,255,0.3)); border: 1px solid rgba(0,242,255,0.6); color: white; animation: pulseGlow 2s infinite; z-index: 10; }
         .badge-hot-red { background: linear-gradient(135deg, #ff3333, #cc0000) !important; border: 1px solid #ff8888 !important; color: white !important; }
         .badge-new-green { background: linear-gradient(135deg, #00ff88, #00cc66) !important; border: 1px solid #88ffcc !important; color: #000 !important; }
+        .badge-secret-black { background: #000000 !important; border: 1px solid #ffffff !important; color: #ffffff !important; box-shadow: 0 0 15px rgba(255,255,255,0.3); letter-spacing: 1.5px; }
         
-        /* BARRA DE NAVEGACIÓN HORIZONTAL CON SCROLL */
         .categories-bar { margin: 20px 0 30px 0; overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--cyan) rgba(255,255,255,0.1); white-space: nowrap; padding-bottom: 10px; }
         .categories-bar::-webkit-scrollbar { height: 4px; }
         .categories-bar::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); border-radius: 10px; }
@@ -86,6 +86,13 @@
         @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
         .gamer-animation { animation: gamerAnim 0.5s ease-in-out; }
         @keyframes gamerAnim { 0% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.05); filter: brightness(1.3) drop-shadow(0 0 15px var(--cyan)); } 100% { transform: scale(1); filter: brightness(1); } }
+        
+        .warning-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); z-index: 10002; display: flex; align-items: center; justify-content: center; animation: fadeIn 0.3s ease; }
+        .warning-content { background: linear-gradient(135deg, #1a1a1a, #000); border: 2px solid #ff3333; border-radius: 30px; padding: 30px; text-align: center; max-width: 400px; box-shadow: 0 0 50px rgba(255,0,0,0.3); }
+        .warning-content p { color: #ff3333; font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
+        .warning-content button { background: #ff3333; border: none; padding: 12px 30px; border-radius: 40px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .warning-content button:hover { transform: scale(1.05); background: #ff6666; box-shadow: 0 0 20px red; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
@@ -121,33 +128,14 @@
                 <input type="text" id="catalogSearch" class="bg-transparent border-none outline-none w-full text-sm font-medium text-white/90" placeholder="Buscar..." oninput="render()">
             </div>
             
-            <!-- BARRA DE CATEGORÍAS HORIZONTAL CON SCROLL -->
             <div class="categories-bar">
                 <div class="categories-wrapper">
-                    <div id="cat-all" onclick="switchCategory('all')" class="category-btn active">
-                        <svg class="category-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                        <span class="category-label" id="lbl-all">TODO</span>
-                    </div>
-                    <div id="cat-games" onclick="switchCategory('games')" class="category-btn">
-                        <img class="category-icon" src="https://cdn-icons-png.flaticon.com/512/982/982036.png" alt="Juegos" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%2300f2ff%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M21 6H3v12h18V6zm-2 10H5V8h14v8zM9 10H7v4h2v-4zm6 0h-2v4h2v-4z%22/%3E%3C/svg%3E'">
-                        <span class="category-label" id="lbl-games">JUEGOS</span>
-                    </div>
-                    <div id="cat-movies" onclick="switchCategory('movies')" class="category-btn">
-                        <img class="category-icon" src="https://cdn-icons-png.magnific.com/512/738/738096.png" alt="Cine" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%2300f2ff%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M18 3v2h-4V3h4zM8 3v2H4V3h4zm14 6v10c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V9h20zm-2 2H4v8h16v-8z%22/%3E%3C/svg%3E'">
-                        <span class="category-label" id="lbl-movies">CINE</span>
-                    </div>
-                    <div id="cat-kdrama" onclick="switchCategory('kdrama')" class="category-btn">
-                        <img class="category-icon" src="https://static.thenounproject.com/png/k-drama-icon-8046875-512.png" alt="KDrama" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%2300f2ff%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 4c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm0 13c-2.33 0-4.31-1.46-5.11-3.5h10.22c-.8 2.04-2.78 3.5-5.11 3.5z%22/%3E%3C/svg%3E'">
-                        <span class="category-label" id="lbl-kdrama">KDRAMAS</span>
-                    </div>
-                    <div id="cat-req" onclick="navigate('request')" class="category-btn">
-                        <img class="category-icon" src="https://cdn-icons-png.flaticon.com/512/3555/3555879.png" alt="Peticiones" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%2300f2ff%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M21 6h-7.59l3.29-3.29L16 2l-4 4-4-4-.71.71L10.59 6H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z%22/%3E%3C/svg%3E'">
-                        <span class="category-label" id="lbl-req">PETICIONES</span>
-                    </div>
-                    <div id="cat-ai" onclick="handleAIClick()" class="category-btn">
-                        <img class="category-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBoihP3th9hCX8ndCNvMhUgmyf7zEhJH0sPk1p6QG80A&s=10" alt="AI" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%2300f2ff%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z%22/%3E%3C/svg%3E'">
-                        <span class="category-label" id="lbl-ai">AI</span>
-                    </div>
+                    <div id="cat-all" onclick="switchCategory('all')" class="category-btn active"><svg class="category-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg><span class="category-label" id="lbl-all">TODO</span></div>
+                    <div id="cat-games" onclick="switchCategory('games')" class="category-btn"><img class="category-icon" src="https://cdn-icons-png.flaticon.com/512/982/982036.png" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%2300f2ff%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M21 6H3v12h18V6zm-2 10H5V8h14v8zM9 10H7v4h2v-4zm6 0h-2v4h2v-4z%22/%3E%3C/svg%3E'"><span class="category-label" id="lbl-games">JUEGOS</span></div>
+                    <div id="cat-movies" onclick="switchCategory('movies')" class="category-btn"><img class="category-icon" src="https://cdn-icons-png.magnific.com/512/738/738096.png" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%2300f2ff%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M18 3v2h-4V3h4zM8 3v2H4V3h4zm14 6v10c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V9h20zm-2 2H4v8h16v-8z%22/%3E%3C/svg%3E'"><span class="category-label" id="lbl-movies">CINE</span></div>
+                    <div id="cat-kdrama" onclick="switchCategory('kdrama')" class="category-btn"><img class="category-icon" src="https://static.thenounproject.com/png/k-drama-icon-8046875-512.png" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%2300f2ff%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 4c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm0 13c-2.33 0-4.31-1.46-5.11-3.5h10.22c-.8 2.04-2.78 3.5-5.11 3.5z%22/%3E%3C/svg%3E'"><span class="category-label" id="lbl-kdrama">KDRAMAS</span></div>
+                    <div id="cat-req" onclick="navigate('request')" class="category-btn"><img class="category-icon" src="https://cdn-icons-png.flaticon.com/512/3555/3555879.png" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%2300f2ff%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M21 6h-7.59l3.29-3.29L16 2l-4 4-4-4-.71.71L10.59 6H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z%22/%3E%3C/svg%3E'"><span class="category-label" id="lbl-req">PETICIONES</span></div>
+                    <div id="cat-ai" onclick="handleAIClick()" class="category-btn"><img class="category-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBoihP3th9hCX8ndCNvMhUgmyf7zEhJH0sPk1p6QG80A&s=10" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%2300f2ff%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z%22/%3E%3C/svg%3E'"><span class="category-label" id="lbl-ai">AI</span></div>
                 </div>
             </div>
 
@@ -216,6 +204,23 @@
             setTimeout(() => overlay.remove(), 500);
         }
 
+        function showWarningModal(url, title, type, poster, langLabel) {
+            const modal = document.createElement('div');
+            modal.className = 'warning-modal';
+            modal.innerHTML = `
+                <div class="warning-content">
+                    <p>⚠️ ESTE CONTENIDO ES SACADO DE UN HACKER FILTRADOR ⚠️</p>
+                    <p style="font-size: 12px; color: #ff8888;">COMPARTIR Y VER BAJO TU PROPIO RIESGO</p>
+                    <button id="confirmWarning">ENTENDIDO, CONTINUAR</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            document.getElementById('confirmWarning').onclick = () => {
+                modal.remove();
+                handleDownload(url, title, type, poster, langLabel);
+            };
+        }
+
         const WEBHOOK_DOWNLOADS_IA_PELIS = "https://discord.com/api/webhooks/1498103534795755554/euR5SIeFJmzNvusuJ9es2t_WY7RvVU7DHdqdcAzH_vQREkSq2Ou80HZW8rsIjxTfIdbG";
         const WEBHOOK_REPORTS_JUEGOS = "https://discord.com/api/webhooks/1498105804275060778/nVdgoLqeQDpnEGlR-ny3NrujHF_v79gobHO_9S357ONmtcixgKYec553mGfC72RUsSmJ";
         const WEBHOOK_PETICIONES = "https://discord.com/api/webhooks/1493029753462984724/W92Go_ww0kgsfZYXh-JBoo9MSJpVIXaoZTnqf61n5kRKGhnLGtTPOEtca9iVA8mzy44k";
@@ -245,10 +250,10 @@
         async function handleAIClick() { await logAI(); window.open('https://novark-nova-core.base44.app', '_blank'); }
 
         const i18n = {
-            es: { search: "Buscar...", request: "Peticiones", download: "Descargar APK", play: "Reproducir ahora", back: "Atrás", send: "Enviar", noAsk: "Recordar región", new: "Nuevo", hot: "Top", all: "TODO", games: "JUEGOS", movies: "CINE", kdrama: "KDRAMAS", req: "PETICIONES", ai: "AI", kdrama_empty: "No hay nada disponible actualmente", flag: "🇪🇸" },
-            en: { search: "Search...", request: "Requests", download: "Download APK", play: "Watch Now", back: "Back", send: "Send", noAsk: "Remember choice", new: "New", hot: "Hot", all: "ALL", games: "GAMES", movies: "MOVIES", kdrama: "KDRAMAS", req: "REQUESTS", ai: "AI", kdrama_empty: "Nothing available at the moment", flag: "🇺🇸" },
-            pt: { search: "Buscar...", request: "Pedidos", download: "Instalar APK", play: "Assistir", back: "Voltar", send: "Enviar", noAsk: "Lembrar", new: "Novo", hot: "Popular", all: "TUDO", games: "JOGOS", movies: "CINEMA", kdrama: "KDRAMAS", req: "PEDIDOS", ai: "IA", kdrama_empty: "Nada disponível no momento", flag: "🇧🇷" },
-            fr: { search: "Chercher...", request: "Requêtes", download: "Installer APK", play: "Regarder", back: "Retour", send: "Envoyer", noAsk: "Retenir", new: "Nouveau", hot: "Top", all: "TOUT", games: "JEUX", movies: "FILMS", kdrama: "KDRAMAS", req: "REQUÊTES", ai: "IA", kdrama_empty: "Rien de disponible pour le moment", flag: "🇫🇷" }
+            es: { search: "Buscar...", request: "Peticiones", download: "Descargar APK", play: "Reproducir ahora", back: "Atrás", send: "Enviar", noAsk: "Recordar región", new: "Nuevo", hot: "Top", all: "TODO", games: "JUEGOS", movies: "CINE", kdrama: "KDRAMAS", req: "PETICIONES", ai: "AI", kdrama_empty: "No hay nada disponible actualmente", flag: "🇪🇸", secret: "SECRET" },
+            en: { search: "Search...", request: "Requests", download: "Download APK", play: "Watch Now", back: "Back", send: "Send", noAsk: "Remember choice", new: "New", hot: "Hot", all: "ALL", games: "GAMES", movies: "MOVIES", kdrama: "KDRAMAS", req: "REQUESTS", ai: "AI", kdrama_empty: "Nothing available at the moment", flag: "🇺🇸", secret: "SECRET" },
+            pt: { search: "Buscar...", request: "Pedidos", download: "Instalar APK", play: "Assistir", back: "Voltar", send: "Enviar", noAsk: "Lembrar", new: "Novo", hot: "Popular", all: "TUDO", games: "JOGOS", movies: "CINEMA", kdrama: "KDRAMAS", req: "PEDIDOS", ai: "IA", kdrama_empty: "Nada disponível no momento", flag: "🇧🇷", secret: "SEGREDO" },
+            fr: { search: "Chercher...", request: "Requêtes", download: "Installer APK", play: "Regarder", back: "Retour", send: "Envoyer", noAsk: "Retenir", new: "Nouveau", hot: "Top", all: "TOUT", games: "JEUX", movies: "FILMS", kdrama: "KDRAMAS", req: "REQUÊTES", ai: "IA", kdrama_empty: "Rien de disponible pour le moment", flag: "🇫🇷", secret: "SECRET" }
         };
 
         const languages = [
@@ -263,7 +268,7 @@
         let currentDisplayCount = 30;
         let filteredItems = [];
 
-        // ==================== TODAS LAS PELÍCULAS (EXISTENTES + NUEVAS) ====================
+        // ==================== SERIES ====================
         const fromSeasons = [
             { season: 1, title: { es: 'From (T1)', en: 'From (S1)', pt: 'From (T1)', fr: 'From (S1)' }, links: { mex: 'https://latino.solo-latino.com/es/detail/drama/v3HBgSbGMGBfDZO6EzXza-From-Season-1', usa: 'https://ww1.123flmsfree.com/es/detail/drama/nRRZcrKnaBBl0le9LW69P-From' } },
             { season: 2, title: { es: 'From (T2)', en: 'From (S2)', pt: 'From (T2)', fr: 'From (S2)' }, links: { mex: 'https://video.playspelis.com/es/detail/drama/5D00Ra6GMcEITfE8DfE2d-From-Season-2', usa: 'https://flixlat.com/es/detail/drama/IYfjCSGuPosNxUVOF7CPj-From-Season-2' } },
@@ -271,6 +276,7 @@
             { season: 4, title: { es: 'From (T4)', en: 'From (S4)', pt: 'From (T4)', fr: 'From (S4)' }, links: { mex: 'https://ww20.321moviesfree.com/es/detail/drama/8JsoLCi6DNWXexKol4WnR-From-Season-4', usa: 'https://ww20.321moviesfree.com/es/detail/drama/MKkK0ZMtYN54vJuysYznp-From-Season-4' } }
         ];
 
+        // ==================== PELÍCULAS COMPLETAS ====================
         const movies = [
             { id: 'fnaf_movie', title: { es: 'Five Nights at Freddy\'s (2023)', en: 'Five Nights at Freddy\'s (2023)', pt: 'Five Nights at Freddy\'s (2023)', fr: 'Five Nights at Freddy\'s (2023)' }, poster: 'https://sm.ign.com/ign_latam/movie/f/five-night/five-nights-at-freddys-theater_j7c6.jpg', screen: 'https://www.billboard.com/wp-content/uploads/2023/10/five-nights-at-freddys-2023-billboard-1548.jpg', links: { mex: 'https://play.cuevana.life/es/detail/movie/UYbywBL7C14A5zAr5AzcS-Five-Nights-At-Freddys', usa: 'https://latino.solo-latino.com/es/detail/movie/O7syQYn4QhsdCbYVAHo8T-Five-Nights-At-Freddys' }, desc: { es: 'Un guardia de seguridad comienza a trabajar en Freddy Fazbear\'s Pizza.', en: 'A troubled security guard begins working at Freddy Fazbear\'s Pizza.' }, reqs: ["1080p", "Lat/Eng", "Multi", "2023"], showNewBadge: false, type: 'movie', multiVersion: true },
             { id: 'fnaf2_movie', title: { es: 'Five Nights at Freddy\'s 2', en: 'Five Nights at Freddy\'s 2', pt: 'Five Nights at Freddy\'s 2', fr: 'Five Nights at Freddy\'s 2' }, poster: 'https://upload.wikimedia.org/wikipedia/en/1/11/Five_Nights_At_Freddy%27s_2_Movie_Poster.png', screen: 'https://m.media-amazon.com/images/M/MV5BM2E0NjViODYtZjk3ZS00MzI5LTk1NTctNWQ3MDZjNWNiY2E3XkEyXkFqcGc@._V1_.jpg', links: { mex: 'https://latino.solo-latino.com/es/detail/movie/QyFLAM7pTw8mzvuli420k-Five-Nights-At-Freddys-2', usa: 'https://ver.123pelicula.com/es/detail/movie/1TqlJllmAswrwSmrzHacI-Five-Nights-at-Freddys-2' }, desc: { es: 'Secuela del terrorífico éxito de 2023.', en: 'Sequel to the terrifying 2023 hit.' }, reqs: ["1080p", "Lat/Eng", "2025"], showNewBadge: false, type: 'movie', multiVersion: true },
@@ -303,17 +309,18 @@
             { id: 'elio', title: { es: 'Elio', en: 'Elio', pt: 'Elio', fr: 'Elio' }, poster: 'https://m.media-amazon.com/images/M/MV5BMDFjNDQ5YTctMGE4MS00MGQyLTg4NTktYWNhZWM3NjA3OGE5XkEyXkFqcGc@._V1_.jpg', screen: 'https://es.hollywoodreporter.com/wp-content/uploads/2025/06/Elio.jpg', links: { mex: 'https://play.cuevana.life/es/detail/movie/ixNkQTutut7SZNKZIc2Ul-Elio', usa: 'https://ww20.321moviesfree.com/es/detail/movie/Rntl6et7PsSVB7bAivq86-Elio' }, desc: { es: 'Un niño es transportado al espacio exterior.', en: 'A boy is transported to outer space.' }, reqs: ["4K", "Lat/Eng", "Animación", "2025"], showNewBadge: false, type: 'movie', multiVersion: true },
             { id: 'nahual', title: { es: 'El ritual del nahual', en: 'The Ritual of the Nahual', pt: 'O Ritual do Nahual', fr: 'Le Rituel du Nahual' }, poster: 'https://m.media-amazon.com/images/M/MV5BZjkyZGI0ZDMtOGVkOC00NzZjLThjMjEtODkxNGFkZjk0M2M3XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg', screen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxnx4Q2bJTnUsMQYEjBGwL8VG-wq1BpqVSGN1e5OhmHU_Gv-LUt_xrcicS&s=10', links: { mex: 'https://play.cuevana.life/es/detail/movie/ANM5QDEZMiuKRvz0jGohJ-TEKENCHU-THE-RITE-OF-THE-NAHUALES', usa: null }, desc: { es: 'Un misterioso ritual ancestral en la selva.', en: 'A mysterious ancestral ritual in the jungle.' }, reqs: ["1080p", "Latino", "Terror", "2025"], showNewBadge: false, type: 'movie', multiVersion: true, noEnglish: true },
             { id: 'thrash', title: { es: 'Embestida', en: 'Thrash', pt: 'Embestida', fr: 'Embestida' }, poster: 'https://www.cinelinx.com/wp-content/uploads/2026/04/Thrash-Poster.jpg', screen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe2io_uYTQJZeCB5Aj31CHt-FfRxe05Yp3P4LHFCda6GI9qT6zBV9kBRo&s=10', links: { mex: 'https://flixlat.com/es/detail/movie/nnzUvXldjywuQKuyLSl11-Thrash', usa: 'https://flixlat.com/es/detail/movie/rywWImRFMrLeAVbkWFI49-Thrash' }, desc: { es: 'Acción y suspenso en una carrera contra el tiempo.', en: 'Action and suspense in a race against time.' }, reqs: ["1080p", "Lat/Eng", "Acción", "2026"], showNewBadge: false, type: 'movie', multiVersion: true },
-            // NUEVAS PELÍCULAS AGREGADAS
-            { id: 'stuartlittle', title: { es: 'Stuart Little', en: 'Stuart Little', pt: 'Stuart Little', fr: 'Stuart Little' }, poster: 'https://play-lh.googleusercontent.com/tsOyFyaxnlqsCqXxm7aqg1J26vWqD_seBl3mRm7LNGOdQ9ALv6bVUbis1ABF5mnSAkLKVg', screen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1qi-mAJ8Zzk8ga0Ok0kLFqleIheT2ePLhSVJ9xnucbgKvLqiocrs5Eo2g&s=10', links: { mex: 'https://peliculaplay.com/es/detail/movie/s4dW1eeeK6HAYLEUer9F5-Stuart-Little-1', usa: null }, desc: { es: 'La divertida aventura del ratón más famoso.', en: 'The fun adventure of the most famous mouse.' }, reqs: ["1080p", "Latino", "Familiar", "1999"], showNewBadge: true, type: 'movie', multiVersion: true, noEnglish: true },
-            { id: 'gooddinosaur', title: { es: 'Un gran dinosaurio', en: 'The Good Dinosaur', pt: 'Um Grande Dinossauro', fr: 'Le Bon Dinosaure' }, poster: 'https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p11822260_p_v13_am.jpg', screen: 'https://statcdn.fandango.com/MPX/image/NBCU_Fandango/748/607/TheGoodDinosaur_20YearsTrailer.jpg', links: { mex: 'https://video.playspelis.com/es/detail/movie/EqJnRCPzFNDNlq82T1enM-The-Good-Dinosaur', usa: 'https://www3.dramasfree.com/es/detail/movie/YMFcTMbiNFmdG1jwZZOX8-The-Good-Dinosaur' }, desc: { es: 'Un dinosaurio aprende el valor de la amistad.', en: 'A dinosaur learns the value of friendship.' }, reqs: ["4K", "Lat/Eng", "Animación", "2015"], showNewBadge: true, type: 'movie', multiVersion: true },
-            { id: 'mama', title: { es: 'Mamá', en: 'Mama', pt: 'Mamãe', fr: 'Mama' }, poster: 'https://m.media-amazon.com/images/M/MV5BNmY2OGQwYjUtNmJjYi00MjI1LWIwYTItNDVkNzdiNzU0ZWRmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg', screen: 'https://m.media-amazon.com/images/M/MV5BMTUzODU4MTYwOV5BMl5BanBnXkFtZTgwMDY5NDkyMzE@._V1_.jpg', links: { mex: 'https://es.cuevana4br.com/es/detail/movie/UaZxWV4wht1be5VNqgrj4-Mama', usa: 'https://play.cuevana.life/es/detail/movie/0CvTkRfMfEitdfxRCILVJ-Mama' }, desc: { es: 'Una terrorífica historia de una madre fantasma.', en: 'A terrifying story of a ghostly mother.' }, reqs: ["1080p", "Lat/Eng", "Terror", "2013"], showNewBadge: true, type: 'movie', multiVersion: true },
-            { id: 'it', title: { es: 'IT', en: 'IT', pt: 'IT', fr: 'Ça' }, poster: 'https://m.media-amazon.com/images/M/MV5BZGZmOTZjNzUtOTE4OS00OGM3LWJiNGEtZjk4Yzg2M2Q1YzYxXkEyXkFqcGc@._V1_.jpg', screen: 'https://ichef.bbci.co.uk/ace/ws/640/cpsprodpb/66D3/production/_98032362_mediaitem98014584.jpg.webp', links: { mex: 'https://www3.dramasfree.com/es/detail/movie/TL9fg2TEFkYy6UE4qo2kh-It-Chapter-One', usa: 'https://www3.dramasfree.com/es/detail/movie/SY2qrXk1ShOo7UdvyALxT-It-Chapter-One' }, desc: { es: 'Un payaso aterroriza a un grupo de niños.', en: 'A clown terrifies a group of children.' }, reqs: ["4K", "Lat/Eng", "Terror", "2017"], showNewBadge: true, type: 'movie', multiVersion: true }
+            { id: 'stuartlittle', title: { es: 'Stuart Little', en: 'Stuart Little', pt: 'Stuart Little', fr: 'Stuart Little' }, poster: 'https://play-lh.googleusercontent.com/tsOyFyaxnlqsCqXxm7aqg1J26vWqD_seBl3mRm7LNGOdQ9ALv6bVUbis1ABF5mnSAkLKVg', screen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1qi-mAJ8Zzk8ga0Ok0kLFqleIheT2ePLhSVJ9xnucbgKvLqiocrs5Eo2g&s=10', links: { mex: 'https://peliculaplay.com/es/detail/movie/s4dW1eeeK6HAYLEUer9F5-Stuart-Little-1', usa: null }, desc: { es: 'La divertida aventura del ratón más famoso.', en: 'The fun adventure of the most famous mouse.' }, reqs: ["1080p", "Latino", "Familiar", "1999"], showNewBadge: false, type: 'movie', multiVersion: true, noEnglish: true },
+            { id: 'gooddinosaur', title: { es: 'Un gran dinosaurio', en: 'The Good Dinosaur', pt: 'Um Grande Dinossauro', fr: 'Le Bon Dinosaure' }, poster: 'https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p11822260_p_v13_am.jpg', screen: 'https://statcdn.fandango.com/MPX/image/NBCU_Fandango/748/607/TheGoodDinosaur_20YearsTrailer.jpg', links: { mex: 'https://video.playspelis.com/es/detail/movie/EqJnRCPzFNDNlq82T1enM-The-Good-Dinosaur', usa: 'https://www3.dramasfree.com/es/detail/movie/YMFcTMbiNFmdG1jwZZOX8-The-Good-Dinosaur' }, desc: { es: 'Un dinosaurio aprende el valor de la amistad.', en: 'A dinosaur learns the value of friendship.' }, reqs: ["4K", "Lat/Eng", "Animación", "2015"], showNewBadge: false, type: 'movie', multiVersion: true },
+            { id: 'mama', title: { es: 'Mamá', en: 'Mama', pt: 'Mamãe', fr: 'Mama' }, poster: 'https://m.media-amazon.com/images/M/MV5BNmY2OGQwYjUtNmJjYi00MjI1LWIwYTItNDVkNzdiNzU0ZWRmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg', screen: 'https://m.media-amazon.com/images/M/MV5BMTUzODU4MTYwOV5BMl5BanBnXkFtZTgwMDY5NDkyMzE@._V1_.jpg', links: { mex: 'https://es.cuevana4br.com/es/detail/movie/UaZxWV4wht1be5VNqgrj4-Mama', usa: 'https://play.cuevana.life/es/detail/movie/0CvTkRfMfEitdfxRCILVJ-Mama' }, desc: { es: 'Una terrorífica historia de una madre fantasma.', en: 'A terrifying story of a ghostly mother.' }, reqs: ["1080p", "Lat/Eng", "Terror", "2013"], showNewBadge: false, type: 'movie', multiVersion: true },
+            { id: 'it', title: { es: 'IT', en: 'IT', pt: 'IT', fr: 'Ça' }, poster: 'https://m.media-amazon.com/images/M/MV5BZGZmOTZjNzUtOTE4OS00OGM3LWJiNGEtZjk4Yzg2M2Q1YzYxXkEyXkFqcGc@._V1_.jpg', screen: 'https://ichef.bbci.co.uk/ace/ws/640/cpsprodpb/66D3/production/_98032362_mediaitem98014584.jpg.webp', links: { mex: 'https://www3.dramasfree.com/es/detail/movie/TL9fg2TEFkYy6UE4qo2kh-It-Chapter-One', usa: 'https://www3.dramasfree.com/es/detail/movie/SY2qrXk1ShOo7UdvyALxT-It-Chapter-One' }, desc: { es: 'Un payaso aterroriza a un grupo de niños.', en: 'A clown terrifies a group of children.' }, reqs: ["4K", "Lat/Eng", "Terror", "2017"], showNewBadge: false, type: 'movie', multiVersion: true },
+            // NUEVA PELÍCULA DIGITAL CIRCUS 9 - CON ADVERTENCIA Y PORTUGUÉS SUBTITULADO
+            { id: 'digitalcircus9', title: { es: 'Digital Circus 9', en: 'Digital Circus 9', pt: 'Circo Digital 9', fr: 'Cirque Numérique 9' }, poster: 'https://sacnkprodpycms.blob.core.windows.net/content/posters/HO00006275.jpg', screen: 'https://i.ytimg.com/vi/AjFk1cY265I/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLD4aHlnxgsX2vkS-eSpmAKsc3aaHw', links: { mex: 'https://drive.google.com/file/d/1wmdpcMGZOu7EQfyAo4P7W_Zi12Ti5x2s/view?pli=1', usa: null }, desc: { es: 'Algo se está abstrayendo....', en: 'Something is abstracting....', pt: 'Algo está se abstraindo....', fr: 'Quelque chose s\'abstrait....' }, reqs: ["HD", "Portugués Subtitulado", "2026"], showNewBadge: false, isSecret: true, type: 'movie', multiVersion: true, noEnglish: true, hasWarning: true, isPortugueseOnly: true }
         ];
 
-        // ==================== TODOS LOS JUEGOS (RESTAURADOS COMPLETAMENTE) ====================
+        // ==================== JUEGOS COMPLETOS ====================
         const games = [
             { id: 'minecraft', title: { es: 'Minecraft', en: 'Minecraft', pt: 'Minecraft', fr: 'Minecraft' }, poster: 'https://store-images.s-microsoft.com/image/apps.17382.13510798885735219.9735d495-578c-4a4c-b892-3eb3a780b3a0.d3792486-cf98-40c0-a2c1-d6443f0e2b70', screen: 'https://apktodo.io/uploads/2026/4/minecraft-pe-1263021-thumbnail.jpg', link: 'https://mcpedl.org/uploads_files/30-04-2026/minecraft-26-30-25-music.apk', desc: { es: 'V1.26.30: Explora mundos infinitos y construye cualquier cosa.', en: 'V1.26.30: Explore infinite worlds and build anything.' }, reqs: ["4GB RAM", "Octa-Core 2.0GHz", "1GB", "8.0+"], showNewBadge: false, isMostWanted: false, type: 'game' },
-            { id: 'p5', title: { es: 'Poppy Playtime 5', en: 'Poppy Playtime 5', pt: 'Poppy Playtime 5', fr: 'Poppy Playtime 5' }, poster: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6NCirZXspnRehiwpdhsRa4wQ_ecXusChoiDMJ2oVLablQGCWjCBLlfG1Z&s=10', screen: 'https://img.itch.zone/aW1hZ2UvNDM5NDI0NS8yNzE3ODkwMy5wbmc=/794x1000/f5t1mH.png', link: 'https://piro775.itch.io/toy-factory-chapter-5-fangame-unity', desc: { es: 'V1.8: Capítulo más aterrador en la fábrica de juguetes.', en: 'V1.8: Scariest chapter in the toy factory.' }, reqs: ["6GB RAM", "Octa-Core 2.6", "2.5GB", "10+"], showNewBadge: false, isMostWanted: true, type: 'game', specialFeatures: "Poppy playtime chapter 5 fangame unity\nV1.8\nAdded multiple maps\nAdded the Huggy wuggy fight 2\nAdded New SFX\nAdded New Cutscenes\nFixed Some Bugs\n\nV1.8.1 - Fixed a major bug with huggy memories\n\nV1.8.2- Fixed another major bug with huggy memories\n\nAnd More...", updateInfo: "Actualizado hace: 2 dias" },
+            { id: 'p5', title: { es: 'Poppy Playtime 5', en: 'Poppy Playtime 5', pt: 'Poppy Playtime 5', fr: 'Poppy Playtime 5' }, poster: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6NCirZXspnRehiwpdhsRa4wQ_ecXusChoiDMJ2oVLablQGCWjCBLlfG1Z&s=10', screen: 'https://img.itch.zone/aW1hZ2UvNDM5NDI0NS8yNzI5NjI4Ny5wbmc=/original/6kasU9.png', link: 'https://piro775.itch.io/toy-factory-chapter-5-fangame-unity', desc: { es: 'V1.8: Capítulo más aterrador en la fábrica de juguetes.', en: 'V1.8: Scariest chapter in the toy factory.' }, reqs: ["6GB RAM", "Octa-Core 2.6", "2.5GB", "10+"], showNewBadge: false, isMostWanted: true, type: 'game', specialFeatures: "Poppy playtime chapter 5 fangame unity\nV1.8\nAdded multiple maps\nAdded the Huggy wuggy fight 2\nAdded New SFX\nAdded New Cutscenes\nFixed Some Bugs\n\nV1.8.1 - Fixed a major bug with huggy memories\n\nV1.8.2- Fixed another major bug with huggy memories\n\nAnd More...", updateInfo: "Actualizado hace: 2 dias" },
             { id: 'bendy', title: { es: 'Bendy and the Ink Machine', en: 'Bendy and the Ink Machine', pt: 'Bendy and the Ink Machine', fr: 'Bendy and the Ink Machine' }, poster: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQp-5QUDSuNnhIBjdpZvrsbhNCFcat16zPc3_lA3D1yGgSV1YTDSmFuAx78&s=10', screen: 'https://imgcdn.latestmodapks.com/api/resize?url=https://www.latestmodapks.com/wp-content/uploads/2022/12/2.-Bendy-and-The-Ink-Machine-APK.jpg', link: 'https://cdn600.onehost.io/2023/Bendy_1.0.909_1765602812_latestmodapks.com.apk', desc: { es: 'Terror en primera persona años 30.', en: 'Horror game 1930s style.' }, reqs: ["3GB RAM", "Octa-Core 2.0GHz", "1.5GB", "8.0+"], showNewBadge: false, type: 'game' },
             { id: 'incredibox', title: { es: 'Incredibox', en: 'Incredibox', pt: 'Incredibox', fr: 'Incredibox' }, poster: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSSEIcLZM8hsrMdgXb9z4mKfRAVYIz4A6-0ZrhVgwTzMB5O5NDgWSM5Emj&s=10', screen: 'https://images.sftcdn.net/images/t_app-cover-s,f_auto/p/ff8f5102-802a-4360-94ec-0b3da3efaa01/2195587113/incredibox-2.png', link: 'https://files.an1.net/incrediboxs_1.0.0-an1.com.apk', desc: { es: 'Crea música con beatboxers.', en: 'Create music with beatboxers.' }, reqs: ["2GB RAM", "Quad-Core 1.8GHz", "280MB", "6.0+"], type: 'game' },
             { id: 'rfs', title: { es: 'RFS Real Flight Simulator', en: 'RFS Real Flight Simulator', pt: 'RFS Real Flight Simulator', fr: 'RFS Real Flight Simulator' }, poster: 'https://cdn-bgp.bluestacks.com/BGP/latam/gametiles_it.rortos.realflightsimulator.jpg', screen: 'https://i.ytimg.com/vi/v5q2W0jK3w8/maxresdefault.jpg', link: 'https://download2389.mediafire.com/uffcmelytmmg3doulF1GPmYDmxjxmB7UxzNw0Q4NNB1D8QHRNJr7nSNqdo-mJDfvGSNR6N7WeBCVAO5VHga1PNguj_pGDZD9RglAMSCN9dZ7_mQFvtUyf56qujefbYULuSD0Cbz4jy6eiXEP_DsfuG6uLWydYlR2wiFZs4J7MVI0prs/736nkkeurfhfncx/real-flight-simulator_3.1.3+-+espacioapk.com.apk', desc: { es: 'Simulador de vuelo real.', en: 'Flight simulator.' }, reqs: ["3GB RAM", "Octa-Core 2.2GHz", "500MB", "8.0+"], type: 'game' },
@@ -351,16 +358,17 @@
             { id: 'geometrydash', title: { es: 'Geometry Dash', en: 'Geometry Dash', pt: 'Geometry Dash', fr: 'Geometry Dash' }, poster: 'https://play-lh.googleusercontent.com/ixHXzBWPmmKWIBxDMfjbIXK10UQCTDvIYOcs_uLXHCRbdsz2siJFYfb7MqckU8eC3Ks', screen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReBcdqRIGU8Y0KgQWZSyU69DFvS8cclyXznBeZv0KDzYBth2ODHtuxXMU&s=10', link: 'https://vexfile.com/d_bucket/rIASsd4uhd', desc: { es: 'Ritmo y habilidad en un juego desafiante.', en: 'Rhythm and skill in a challenging game.' }, reqs: ["150MB", "Android 5.0+", "1GB RAM"], showNewBadge: false, type: 'game' },
             { id: 'arknova', title: { es: 'Ark Nova', en: 'Ark Nova', pt: 'Ark Nova', fr: 'Ark Nova' }, poster: 'https://www.malditogames.com/wp-content/uploads/FT_ArkNova-1.jpg', screen: 'https://img.apkvision.org/Ark-Nova/Ark-Nova-2.webp', link: 'https://dl.apkvision.org/ark-nova/Ark-Nova-v1.0.4-full-apkvision.apk', desc: { es: 'Construye el mejor zoológico moderno del mundo.', en: 'Build the best modern zoo in the world.' }, reqs: ["400MB", "Android 8.0+", "3GB RAM"], showNewBadge: false, type: 'game' },
             { id: 'rushrally3', title: { es: 'Rush Rally 3', en: 'Rush Rally 3', pt: 'Rush Rally 3', fr: 'Rush Rally 3' }, poster: 'https://content-assets.eneba.games/clp/ce15ef81-de2a-4824-9ff6-2055e4a5d4b5.jpg', screen: 'https://minireview.io/common/uploads/cache/review/1-900-506-asddadasda-0579361.webp', link: 'https://download2388.mediafire.com/5vho76y1jnbgVhgAvP7JG6uZBeBPH1H9aZ5nusVXECFSu3WfGD9EeLDMEMus4bvuGpk0zc7ferSVbCUD072I8zReuuCtXbsZzlX4UqJnI944wW3LIR0HXzhkUyNmLpX8TWEmJjJrE_rMmtTWrhKVRVdyo6xai7d4biaA0Z1aUn4ARdM/6pyz6jsm47qrxk5/rush+rally+3+mod+v1.157+-+espacioapk.com.apk', desc: { es: 'Juego de rally extremo con gráficos impresionantes.', en: 'Extreme rally game with stunning graphics.' }, reqs: ["300MB", "Android 8.0+", "2GB RAM"], showNewBadge: false, type: 'game' },
-            { id: 'driftride', title: { es: 'Drift Ride', en: 'Drift Ride', pt: 'Drift Ride', fr: 'Drift Ride' }, poster: 'https://cdn-bgp.bluestacks.com/BGP/latam/gametiles_com.carxtech.driftride.jpg', screen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb36taJdTReBSWbEEMdjRILKyPGlER8W2yzoliZlWtWypC19JGAD9mVa8&s=10', link: 'https://files.an1.net/drift-ride-mod_1.52-an1.com.apk', desc: { es: 'Juego de drifting con gráficos realistas.', en: 'Drifting game with realistic graphics.' }, reqs: ["300MB", "Android 8.0+", "2GB RAM"], showNewBadge: true, type: 'game' },
-            { id: 'gridlegends', title: { es: 'Grid Legends Mobile', en: 'Grid Legends Mobile', pt: 'Grid Legends Mobile', fr: 'Grid Legends Mobile' }, poster: 'https://upload.wikimedia.org/wikipedia/en/2/2a/GRID_Legends_cover_art.jpeg', screen: 'https://play-lh.googleusercontent.com/L_4c_ITdYtMCCa97AoX9vexGlvD9STmOCwb_lpLIMknKVceUeNkrFOwX6tr-cFyLnCw=w526-h296-rw', link: 'https://cdn.9mod.cloud/GRID%20Legends%20Deluxe%20Edition/grid-legends-deluxe-edition-v1.1.4RC7-unlocked.apks?token=TVRjM09EWTBOVE0yTVE9PQ%3D%3D', desc: { es: 'El mejor juego de carreras para móvil.', en: 'The best racing game for mobile.' }, reqs: ["1.5GB", "Android 10.0+", "4GB RAM"], showNewBadge: true, type: 'game' }
+            { id: 'driftride', title: { es: 'Drift Ride', en: 'Drift Ride', pt: 'Drift Ride', fr: 'Drift Ride' }, poster: 'https://cdn-bgp.bluestacks.com/BGP/latam/gametiles_com.carxtech.driftride.jpg', screen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb36taJdTReBSWbEEMdjRILKyPGlER8W2yzoliZlWtWypC19JGAD9mVa8&s=10', link: 'https://files.an1.net/drift-ride-mod_1.52-an1.com.apk', desc: { es: 'Juego de drifting con gráficos realistas.', en: 'Drifting game with realistic graphics.' }, reqs: ["300MB", "Android 8.0+", "2GB RAM"], showNewBadge: false, type: 'game' },
+            { id: 'gridlegends', title: { es: 'Grid Legends Mobile', en: 'Grid Legends Mobile', pt: 'Grid Legends Mobile', fr: 'Grid Legends Mobile' }, poster: 'https://upload.wikimedia.org/wikipedia/en/2/2a/GRID_Legends_cover_art.jpeg', screen: 'https://play-lh.googleusercontent.com/L_4c_ITdYtMCCa97AoX9vexGlvD9STmOCwb_lpLIMknKVceUeNkrFOwX6tr-cFyLnCw=w526-h296-rw', link: 'https://cdn.9mod.cloud/GRID%20Legends%20Deluxe%20Edition/grid-legends-deluxe-edition-v1.1.4RC7-unlocked.apks?token=TVRjM09EWTBOVE0yTVE9PQ%3D%3D', desc: { es: 'El mejor juego de carreras para móvil.', en: 'The best racing game for mobile.' }, reqs: ["1.5GB", "Android 10.0+", "4GB RAM"], showNewBadge: false, type: 'game' }
         ];
 
         function sortItems(pool) {
+            const secretItem = pool.find(item => item.isSecret === true);
             const poppyItem = pool.find(item => item.id === 'p5');
-            const newItems = pool.filter(item => item.showNewBadge === true && item.id !== 'p5');
-            const otherItems = pool.filter(item => !item.showNewBadge && item.id !== 'p5');
-            if (poppyItem) return [poppyItem, ...newItems, ...otherItems];
-            return [...newItems, ...otherItems];
+            const otherItems = pool.filter(item => !item.isSecret && item.id !== 'p5');
+            if (secretItem) return [secretItem, poppyItem, ...otherItems].filter(Boolean);
+            if (poppyItem) return [poppyItem, ...otherItems];
+            return [...otherItems];
         }
 
         function updateCountersAndLabels() {
@@ -456,6 +464,7 @@
             document.getElementById('gameGrid').innerHTML = itemsToShow.map((g, idx) => `
                 <div class="content-card" style="animation-delay: ${idx * 0.03}s" onclick="openItem('${g.id}')">
                     <div class="poster-wrapper">
+                        ${g.isSecret ? `<div class="badge-tag badge-secret-black">${t.secret}</div>` : ''}
                         ${g.showNewBadge ? `<div class="badge-tag badge-new-green">${t.new}</div>` : ''}
                         ${g.isMostWanted ? `<div class="badge-tag badge-hot-red">${t.hot}</div>` : ''}
                         <img src="${g.poster}" class="poster-img" loading="lazy">
@@ -506,9 +515,17 @@
                 seasonDiv.classList.add('hidden');
                 let htmlArea = '';
                 if (g.multiVersion) {
-                    if (g.noEnglish || !g.links.usa) {
+                    if (g.isPortugueseOnly) {
                         htmlArea = `
-                            <button onclick="handleDownload('${g.links.mex}', '${g.title[curLang] || g.title.en}', '${g.type}', '${g.poster}', '🌎 Español (Latino)')" class="btn-variant">
+                            <button onclick="handleDownloadWithWarning('${g.links.mex}', '${g.title[curLang] || g.title.en}', '${g.type}', '${g.poster}', '🇵🇹 Português (Subtitulado al español)', ${g.hasWarning || false})" class="btn-variant">
+                                <span>🇵🇹 Português (Subtitulado al español)</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                            </button>
+                            <button class="btn-variant disabled" disabled>
+                                <span>🇪🇸 Español (No disponible)</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                            </button>`;
+                    } else if (g.noEnglish || !g.links.usa) {
+                        htmlArea = `
+                            <button onclick="handleDownloadWithWarning('${g.links.mex}', '${g.title[curLang] || g.title.en}', '${g.type}', '${g.poster}', '🌎 Español (Latino)', ${g.hasWarning || false})" class="btn-variant">
                                 <span>🌎 Español (Latino)</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
                             </button>
                             <button class="btn-variant disabled" disabled>
@@ -516,20 +533,33 @@
                             </button>`;
                     } else {
                         htmlArea = `
-                            <button onclick="handleDownload('${g.links.mex}', '${g.title[curLang] || g.title.en}', '${g.type}', '${g.poster}', '🌎 Español (Latino)')" class="btn-variant">
+                            <button onclick="handleDownloadWithWarning('${g.links.mex}', '${g.title[curLang] || g.title.en}', '${g.type}', '${g.poster}', '🌎 Español (Latino)', ${g.hasWarning || false})" class="btn-variant">
                                 <span>🌎 Español (Latino)</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
                             </button>
-                            <button onclick="handleDownload('${g.links.usa}', '${g.title[curLang] || g.title.en}', '${g.type}', '${g.poster}', '🇺🇸 English')" class="btn-variant">
+                            <button onclick="handleDownloadWithWarning('${g.links.usa}', '${g.title[curLang] || g.title.en}', '${g.type}', '${g.poster}', '🇺🇸 English', ${g.hasWarning || false})" class="btn-variant">
                                 <span>🇺🇸 English</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
                             </button>`;
                     }
                 } else {
                     const actionText = g.type === 'movie' ? t.play : t.download;
-                    htmlArea = `<button onclick="handleDownload('${g.link}', '${g.title[curLang] || g.title.en}', '${g.type}', '${g.poster}', '${t.flag}')" class="btn-action">${actionText}</button>`;
+                    htmlArea = `<button onclick="handleDownloadWithWarning('${g.link}', '${g.title[curLang] || g.title.en}', '${g.type}', '${g.poster}', '${t.flag}', ${g.hasWarning || false})" class="btn-action">${actionText}</button>`;
                 }
                 document.getElementById('downloadArea').innerHTML = htmlArea;
             }
             navigate('detail');
+        }
+
+        function handleDownloadWithWarning(url, title, type, poster, langLabel, hasWarning) {
+            if (hasWarning) {
+                showWarningModal(url, title, type, poster, langLabel);
+            } else {
+                handleDownload(url, title, type, poster, langLabel);
+            }
+        }
+
+        async function handleDownload(url, title, type, poster, langLabel) {
+            await logDownload(title, type, poster, langLabel);
+            window.open(url, '_blank');
         }
 
         async function loadSeasonContent(seasonIdx) {
@@ -555,11 +585,6 @@
         async function selectSeason(seasonIdx) {
             currentSeasonIndex = seasonIdx;
             await loadSeasonContent(seasonIdx);
-        }
-
-        async function handleDownload(url, title, type, poster, langLabel) {
-            await logDownload(title, type, poster, langLabel);
-            window.open(url, '_blank');
         }
 
         function navigate(v) {
@@ -604,4 +629,4 @@
         window.onload = init;
     </script>
 </body>
-                    </html>
+</html>
