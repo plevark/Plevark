@@ -5,7 +5,7 @@
     <meta name="robots" content="index, follow">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-    <title>Novark | Cine & Gaming</title>
+    <title>Novark | Cyberpunk Cine & Gaming</title>
     <meta name="description" content="Novark: Tu centro de entretenimiento premium para Cine, Series y Gaming. Descarga y disfruta del mejor contenido.">
     <meta property="og:title" content="Novark | Cine & Gaming">
     <meta property="og:description" content="Accede al catálogo de juegos y películas más completo en Novark.">
@@ -16,121 +16,309 @@
     <meta name="theme-color" content="#00f2ff">
     <link rel="icon" type="image/png" href="favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        :root { --cyan: #00f2ff; --dark: #050505; --card: #0c0c0c; --glass: rgba(255, 255, 255, 0.03); --border: rgba(255, 255, 255, 0.08); --purple: #bf00ff; --pink: #ff00aa; --orange: #ff6600; --black-secret: #000000; }
-        body { background: var(--dark); color: #fff; font-family: 'Outfit', sans-serif; overflow-x: hidden; padding-bottom: 20px; }
-        .bg-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 20% 30%, rgba(0, 242, 255, 0.2), transparent 50%), radial-gradient(circle at 80% 70%, rgba(191, 0, 255, 0.15), transparent 50%), radial-gradient(circle at 50% 100%, rgba(255, 0, 170, 0.1), transparent 40%), radial-gradient(circle at 0% 50%, rgba(255, 102, 0, 0.08), transparent 30%); z-index: -1; pointer-events: none; animation: floatBg 20s ease-in-out infinite; }
+        :root { 
+            --cyan: #00f2ff; 
+            --dark: #0a0a0f; 
+            --card: #0f0f1a; 
+            --glass: rgba(0, 242, 255, 0.05); 
+            --border: rgba(0, 242, 255, 0.3); 
+            --purple: #bf00ff; 
+            --pink: #ff00aa; 
+            --orange: #ff6600;
+            --yellow: #ffcc00;
+            --black-secret: #000000;
+        }
+        body { 
+            background: #0a0a0f; 
+            color: #fff; 
+            font-family: 'Orbitron', monospace; 
+            overflow-x: hidden; 
+            padding-bottom: 20px;
+        }
+        .bg-glow { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-image: 
+                linear-gradient(rgba(0, 242, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -2; 
+            pointer-events: none; 
+        }
+        .bg-glow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(0, 242, 255, 0.15), transparent 50%), 
+                        radial-gradient(circle at 80% 70%, rgba(191, 0, 255, 0.1), transparent 50%),
+                        radial-gradient(circle at 50% 100%, rgba(255, 0, 170, 0.08), transparent 40%);
+            z-index: -1;
+            animation: floatBg 20s ease-in-out infinite;
+        }
         @keyframes floatBg { 0%, 100% { transform: translate(0, 0); } 25% { transform: translate(-1%, 1%); } 50% { transform: translate(1%, -1%); } 75% { transform: translate(-0.5%, -0.5%); } }
-        .font-brand { font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px; }
-        @keyframes fadeInScale { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
-        @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 5px rgba(0,242,255,0.3); } 50% { box-shadow: 0 0 25px rgba(0,242,255,0.6), 0 0 10px rgba(191,0,255,0.4); } }
-        @keyframes neonPulse { 0%, 100% { border-color: rgba(0,242,255,0.5); box-shadow: 0 0 5px rgba(0,242,255,0.3); } 50% { border-color: rgba(255,102,0,0.8); box-shadow: 0 0 15px rgba(255,102,0,0.5); } }
-        .content-card { background: linear-gradient(135deg, rgba(12,12,12,0.95) 0%, rgba(8,8,8,0.98) 100%); border-radius: 24px; overflow: hidden; border: 1px solid rgba(0,242,255,0.2); transition: all 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1); cursor: pointer; animation: fadeInScale 0.6s ease backwards; position: relative; backdrop-filter: blur(2px); }
-        .content-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent 0%, rgba(0,242,255,0.05) 50%, rgba(191,0,255,0.05) 100%); opacity: 0; transition: opacity 0.5s ease; z-index: 1; pointer-events: none; }
-        .content-card:hover::before { opacity: 1; }
-        .content-card:hover { transform: scale(1.05) translateY(-10px); border-color: var(--cyan); box-shadow: 0 25px 45px rgba(0,242,255,0.3), 0 0 25px rgba(191,0,255,0.2); }
-        .poster-wrapper { position: relative; aspect-ratio: 2/3; overflow: hidden; }
-        .poster-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1); }
-        .content-card:hover .poster-img { transform: scale(1.12); }
-        .card-title-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.7) 60%, transparent 100%); padding: 18px 14px 14px 14px; z-index: 5; }
-        .card-title-overlay p { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; line-height: 1.2; text-transform: uppercase; letter-spacing: 1px; background: linear-gradient(135deg, #fff, var(--cyan), var(--orange)); background-clip: text; -webkit-background-clip: text; color: transparent; }
-        .badge-tag { position: absolute; top: 12px; right: 12px; padding: 4px 14px; border-radius: 30px; font-size: 8px; font-weight: 900; text-transform: uppercase; backdrop-filter: blur(12px); background: linear-gradient(135deg, rgba(0,242,255,0.4), rgba(191,0,255,0.3)); border: 1px solid rgba(0,242,255,0.6); color: white; animation: pulseGlow 2s infinite; z-index: 10; }
-        .badge-hot-red { background: linear-gradient(135deg, #ff3333, #cc0000) !important; border: 1px solid #ff8888 !important; color: white !important; }
-        .badge-new-green { background: linear-gradient(135deg, #00ff88, #00cc66) !important; border: 1px solid #88ffcc !important; color: #000 !important; }
-        .badge-secret-black { background: #000000 !important; border: 1px solid #ffffff !important; color: #ffffff !important; box-shadow: 0 0 15px rgba(255,255,255,0.3); letter-spacing: 1.5px; }
+        @keyframes glitch { 0%, 100% { text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.05em -0.025em 0 rgba(0,255,0,0.75); } 50% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,0.75), 0.025em 0.05em 0 rgba(0,255,0,0.75); } }
+        @keyframes neonPulse { 0%, 100% { border-color: rgba(0,242,255,0.5); box-shadow: 0 0 5px rgba(0,242,255,0.3); } 50% { border-color: rgba(255,0,170,0.8); box-shadow: 0 0 20px rgba(255,0,170,0.5); } }
         
-        .categories-bar { margin: 20px 0 30px 0; overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--cyan) rgba(255,255,255,0.1); white-space: nowrap; padding-bottom: 10px; }
-        .categories-bar::-webkit-scrollbar { height: 4px; }
-        .categories-bar::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .font-brand { font-family: 'Orbitron', monospace; letter-spacing: 3px; font-weight: 900; text-transform: uppercase; }
+        .font-mono { font-family: 'Share Tech Mono', monospace; }
+        
+        .content-card { 
+            background: linear-gradient(135deg, rgba(15,15,26,0.95) 0%, rgba(8,8,16,0.98) 100%); 
+            border-radius: 12px; 
+            overflow: hidden; 
+            border: 1px solid rgba(0,242,255,0.3); 
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1); 
+            cursor: pointer; 
+            animation: fadeInScale 0.5s ease backwards; 
+            position: relative; 
+            backdrop-filter: blur(4px);
+        }
+        .content-card::before { 
+            content: ''; 
+            position: absolute; 
+            inset: 0; 
+            background: linear-gradient(135deg, transparent 0%, rgba(0,242,255,0.08) 50%, rgba(191,0,255,0.08) 100%); 
+            opacity: 0; 
+            transition: opacity 0.4s ease; 
+            z-index: 1; 
+            pointer-events: none; 
+        }
+        .content-card:hover::before { opacity: 1; }
+        .content-card:hover { 
+            transform: scale(1.03) translateY(-5px); 
+            border-color: var(--cyan); 
+            box-shadow: 0 0 25px rgba(0,242,255,0.4), 0 0 15px rgba(191,0,255,0.3); 
+        }
+        .poster-wrapper { position: relative; aspect-ratio: 2/3; overflow: hidden; }
+        .poster-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1); }
+        .content-card:hover .poster-img { transform: scale(1.08); }
+        .card-title-overlay { 
+            position: absolute; 
+            bottom: 0; 
+            left: 0; 
+            right: 0; 
+            background: linear-gradient(to top, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.8) 60%, transparent 100%); 
+            padding: 14px 10px 10px 10px; 
+            z-index: 5; 
+        }
+        .card-title-overlay p { 
+            font-family: 'Orbitron', monospace; 
+            font-size: 0.85rem; 
+            line-height: 1.2; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, var(--cyan), var(--purple)); 
+            background-clip: text; 
+            -webkit-background-clip: text; 
+            color: transparent; 
+        }
+        .badge-tag { 
+            position: absolute; 
+            top: 10px; 
+            right: 10px; 
+            padding: 3px 10px; 
+            border-radius: 4px; 
+            font-size: 7px; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            backdrop-filter: blur(8px); 
+            background: rgba(0, 242, 255, 0.3); 
+            border: 1px solid var(--cyan); 
+            color: var(--cyan); 
+            letter-spacing: 1px;
+            z-index: 10; 
+            font-family: 'Share Tech Mono', monospace;
+        }
+        .badge-hot-red { background: linear-gradient(135deg, #ff3333, #cc0000) !important; border: 1px solid #ff6666 !important; color: white !important; }
+        .badge-new-green { background: linear-gradient(135deg, #00ff88, #00cc66) !important; border: 1px solid #00ff88 !important; color: #000 !important; }
+        .badge-secret-black { background: #000000 !important; border: 1px solid #ffffff !important; color: #ffffff !important; box-shadow: 0 0 10px rgba(255,255,255,0.3); }
+        
+        .categories-bar { margin: 25px 0 30px 0; overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--cyan) rgba(0,242,255,0.1); white-space: nowrap; padding-bottom: 10px; }
+        .categories-bar::-webkit-scrollbar { height: 3px; }
+        .categories-bar::-webkit-scrollbar-track { background: rgba(0,242,255,0.1); border-radius: 10px; }
         .categories-bar::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 10px; }
-        .categories-wrapper { display: inline-flex; gap: 15px; padding: 5px 5px; }
-        .category-btn { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(0,242,255,0.05)); border: 1px solid rgba(0,242,255,0.2); border-radius: 20px; padding: 12px 25px; cursor: pointer; transition: all 0.3s ease; min-width: 100px; backdrop-filter: blur(10px); }
-        .category-btn:hover { background: linear-gradient(135deg, rgba(0,242,255,0.2), rgba(191,0,255,0.15)); border-color: var(--cyan); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,242,255,0.2); }
+        .categories-wrapper { display: inline-flex; gap: 12px; padding: 5px 5px; }
+        .category-btn { 
+            display: inline-flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 6px; 
+            background: rgba(0,242,255,0.05); 
+            border: 1px solid rgba(0,242,255,0.3); 
+            border-radius: 8px; 
+            padding: 10px 20px; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            min-width: 90px; 
+            backdrop-filter: blur(8px); 
+        }
+        .category-btn:hover { background: rgba(0,242,255,0.15); border-color: var(--cyan); transform: translateY(-2px); box-shadow: 0 0 15px rgba(0,242,255,0.3); }
         .category-btn.active { background: linear-gradient(135deg, var(--cyan), var(--purple)); border-color: white; box-shadow: 0 0 20px rgba(0,242,255,0.5); }
         .category-btn.active .category-label { color: #000; }
-        .category-icon { width: 28px; height: 28px; object-fit: contain; filter: drop-shadow(0 0 5px rgba(0,242,255,0.5)); }
-        .category-label { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.8); }
-        .category-btn.active .category-label { color: #000; font-weight: 900; }
+        .category-icon { width: 24px; height: 24px; object-fit: contain; filter: drop-shadow(0 0 3px rgba(0,242,255,0.5)); }
+        .category-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.8); font-family: 'Share Tech Mono', monospace; }
+        .category-btn.active .category-label { color: #000; }
         
-        .btn-action { background: linear-gradient(135deg, #fff 0%, #e8e8e8 100%); color: #000; font-weight: 800; padding: 16px; border-radius: 15px; text-align: center; width: 100%; text-transform: uppercase; transition: all 0.4s ease; }
-        .btn-action:hover { transform: scale(1.03); box-shadow: 0 15px 30px rgba(0,242,255,0.4); }
-        .btn-variant { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: #fff; padding: 14px; border-radius: 14px; font-size: 11px; font-weight: 600; text-align: left; display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 8px; transition: all 0.3s ease; }
-        .btn-variant:hover { background: linear-gradient(135deg, var(--cyan), #00aacc); color: #000; transform: translateX(8px); }
+        .search-container { 
+            background: rgba(0,242,255,0.05); 
+            border: 1px solid rgba(0,242,255,0.3); 
+            border-radius: 8px; 
+            padding: 12px 20px; 
+            transition: all 0.3s; 
+            backdrop-filter: blur(8px); 
+        }
+        .search-container:focus-within { border-color: var(--cyan); box-shadow: 0 0 20px rgba(0,242,255,0.4); transform: scale(1.01); }
+        .search-container input { background: transparent; border: none; outline: none; width: 100%; color: white; font-family: 'Share Tech Mono', monospace; font-size: 14px; }
+        .search-container input::placeholder { color: rgba(255,255,255,0.4); }
+        
+        .btn-action { 
+            background: linear-gradient(135deg, var(--cyan), var(--purple)); 
+            color: #000; 
+            font-weight: 800; 
+            padding: 14px; 
+            border-radius: 8px; 
+            text-align: center; 
+            width: 100%; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            font-size: 12px; 
+            transition: all 0.3s ease; 
+            border: none;
+            font-family: 'Orbitron', monospace;
+        }
+        .btn-action:hover { transform: scale(1.02); box-shadow: 0 0 25px rgba(0,242,255,0.5); letter-spacing: 3px; }
+        
+        .btn-variant { 
+            background: rgba(255,255,255,0.03); 
+            border: 1px solid rgba(0,242,255,0.3); 
+            color: #fff; 
+            padding: 12px; 
+            border-radius: 8px; 
+            font-size: 11px; 
+            font-weight: 600; 
+            text-align: left; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            width: 100%; 
+            margin-bottom: 8px; 
+            transition: all 0.3s ease; 
+            font-family: 'Share Tech Mono', monospace;
+        }
+        .btn-variant:hover { background: linear-gradient(135deg, var(--cyan), #00aacc); color: #000; border-color: var(--cyan); transform: translateX(5px); }
         .btn-variant.disabled { opacity: 0.5; cursor: not-allowed; }
-        .lang-card { background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(0,242,255,0.05)); border: 1px solid rgba(0,242,255,0.2); border-radius: 28px; transition: all 0.5s ease; cursor: pointer; backdrop-filter: blur(12px); overflow: hidden; }
-        .lang-card:hover { background: linear-gradient(135deg, rgba(0,242,255,0.25), rgba(191,0,255,0.15)); border-color: var(--cyan); transform: translateY(-8px) scale(1.03); }
-        .detail-screen-img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 24px; transition: transform 0.5s ease; }
-        .detail-screen-img:hover { transform: scale(1.02); }
-        .view-section.hidden { display: none; }
-        .search-container { background: linear-gradient(135deg, var(--glass), rgba(0,242,255,0.08)); border: 1px solid rgba(0,242,255,0.3); border-radius: 100px; padding: 12px 24px; transition: all 0.4s; backdrop-filter: blur(10px); margin-bottom: 20px; }
-        .search-container:focus-within { border-color: var(--cyan); box-shadow: 0 0 25px rgba(0,242,255,0.4), 0 0 15px rgba(255,102,0,0.3); transform: scale(1.01); }
-        .feature-box { background: linear-gradient(135deg, rgba(0,242,255,0.15), rgba(191,0,255,0.08)); border: 2px solid var(--cyan); border-radius: 20px; padding: 14px; margin-top: 12px; font-size: 11px; color: #ccf4ff; backdrop-filter: blur(5px); animation: neonPulse 3s infinite; }
-        .update-text { font-size: 10px; color: #00f2ff; margin-top: 8px; text-align: right; }
-        .counter-badge { background: linear-gradient(135deg, rgba(0,242,255,0.3), rgba(191,0,255,0.2)); border-radius: 30px; padding: 2px 10px; font-size: 10px; margin-left: 8px; }
-        .load-more-btn { background: linear-gradient(135deg, rgba(0,242,255,0.2) 0%, rgba(191,0,255,0.1) 100%); border: 2px solid var(--cyan); border-radius: 50px; padding: 14px 40px; text-align: center; margin: 40px auto; display: inline-block; cursor: pointer; transition: all 0.3s ease; font-weight: 700; animation: neonPulse 2s infinite; }
-        .load-more-btn:hover { background: linear-gradient(135deg, var(--cyan), var(--purple)); color: #000; transform: scale(1.05); box-shadow: 0 0 30px rgba(0,242,255,0.5); }
-        .lang-flag-icon { font-size: 52px; display: inline-block; transition: transform 0.4s ease; }
-        .lang-card:hover .lang-flag-icon { transform: scale(1.15) rotate(8deg); }
-        .lang-card-title { font-size: 12px; font-weight: 800; letter-spacing: 2.5px; margin-top: 12px; text-transform: uppercase; background: linear-gradient(135deg, #fff, var(--cyan), var(--orange)); background-clip: text; -webkit-background-clip: text; color: transparent; }
-        .glow-text { text-shadow: 0 0 20px rgba(0,242,255,0.6), 0 0 10px rgba(255,102,0,0.4); }
-        .season-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
-        .season-btn { background: linear-gradient(135deg, rgba(0,242,255,0.15), rgba(191,0,255,0.08)); border: 1px solid var(--cyan); border-radius: 30px; padding: 8px 18px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; }
-        .season-btn:hover { background: linear-gradient(135deg, var(--cyan), var(--purple)); color: #000; transform: scale(1.05); }
-        .season-active { background: linear-gradient(135deg, var(--cyan), var(--purple)); color: #000; border-color: white; }
-        .gradient-text { background: linear-gradient(135deg, #fff 0%, var(--cyan) 40%, var(--orange) 100%); background-clip: text; -webkit-background-clip: text; color: transparent; }
-        .empty-state { text-align: center; padding: 60px 20px; background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(0,242,255,0.03)); border-radius: 30px; border: 1px dashed rgba(0,242,255,0.4); }
-        .empty-state img { width: 80px; height: 80px; margin-bottom: 20px; opacity: 0.6; animation: float 3s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
-        .gamer-animation { animation: gamerAnim 0.5s ease-in-out; }
-        @keyframes gamerAnim { 0% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.05); filter: brightness(1.3) drop-shadow(0 0 15px var(--cyan)); } 100% { transform: scale(1); filter: brightness(1); } }
         
-        .warning-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); z-index: 10002; display: flex; align-items: center; justify-content: center; animation: fadeIn 0.3s ease; }
-        .warning-content { background: linear-gradient(135deg, #1a1a1a, #000); border: 2px solid #ff3333; border-radius: 30px; padding: 30px; text-align: center; max-width: 400px; box-shadow: 0 0 50px rgba(255,0,0,0.3); }
-        .warning-content p { color: #ff3333; font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
-        .warning-content button { background: #ff3333; border: none; padding: 12px 30px; border-radius: 40px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .lang-card { 
+            background: rgba(0,242,255,0.05); 
+            border: 1px solid rgba(0,242,255,0.3); 
+            border-radius: 12px; 
+            transition: all 0.4s ease; 
+            cursor: pointer; 
+            backdrop-filter: blur(12px); 
+            overflow: hidden; 
+        }
+        .lang-card:hover { background: rgba(0,242,255,0.2); border-color: var(--cyan); transform: translateY(-5px) scale(1.02); box-shadow: 0 0 25px rgba(0,242,255,0.3); }
+        
+        .detail-screen-img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 12px; transition: transform 0.3s ease; border: 1px solid rgba(0,242,255,0.3); }
+        .detail-screen-img:hover { transform: scale(1.01); box-shadow: 0 0 20px rgba(0,242,255,0.3); }
+        
+        .feature-box { background: rgba(0,242,255,0.08); border: 1px solid var(--cyan); border-radius: 8px; padding: 12px; margin-top: 12px; font-size: 11px; color: #ccf4ff; font-family: 'Share Tech Mono', monospace; }
+        .update-text { font-size: 9px; color: #00f2ff; margin-top: 8px; text-align: right; font-family: 'Share Tech Mono', monospace; }
+        
+        .counter-badge { background: rgba(0,242,255,0.2); border-radius: 4px; padding: 2px 6px; font-size: 9px; margin-left: 6px; font-family: 'Share Tech Mono', monospace; }
+        
+        .load-more-btn { 
+            background: rgba(0,242,255,0.1); 
+            border: 1px solid var(--cyan); 
+            border-radius: 8px; 
+            padding: 12px 30px; 
+            text-align: center; 
+            margin: 30px auto; 
+            display: inline-block; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            font-weight: 700; 
+            letter-spacing: 2px; 
+            backdrop-filter: blur(8px); 
+            font-family: 'Orbitron', monospace;
+            font-size: 12px;
+        }
+        .load-more-btn:hover { background: var(--cyan); color: #000; transform: scale(1.03); box-shadow: 0 0 25px rgba(0,242,255,0.5); }
+        
+        .lang-flag-icon { font-size: 42px; display: inline-block; transition: transform 0.3s ease; }
+        .lang-card:hover .lang-flag-icon { transform: scale(1.1) rotate(5deg); }
+        .lang-card-title { font-size: 11px; font-weight: 800; letter-spacing: 2px; margin-top: 10px; text-transform: uppercase; font-family: 'Orbitron', monospace; background: linear-gradient(135deg, #fff, var(--cyan)); background-clip: text; -webkit-background-clip: text; color: transparent; }
+        
+        .glow-text { text-shadow: 0 0 15px rgba(0,242,255,0.8), 0 0 5px rgba(191,0,255,0.5); }
+        .gradient-text { background: linear-gradient(135deg, #fff 0%, var(--cyan) 40%, var(--purple) 100%); background-clip: text; -webkit-background-clip: text; color: transparent; font-family: 'Orbitron', monospace; }
+        
+        .empty-state { text-align: center; padding: 50px 20px; background: rgba(0,242,255,0.03); border-radius: 12px; border: 1px dashed rgba(0,242,255,0.4); }
+        .empty-state img { width: 70px; height: 70px; margin-bottom: 15px; opacity: 0.5; filter: drop-shadow(0 0 10px var(--cyan)); animation: float 3s ease-in-out infinite; }
+        
+        .warning-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); backdrop-filter: blur(8px); z-index: 10002; display: flex; align-items: center; justify-content: center; animation: fadeIn 0.3s ease; }
+        .warning-content { background: linear-gradient(135deg, #1a0a0a, #000); border: 2px solid #ff3333; border-radius: 12px; padding: 25px; text-align: center; max-width: 380px; box-shadow: 0 0 40px rgba(255,0,0,0.3); }
+        .warning-content p { color: #ff3333; font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; font-family: 'Orbitron', monospace; }
+        .warning-content button { background: #ff3333; border: none; padding: 10px 25px; border-radius: 6px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; font-family: 'Orbitron', monospace; }
         .warning-content button:hover { transform: scale(1.05); background: #ff6666; box-shadow: 0 0 20px red; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .season-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+        .season-btn { background: rgba(0,242,255,0.1); border: 1px solid var(--cyan); border-radius: 6px; padding: 6px 14px; font-size: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; font-family: 'Share Tech Mono', monospace; }
+        .season-btn:hover { background: var(--cyan); color: #000; transform: scale(1.05); }
+        .season-active { background: var(--cyan); color: #000; border-color: white; box-shadow: 0 0 15px rgba(0,242,255,0.5); }
+        
+        .gamer-animation { animation: gamerAnim 0.4s ease-in-out; }
+        @keyframes gamerAnim { 0% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.03); filter: brightness(1.4) drop-shadow(0 0 15px var(--cyan)); } 100% { transform: scale(1); filter: brightness(1); } }
     </style>
 </head>
 <body>
     <div class="bg-glow"></div>
 
-    <div id="language-overlay" class="fixed inset-0 z-[10000] bg-[#050505] flex items-center justify-center p-6 transition-all duration-700" style="backdrop-filter: blur(16px);">
+    <div id="language-overlay" class="fixed inset-0 z-[10000] bg-[#0a0a0f] flex items-center justify-center p-6 transition-all duration-700" style="backdrop-filter: blur(16px);">
         <div class="max-w-3xl w-full text-center" data-aos="zoom-in" data-aos-duration="600">
             <h2 class="font-brand text-6xl md:text-7xl mb-6 tracking-widest text-white glow-text">SELECT REGION</h2>
-            <p class="text-white/40 text-xs uppercase tracking-wider mb-12">Choose your language / Elige tu idioma</p>
+            <p class="text-white/40 text-xs uppercase tracking-wider mb-12 font-mono">Choose your language / Elige tu idioma</p>
             <div class="grid grid-cols-2 md:grid-cols-5 gap-5 mb-10" id="langGrid"></div>
             <label class="flex items-center justify-center gap-3 cursor-pointer opacity-70 hover:opacity-100 transition-all duration-300 group">
                 <input type="checkbox" id="rememberLang" class="hidden peer">
                 <div class="w-4 h-4 border-2 border-white/40 rounded peer-checked:bg-cyan-400 peer-checked:border-cyan-400 transition-all group-hover:border-cyan-400"></div>
-                <span id="label-no-ask" class="text-[10px] uppercase font-bold tracking-widest text-white/60 group-hover:text-white transition-all"></span>
+                <span id="label-no-ask" class="text-[10px] uppercase font-bold tracking-widest text-white/60 group-hover:text-white transition-all font-mono"></span>
             </label>
         </div>
     </div>
 
-    <header class="px-6 py-6 flex items-center justify-between sticky top-0 z-[900] bg-dark/40 backdrop-blur-xl border-b border-white/10">
+    <header class="px-6 py-5 flex items-center justify-between sticky top-0 z-[900] bg-dark/60 backdrop-blur-xl border-b border-cyan-500/30">
         <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
-            <img src="https://i.ibb.co/ZRJzrLqr/image.png" alt="Logo" class="w-9 h-9 rounded-xl object-contain transition-all duration-300 group-hover:scale-110">
-            <span class="font-brand text-3xl gradient-text">NOVARK</span>
+            <img src="https://i.ibb.co/ZRJzrLqr/image.png" alt="Logo" class="w-8 h-8 rounded-lg object-contain transition-all duration-300 group-hover:scale-110 group-hover:drop-shadow-neon">
+            <span class="font-brand text-2xl gradient-text glow-text">NOVARK</span>
         </div>
-        <div id="current-lang-display" onclick="resetLanguage()" class="bg-white/10 px-3 py-1.5 rounded-full border border-white/20 flex items-center gap-2 cursor-pointer hover:bg-white/20 transition-all hover:scale-105 backdrop-blur-sm">
+        <div id="current-lang-display" onclick="resetLanguage()" class="bg-white/5 px-3 py-1.5 rounded-lg border border-cyan-500/30 flex items-center gap-2 cursor-pointer hover:bg-white/10 transition-all hover:scale-105 backdrop-blur-sm">
             <span id="header-flag" class="text-lg"></span>
         </div>
     </header>
 
     <main class="px-6 max-w-7xl mx-auto pb-20">
         <section id="home-view" class="view-section" data-aos="fade-up">
-            <div class="search-container flex items-center gap-4">
-                <svg class="opacity-60" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                <input type="text" id="catalogSearch" class="bg-transparent border-none outline-none w-full text-sm font-medium text-white/90" placeholder="Buscar..." oninput="render()">
+            <div class="search-container flex items-center gap-3">
+                <svg class="opacity-60" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <input type="text" id="catalogSearch" class="bg-transparent border-none outline-none w-full text-sm text-white/80" placeholder="Buscar..." oninput="render()">
             </div>
             
             <div class="categories-bar">
                 <div class="categories-wrapper">
-                    <div id="cat-all" onclick="switchCategory('all')" class="category-btn active"><svg class="category-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg><span class="category-label" id="lbl-all">TODO</span></div>
+                    <div id="cat-all" onclick="switchCategory('all')" class="category-btn active"><svg class="category-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg><span class="category-label" id="lbl-all">TODO</span></div>
                     <div id="cat-games" onclick="switchCategory('games')" class="category-btn"><img class="category-icon" src="https://cdn-icons-png.flaticon.com/512/982/982036.png" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%2300f2ff%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M21 6H3v12h18V6zm-2 10H5V8h14v8zM9 10H7v4h2v-4zm6 0h-2v4h2v-4z%22/%3E%3C/svg%3E'"><span class="category-label" id="lbl-games">JUEGOS</span></div>
                     <div id="cat-movies" onclick="switchCategory('movies')" class="category-btn"><img class="category-icon" src="https://cdn-icons-png.magnific.com/512/738/738096.png" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%2300f2ff%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M18 3v2h-4V3h4zM8 3v2H4V3h4zm14 6v10c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V9h20zm-2 2H4v8h16v-8z%22/%3E%3C/svg%3E'"><span class="category-label" id="lbl-movies">CINE</span></div>
                     <div id="cat-kdrama" onclick="switchCategory('kdrama')" class="category-btn"><img class="category-icon" src="https://static.thenounproject.com/png/k-drama-icon-8046875-512.png" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%2300f2ff%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 4c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm0 13c-2.33 0-4.31-1.46-5.11-3.5h10.22c-.8 2.04-2.78 3.5-5.11 3.5z%22/%3E%3C/svg%3E'"><span class="category-label" id="lbl-kdrama">KDRAMAS</span></div>
@@ -139,29 +327,29 @@
                 </div>
             </div>
 
-            <div id="gameGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 mt-6"></div>
+            <div id="gameGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-5 mt-5"></div>
             <div id="loadMoreContainer" class="flex justify-center w-full">
-                <div id="loadMoreBtn" class="load-more-btn hidden">✨ CARGAR MÁS ✨</div>
+                <div id="loadMoreBtn" class="load-more-btn hidden">⟁ CARGAR MÁS ⟁</div>
             </div>
         </section>
 
         <section id="detail-view" class="view-section hidden pt-4">
-            <button onclick="navigate('home')" class="mb-8 flex items-center gap-2 text-white/50 hover:text-cyan-400 transition-all uppercase text-[10px] font-black tracking-widest group">
-                <svg class="group-hover:-translate-x-1 transition-transform" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m15 18-6-6 6-6"/></svg>
-                <span id="btn-back-text">Volver</span>
+            <button onclick="navigate('home')" class="mb-6 flex items-center gap-2 text-white/50 hover:text-cyan-400 transition-all uppercase text-[9px] font-black tracking-widest group">
+                <svg class="group-hover:-translate-x-1 transition-transform" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+                <span id="btn-back-text" class="font-mono">Volver</span>
             </button>
-            <div class="grid lg:grid-cols-2 gap-12">
-                <div class="rounded-[32px] overflow-hidden border border-white/15 shadow-2xl" data-aos="fade-right">
+            <div class="grid lg:grid-cols-2 gap-10">
+                <div class="rounded-xl overflow-hidden border border-cyan-500/30 shadow-2xl" data-aos="fade-right">
                     <img id="detailImg" class="detail-screen-img" loading="lazy">
                 </div>
                 <div data-aos="fade-left">
-                    <h2 id="detailTitle" class="text-5xl font-brand mb-4 leading-tight gradient-text"></h2>
-                    <p id="detailDesc" class="text-white/60 text-sm leading-relaxed mb-8 font-light"></p>
-                    <div class="mb-10">
-                        <p class="text-[9px] uppercase tracking-widest font-bold text-cyan-400/80 mb-4">⚡ SPECS & DATA</p>
+                    <h2 id="detailTitle" class="text-4xl font-brand mb-3 leading-tight gradient-text"></h2>
+                    <p id="detailDesc" class="text-white/60 text-sm leading-relaxed mb-6 font-light font-mono"></p>
+                    <div class="mb-8">
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-cyan-400/70 mb-3 font-mono">⚡ SPECS & DATA</p>
                         <div id="reqsContainer" class="flex flex-wrap gap-2"></div>
                     </div>
-                    <div id="downloadArea" class="space-y-3"></div>
+                    <div id="downloadArea" class="space-y-2"></div>
                     <div id="specialFeatures" class="feature-box hidden"></div>
                     <div id="updateInfo" class="update-text hidden"></div>
                     <div id="seasonSelector" class="season-buttons hidden"></div>
@@ -171,9 +359,9 @@
 
         <section id="request-view" class="view-section hidden py-20 text-center">
             <div class="max-w-xl mx-auto" data-aos="zoom-in">
-                <h1 class="text-7xl font-brand mb-4 gradient-text" id="req-view-title"></h1>
-                <p class="text-white/30 text-[10px] uppercase tracking-widest mb-12">Novark Media Delivery System</p>
-                <input type="text" id="requestInput" class="w-full bg-transparent border-b border-white/15 py-4 text-center text-xl font-light outline-none focus:border-cyan-400 transition-all mb-10 placeholder-white/30" placeholder="Escribe tu petición...">
+                <h1 class="text-6xl font-brand mb-4 gradient-text" id="req-view-title"></h1>
+                <p class="text-white/30 text-[9px] uppercase tracking-widest mb-10 font-mono">Novark Media Delivery System</p>
+                <input type="text" id="requestInput" class="w-full bg-transparent border-b border-white/15 py-3 text-center text-lg font-light outline-none focus:border-cyan-400 transition-all mb-8 placeholder-white/30 font-mono" placeholder="Escribe tu petición...">
                 <button onclick="sendRequest()" class="btn-action" id="req-btn"></button>
             </div>
         </section>
@@ -182,7 +370,7 @@
             <div class="max-w-md mx-auto" data-aos="zoom-in">
                 <div class="empty-state">
                     <img src="https://cdn-icons-png.flaticon.com/512/7486/7486747.png" alt="No disponible" class="mx-auto">
-                    <p id="kdrama-empty-text">No hay nada disponible actualmente</p>
+                    <p id="kdrama-empty-text" class="font-mono text-xs">No hay nada disponible actualmente</p>
                 </div>
             </div>
         </section>
@@ -199,9 +387,9 @@
             overlay.style.height = '100%';
             overlay.style.pointerEvents = 'none';
             overlay.style.zIndex = '10001';
-            overlay.style.background = 'radial-gradient(circle, rgba(0,242,255,0.2) 0%, transparent 70%)';
+            overlay.style.background = 'radial-gradient(circle, rgba(0,242,255,0.15) 0%, transparent 70%)';
             document.body.appendChild(overlay);
-            setTimeout(() => overlay.remove(), 500);
+            setTimeout(() => overlay.remove(), 400);
         }
 
         function showWarningModal(url, title, type, poster, langLabel) {
@@ -210,7 +398,7 @@
             modal.innerHTML = `
                 <div class="warning-content">
                     <p>⚠️ ESTE CONTENIDO ES SACADO DE UN HACKER FILTRADOR ⚠️</p>
-                    <p style="font-size: 12px; color: #ff8888;">COMPARTIR Y VER BAJO TU PROPIO RIESGO</p>
+                    <p style="font-size: 10px; color: #ff8888; font-family: monospace;">COMPARTIR Y VER BAJO TU PROPIO RIESGO</p>
                     <button id="confirmWarning">ENTENDIDO, CONTINUAR</button>
                 </div>
             `;
@@ -313,11 +501,10 @@
             { id: 'gooddinosaur', title: { es: 'Un gran dinosaurio', en: 'The Good Dinosaur', pt: 'Um Grande Dinossauro', fr: 'Le Bon Dinosaure' }, poster: 'https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p11822260_p_v13_am.jpg', screen: 'https://statcdn.fandango.com/MPX/image/NBCU_Fandango/748/607/TheGoodDinosaur_20YearsTrailer.jpg', links: { mex: 'https://video.playspelis.com/es/detail/movie/EqJnRCPzFNDNlq82T1enM-The-Good-Dinosaur', usa: 'https://www3.dramasfree.com/es/detail/movie/YMFcTMbiNFmdG1jwZZOX8-The-Good-Dinosaur' }, desc: { es: 'Un dinosaurio aprende el valor de la amistad.', en: 'A dinosaur learns the value of friendship.' }, reqs: ["4K", "Lat/Eng", "Animación", "2015"], showNewBadge: false, type: 'movie', multiVersion: true },
             { id: 'mama', title: { es: 'Mamá', en: 'Mama', pt: 'Mamãe', fr: 'Mama' }, poster: 'https://m.media-amazon.com/images/M/MV5BNmY2OGQwYjUtNmJjYi00MjI1LWIwYTItNDVkNzdiNzU0ZWRmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg', screen: 'https://m.media-amazon.com/images/M/MV5BMTUzODU4MTYwOV5BMl5BanBnXkFtZTgwMDY5NDkyMzE@._V1_.jpg', links: { mex: 'https://es.cuevana4br.com/es/detail/movie/UaZxWV4wht1be5VNqgrj4-Mama', usa: 'https://play.cuevana.life/es/detail/movie/0CvTkRfMfEitdfxRCILVJ-Mama' }, desc: { es: 'Una terrorífica historia de una madre fantasma.', en: 'A terrifying story of a ghostly mother.' }, reqs: ["1080p", "Lat/Eng", "Terror", "2013"], showNewBadge: false, type: 'movie', multiVersion: true },
             { id: 'it', title: { es: 'IT', en: 'IT', pt: 'IT', fr: 'Ça' }, poster: 'https://m.media-amazon.com/images/M/MV5BZGZmOTZjNzUtOTE4OS00OGM3LWJiNGEtZjk4Yzg2M2Q1YzYxXkEyXkFqcGc@._V1_.jpg', screen: 'https://ichef.bbci.co.uk/ace/ws/640/cpsprodpb/66D3/production/_98032362_mediaitem98014584.jpg.webp', links: { mex: 'https://www3.dramasfree.com/es/detail/movie/TL9fg2TEFkYy6UE4qo2kh-It-Chapter-One', usa: 'https://www3.dramasfree.com/es/detail/movie/SY2qrXk1ShOo7UdvyALxT-It-Chapter-One' }, desc: { es: 'Un payaso aterroriza a un grupo de niños.', en: 'A clown terrifies a group of children.' }, reqs: ["4K", "Lat/Eng", "Terror", "2017"], showNewBadge: false, type: 'movie', multiVersion: true },
-            // NUEVA PELÍCULA DIGITAL CIRCUS 9 - CON ADVERTENCIA Y PORTUGUÉS SUBTITULADO
             { id: 'digitalcircus9', title: { es: 'Digital Circus 9', en: 'Digital Circus 9', pt: 'Circo Digital 9', fr: 'Cirque Numérique 9' }, poster: 'https://sacnkprodpycms.blob.core.windows.net/content/posters/HO00006275.jpg', screen: 'https://i.ytimg.com/vi/AjFk1cY265I/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLD4aHlnxgsX2vkS-eSpmAKsc3aaHw', links: { mex: 'https://drive.google.com/file/d/1wmdpcMGZOu7EQfyAo4P7W_Zi12Ti5x2s/view?pli=1', usa: null }, desc: { es: 'Algo se está abstrayendo....', en: 'Something is abstracting....', pt: 'Algo está se abstraindo....', fr: 'Quelque chose s\'abstrait....' }, reqs: ["HD", "Portugués Subtitulado", "2026"], showNewBadge: false, isSecret: true, type: 'movie', multiVersion: true, noEnglish: true, hasWarning: true, isPortugueseOnly: true }
         ];
 
-        // ==================== JUEGOS COMPLETOS ====================
+        // ==================== JUEGOS COMPLETOS (con nuevo juego Scritchy Scratchy y etiqueta NUEVO) ====================
         const games = [
             { id: 'minecraft', title: { es: 'Minecraft', en: 'Minecraft', pt: 'Minecraft', fr: 'Minecraft' }, poster: 'https://store-images.s-microsoft.com/image/apps.17382.13510798885735219.9735d495-578c-4a4c-b892-3eb3a780b3a0.d3792486-cf98-40c0-a2c1-d6443f0e2b70', screen: 'https://apktodo.io/uploads/2026/4/minecraft-pe-1263021-thumbnail.jpg', link: 'https://mcpedl.org/uploads_files/30-04-2026/minecraft-26-30-25-music.apk', desc: { es: 'V1.26.30: Explora mundos infinitos y construye cualquier cosa.', en: 'V1.26.30: Explore infinite worlds and build anything.' }, reqs: ["4GB RAM", "Octa-Core 2.0GHz", "1GB", "8.0+"], showNewBadge: false, isMostWanted: false, type: 'game' },
             { id: 'p5', title: { es: 'Poppy Playtime 5', en: 'Poppy Playtime 5', pt: 'Poppy Playtime 5', fr: 'Poppy Playtime 5' }, poster: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6NCirZXspnRehiwpdhsRa4wQ_ecXusChoiDMJ2oVLablQGCWjCBLlfG1Z&s=10', screen: 'https://img.itch.zone/aW1hZ2UvNDM5NDI0NS8yNzI5NjI4Ny5wbmc=/original/6kasU9.png', link: 'https://piro775.itch.io/toy-factory-chapter-5-fangame-unity', desc: { es: 'V1.8: Capítulo más aterrador en la fábrica de juguetes.', en: 'V1.8: Scariest chapter in the toy factory.' }, reqs: ["6GB RAM", "Octa-Core 2.6", "2.5GB", "10+"], showNewBadge: false, isMostWanted: true, type: 'game', specialFeatures: "Poppy playtime chapter 5 fangame unity\nV1.8\nAdded multiple maps\nAdded the Huggy wuggy fight 2\nAdded New SFX\nAdded New Cutscenes\nFixed Some Bugs\n\nV1.8.1 - Fixed a major bug with huggy memories\n\nV1.8.2- Fixed another major bug with huggy memories\n\nAnd More...", updateInfo: "Actualizado hace: 2 dias" },
@@ -359,16 +546,23 @@
             { id: 'arknova', title: { es: 'Ark Nova', en: 'Ark Nova', pt: 'Ark Nova', fr: 'Ark Nova' }, poster: 'https://www.malditogames.com/wp-content/uploads/FT_ArkNova-1.jpg', screen: 'https://img.apkvision.org/Ark-Nova/Ark-Nova-2.webp', link: 'https://dl.apkvision.org/ark-nova/Ark-Nova-v1.0.4-full-apkvision.apk', desc: { es: 'Construye el mejor zoológico moderno del mundo.', en: 'Build the best modern zoo in the world.' }, reqs: ["400MB", "Android 8.0+", "3GB RAM"], showNewBadge: false, type: 'game' },
             { id: 'rushrally3', title: { es: 'Rush Rally 3', en: 'Rush Rally 3', pt: 'Rush Rally 3', fr: 'Rush Rally 3' }, poster: 'https://content-assets.eneba.games/clp/ce15ef81-de2a-4824-9ff6-2055e4a5d4b5.jpg', screen: 'https://minireview.io/common/uploads/cache/review/1-900-506-asddadasda-0579361.webp', link: 'https://download2388.mediafire.com/5vho76y1jnbgVhgAvP7JG6uZBeBPH1H9aZ5nusVXECFSu3WfGD9EeLDMEMus4bvuGpk0zc7ferSVbCUD072I8zReuuCtXbsZzlX4UqJnI944wW3LIR0HXzhkUyNmLpX8TWEmJjJrE_rMmtTWrhKVRVdyo6xai7d4biaA0Z1aUn4ARdM/6pyz6jsm47qrxk5/rush+rally+3+mod+v1.157+-+espacioapk.com.apk', desc: { es: 'Juego de rally extremo con gráficos impresionantes.', en: 'Extreme rally game with stunning graphics.' }, reqs: ["300MB", "Android 8.0+", "2GB RAM"], showNewBadge: false, type: 'game' },
             { id: 'driftride', title: { es: 'Drift Ride', en: 'Drift Ride', pt: 'Drift Ride', fr: 'Drift Ride' }, poster: 'https://cdn-bgp.bluestacks.com/BGP/latam/gametiles_com.carxtech.driftride.jpg', screen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb36taJdTReBSWbEEMdjRILKyPGlER8W2yzoliZlWtWypC19JGAD9mVa8&s=10', link: 'https://files.an1.net/drift-ride-mod_1.52-an1.com.apk', desc: { es: 'Juego de drifting con gráficos realistas.', en: 'Drifting game with realistic graphics.' }, reqs: ["300MB", "Android 8.0+", "2GB RAM"], showNewBadge: false, type: 'game' },
-            { id: 'gridlegends', title: { es: 'Grid Legends Mobile', en: 'Grid Legends Mobile', pt: 'Grid Legends Mobile', fr: 'Grid Legends Mobile' }, poster: 'https://upload.wikimedia.org/wikipedia/en/2/2a/GRID_Legends_cover_art.jpeg', screen: 'https://play-lh.googleusercontent.com/L_4c_ITdYtMCCa97AoX9vexGlvD9STmOCwb_lpLIMknKVceUeNkrFOwX6tr-cFyLnCw=w526-h296-rw', link: 'https://cdn.9mod.cloud/GRID%20Legends%20Deluxe%20Edition/grid-legends-deluxe-edition-v1.1.4RC7-unlocked.apks?token=TVRjM09EWTBOVE0yTVE9PQ%3D%3D', desc: { es: 'El mejor juego de carreras para móvil.', en: 'The best racing game for mobile.' }, reqs: ["1.5GB", "Android 10.0+", "4GB RAM"], showNewBadge: false, type: 'game' }
+            { id: 'gridlegends', title: { es: 'Grid Legends Mobile', en: 'Grid Legends Mobile', pt: 'Grid Legends Mobile', fr: 'Grid Legends Mobile' }, poster: 'https://upload.wikimedia.org/wikipedia/en/2/2a/GRID_Legends_cover_art.jpeg', screen: 'https://play-lh.googleusercontent.com/L_4c_ITdYtMCCa97AoX9vexGlvD9STmOCwb_lpLIMknKVceUeNkrFOwX6tr-cFyLnCw=w526-h296-rw', link: 'https://cdn.9mod.cloud/GRID%20Legends%20Deluxe%20Edition/grid-legends-deluxe-edition-v1.1.4RC7-unlocked.apks?token=TVRjM09EWTBOVE0yTVE9PQ%3D%3D', desc: { es: 'El mejor juego de carreras para móvil.', en: 'The best racing game for mobile.' }, reqs: ["1.5GB", "Android 10.0+", "4GB RAM"], showNewBadge: false, type: 'game' },
+            // NUEVO JUEGO SCRITCHY SCRATCHY - CON ETIQUETA NUEVO (showNewBadge: true)
+            { id: 'scritchyscratchy', title: { es: 'Scritchy Scratchy', en: 'Scritchy Scratchy', pt: 'Scritchy Scratchy', fr: 'Scritchy Scratchy' }, poster: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5HLiEZ4cH0hdhjIIvNEfkn2RyT5DcqBnWIczLCA88OFPi8YZdDfKyFcA&s=10', screen: 'https://images.squarespace-cdn.com/content/v1/5f5a3ad1b3aa75691878d2a5/d6f12626-8834-4b4b-b4f2-a6275ee49404/scritchy-scratchy-1.webp', link: 'https://dl.apkvision.org/scritchy-scratchy/Scritchy-Scratchy-v1.1.18-unlocked-apkvision.apk', desc: { es: 'Juego de raspar y ganar premios increíbles.', en: 'Scratch and win amazing prizes game.', pt: 'Jogo de raspar e ganhar prêmios incríveis.', fr: 'Jeu de gratter et gagner des prix incroyables.' }, reqs: ["200MB", "Android 7.0+", "2GB RAM"], showNewBadge: true, type: 'game' }
         ];
 
+        // ORDEN: PRIMERO SECRET, LUEGO NUEVOS (con showNewBadge true), LUEGO POPPY (HOT), LUEGO RESTO
         function sortItems(pool) {
             const secretItem = pool.find(item => item.isSecret === true);
+            const newItems = pool.filter(item => item.showNewBadge === true && !item.isSecret && item.id !== 'p5');
             const poppyItem = pool.find(item => item.id === 'p5');
-            const otherItems = pool.filter(item => !item.isSecret && item.id !== 'p5');
-            if (secretItem) return [secretItem, poppyItem, ...otherItems].filter(Boolean);
-            if (poppyItem) return [poppyItem, ...otherItems];
-            return [...otherItems];
+            const otherItems = pool.filter(item => !item.isSecret && !item.showNewBadge && item.id !== 'p5');
+            const result = [];
+            if (secretItem) result.push(secretItem);
+            result.push(...newItems);
+            if (poppyItem) result.push(poppyItem);
+            result.push(...otherItems);
+            return result;
         }
 
         function updateCountersAndLabels() {
@@ -398,14 +592,14 @@
             const grid = document.getElementById('langGrid');
             languages.forEach((l, idx) => {
                 const div = document.createElement('div');
-                div.className = "lang-card p-6 flex flex-col items-center gap-3";
+                div.className = "lang-card p-5 flex flex-col items-center gap-2";
                 div.style.animationDelay = `${idx * 0.1}s`;
-                div.innerHTML = `<span class="lang-flag-icon text-5xl">${l.flag}</span><p class="lang-card-title text-white/80">${l.label}</p><p class="text-[8px] text-white/40 uppercase tracking-wider">${l.name}</p>`;
+                div.innerHTML = `<span class="lang-flag-icon text-4xl">${l.flag}</span><p class="lang-card-title text-white/80 text-xs">${l.label}</p><p class="text-[7px] text-white/40 uppercase tracking-wider font-mono">${l.name}</p>`;
                 div.onclick = () => setLang(l.code);
                 grid.appendChild(div);
             });
             applyTranslations();
-            AOS.init({ duration: 600, once: true, offset: 30 });
+            AOS.init({ duration: 500, once: true, offset: 30 });
             updateCountersAndLabels();
         }
 
@@ -415,7 +609,7 @@
             const overlay = document.getElementById('language-overlay');
             showGamerAnimation();
             overlay.style.opacity = '0';
-            setTimeout(() => overlay.remove(), 500);
+            setTimeout(() => overlay.remove(), 400);
             applyTranslations();
         }
 
@@ -469,7 +663,7 @@
                         ${g.isMostWanted ? `<div class="badge-tag badge-hot-red">${t.hot}</div>` : ''}
                         <img src="${g.poster}" class="poster-img" loading="lazy">
                         <div class="card-title-overlay">
-                            <p class="font-brand text-base leading-tight uppercase">${g.title[curLang] || g.title.en}</p>
+                            <p class="font-brand text-sm leading-tight uppercase">${g.title[curLang] || g.title.en}</p>
                         </div>
                     </div>
                 </div>`).join('');
@@ -489,14 +683,14 @@
             document.getElementById('detailImg').src = g.screen || g.poster;
             document.getElementById('detailTitle').innerText = g.title[curLang] || g.title.en;
             document.getElementById('detailDesc').innerText = (g.desc && g.desc[curLang]) ? g.desc[curLang] : (g.desc ? g.desc.en : '');
-            document.getElementById('reqsContainer').innerHTML = g.reqs ? g.reqs.map(r => `<div class="bg-white/5 px-3 py-1.5 rounded-lg border border-white/5 text-[9px] font-bold text-cyan-400/80 uppercase">${r}</div>`).join('') : '';
+            document.getElementById('reqsContainer').innerHTML = g.reqs ? g.reqs.map(r => `<div class="bg-white/5 px-2 py-1 rounded border border-white/5 text-[8px] font-bold text-cyan-400/80 uppercase font-mono">${r}</div>`).join('') : '';
             
             const specialDiv = document.getElementById('specialFeatures');
             const updateDiv = document.getElementById('updateInfo');
             const seasonDiv = document.getElementById('seasonSelector');
             
             if (g.specialFeatures) {
-                specialDiv.innerHTML = g.specialFeatures.split('\n').map(line => `<div>${line}</div>`).join('');
+                specialDiv.innerHTML = g.specialFeatures.split('\n').map(line => `<div class="text-[10px]">${line}</div>`).join('');
                 specialDiv.classList.remove('hidden');
                 updateDiv.innerHTML = g.updateInfo;
                 updateDiv.classList.remove('hidden');
