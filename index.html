@@ -8,7 +8,7 @@
     <!-- ==================== FAVICON ==================== -->
     <link rel="icon" type="image/png" href="https://i.postimg.cc/xdp1cQg6/favicon-72726451437860.png">
 
-    <!-- ==================== META TAGS ACTUALIZADAS ==================== -->
+    <!-- ==================== META TAGS ==================== -->
     <meta property="og:title" content="Plevark - Juegos y Películas" />
     <meta property="og:description" content="Disfruta de contenido premium: películas, series y los mejores juegos. ¡Encuentra tu próxima aventura!" />
     <meta property="og:image" content="https://i.postimg.cc/k5CcmKvC/IMG-20260611-212526-modified.png" />
@@ -17,7 +17,7 @@
     <meta name="twitter:card" content="summary_large_image" />
 
     <style>
-        /* ===== RESET & PALETA (BLANCO Y NEGRO) ===== */
+        /* ===== RESET & PALETA (BLANCO Y NEGRO MEJORADA) ===== */
         * {
             margin: 0;
             padding: 0;
@@ -25,9 +25,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
 
         body {
             background-image: url('https://i.postimg.cc/L5T78935/ae222d52c1f501d06caefbc46e09f1f3.jpg');
@@ -39,7 +37,17 @@
             color: #d0d0d0;
             padding: 16px 16px 100px 16px;
             min-height: 100vh;
-            animation: bodyFadeIn 0.8s ease;
+            animation: bodyFadeIn 0.9s ease;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.035), transparent 60%);
+            pointer-events: none;
+            z-index: 0;
         }
 
         @keyframes bodyFadeIn {
@@ -47,19 +55,33 @@
             to { opacity: 1; transform: scale(1); }
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+        .container { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
 
-        /* --- HEADER SIN TEMÁTICA PARAGUAYA --- */
+        /* --- HEADER MEJORADO --- */
         header {
             text-align: center;
             margin-bottom: 20px;
             position: relative;
-            animation: fadeDown 0.8s ease;
-            padding: 20px 0 10px;
-            border-bottom: 1px solid #333;
+            animation: fadeDown 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+            padding: 22px 0 14px;
+            border-bottom: 1px solid rgba(200,200,200,0.15);
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #999, transparent);
+            animation: lineShine 3.5s ease-in-out infinite;
+        }
+
+        @keyframes lineShine {
+            0%, 100% { opacity: 0.3; width: 140px; }
+            50% { opacity: 1; width: 220px; }
         }
 
         @keyframes fadeDown {
@@ -68,56 +90,59 @@
         }
 
         header h1 {
-            font-size: 2.8rem;
+            font-size: 2.9rem;
             font-weight: 700;
             letter-spacing: -1px;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.9);
+            text-shadow: 2px 2px 12px rgba(0,0,0,0.95);
             margin-bottom: 2px;
-            color: #e0e0e0;
-            animation: glowText 3s ease-in-out infinite;
+            color: #ececec;
+            animation: glowText 4s ease-in-out infinite;
         }
 
         @keyframes glowText {
-            0%, 100% { text-shadow: 2px 2px 10px rgba(0,0,0,0.9); }
-            50% { text-shadow: 2px 2px 20px rgba(200,200,200,0.15), 0 0 40px rgba(200,200,200,0.05); }
+            0%, 100% { text-shadow: 2px 2px 12px rgba(0,0,0,0.95); }
+            50% { text-shadow: 2px 2px 28px rgba(220,220,220,0.22), 0 0 55px rgba(220,220,220,0.08); }
         }
 
         header p {
-            font-size: 0.95rem;
-            color: #aaa;
+            font-size: 0.9rem;
+            color: #999;
             font-weight: 300;
             margin-bottom: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
             animation: fadeUp 1.2s ease;
         }
 
         .logo-icon {
-            width: 70px;
-            height: 70px;
+            width: 72px;
+            height: 72px;
             margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: floatLogo 4s ease-in-out infinite;
+            animation: floatLogo 5s ease-in-out infinite;
+            filter: drop-shadow(0 0 15px rgba(200,200,200,0.12));
         }
 
         @keyframes floatLogo {
             0%, 100% { transform: translateY(0) scale(1) rotate(0deg); }
-            50% { transform: translateY(-8px) scale(1.02) rotate(-3deg); }
+            50% { transform: translateY(-8px) scale(1.03) rotate(-3deg); }
         }
 
         .logo-icon img {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             object-fit: contain;
             border: none;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.4s ease;
         }
 
         .logo-icon img:hover {
-            transform: scale(1.1) rotate(-8deg);
+            transform: scale(1.12) rotate(-8deg);
+            filter: drop-shadow(0 0 22px rgba(220,220,220,0.35));
         }
 
-        /* --- SEARCH --- */
+        /* --- SEARCH MEJORADO --- */
         .search-container {
             width: 100%;
             max-width: 500px;
@@ -133,96 +158,81 @@
 
         .search-container input {
             width: 100%;
-            padding: 12px 20px 12px 45px;
-            background-color: rgba(30, 30, 30, 0.9);
-            border: 1px solid #444;
+            padding: 13px 20px 13px 45px;
+            background-color: rgba(20, 20, 20, 0.88);
+            border: 1px solid #3a3a3a;
             border-radius: 50px;
             color: #d0d0d0;
             font-size: 0.95rem;
             outline: none;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            box-shadow: 0 0 0 0 rgba(200,200,200,0);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04);
         }
 
-        .search-container input::placeholder {
-            color: #777;
-        }
+        .search-container input::placeholder { color: #666; letter-spacing: 0.5px; }
 
         .search-container input:focus {
-            border-color: #888;
-            background-color: rgba(40, 40, 40, 0.95);
-            box-shadow: 0 0 20px rgba(200,200,200,0.1), 0 0 60px rgba(200,200,200,0.02);
+            border-color: #999;
+            background-color: rgba(35, 35, 35, 0.95);
+            box-shadow: 0 0 28px rgba(200,200,200,0.14), 0 0 75px rgba(200,200,200,0.04), inset 0 1px 0 rgba(255,255,255,0.06);
             transform: scale(1.02);
         }
 
         .search-container::before {
             content: "🔍";
             position: absolute;
-            left: 18px;
-            top: 50%;
+            left: 18px; top: 50%;
             transform: translateY(-50%);
             font-size: 1rem;
             opacity: 0.6;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 2;
         }
 
-        .search-container:focus-within::before {
-            opacity: 1;
-        }
+        .search-container:focus-within::before { opacity: 1; transform: translateY(-50%) scale(1.1); }
 
         /* --- GRID ÚNICO --- */
         #main-grid {
             display: grid;
-            gap: 25px;
+            gap: 26px;
             grid-template-columns: repeat(2, 1fr);
             padding-top: 20px;
         }
 
-        @media (min-width: 768px) {
-            #main-grid { grid-template-columns: repeat(4, 1fr); }
-        }
+        @media (min-width: 768px) { #main-grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (min-width: 1024px) { #main-grid { grid-template-columns: repeat(6, 1fr); } }
 
-        @media (min-width: 1024px) {
-            #main-grid { grid-template-columns: repeat(6, 1fr); }
-        }
-
-        /* --- TARJETAS CON ANIMACIONES ESCALONADAS Y NUEVOS EFECTOS --- */
+        /* --- TARJETAS MEJORADAS --- */
         .card {
-            background: rgba(25, 25, 25, 0.92);
-            border: 1px solid rgba(200, 200, 200, 0.10);
-            border-radius: 16px;
+            background: linear-gradient(145deg, rgba(28,28,28,0.96), rgba(16,16,16,0.96));
+            border: 1px solid rgba(200, 200, 200, 0.09);
+            border-radius: 18px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: all 0.55s cubic-bezier(0.23, 1, 0.32, 1);
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.7);
+            box-shadow: 0 6px 26px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.03);
             position: relative;
-            animation: cardFadeUp 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            animation: cardFadeUp 0.9s cubic-bezier(0.23, 1, 0.32, 1) forwards;
             opacity: 0;
-            transform: translateY(30px) scale(0.96);
+            transform: translateY(35px) scale(0.95);
             will-change: transform, opacity;
         }
 
-        /* Efecto de brillo en los bordes al hacer hover */
         .card::after {
             content: '';
             position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            border-radius: 18px;
-            background: linear-gradient(45deg, transparent, rgba(200,200,200,0.05), transparent);
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            border-radius: 20px;
+            background: linear-gradient(45deg, transparent, rgba(220,220,220,0.08), transparent);
             opacity: 0;
             transition: opacity 0.6s ease;
             pointer-events: none;
             z-index: 0;
         }
 
-        .card:hover::after {
-            opacity: 1;
-        }
+        .card:hover::after { opacity: 1; }
 
         .card:nth-child(1) { animation-delay: 0.05s; }
         .card:nth-child(2) { animation-delay: 0.10s; }
@@ -304,19 +314,24 @@
         .card:nth-child(78) { animation-delay: 3.90s; }
         .card:nth-child(79) { animation-delay: 3.95s; }
         .card:nth-child(80) { animation-delay: 4.00s; }
+        .card:nth-child(81) { animation-delay: 4.05s; }
+        .card:nth-child(82) { animation-delay: 4.10s; }
+        .card:nth-child(83) { animation-delay: 4.15s; }
+        .card:nth-child(84) { animation-delay: 4.20s; }
+        .card:nth-child(85) { animation-delay: 4.25s; }
+        .card:nth-child(86) { animation-delay: 4.30s; }
 
         @keyframes cardFadeUp {
-            from { opacity: 0; transform: translateY(30px) scale(0.96); }
+            from { opacity: 0; transform: translateY(35px) scale(0.95); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .card:hover {
             transform: translateY(-12px) scale(1.03);
-            border-color: #666;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(200, 200, 200, 0.08);
+            border-color: #777;
+            box-shadow: 0 22px 55px rgba(0, 0, 0, 0.85), 0 0 35px rgba(210, 210, 210, 0.10);
         }
 
-        /* --- ESTRUCTURA DE LA IMAGEN Y TÍTULO SUPERPUESTO --- */
         .card-img-wrapper {
             position: relative;
             width: 100%;
@@ -326,8 +341,7 @@
         }
 
         .card-img {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             object-fit: cover;
             transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), filter 0.4s ease;
             will-change: transform;
@@ -335,21 +349,20 @@
 
         .card:hover .card-img {
             transform: scale(1.08);
-            filter: brightness(1.1) contrast(1.05);
+            filter: brightness(1.12) contrast(1.06);
         }
 
         .card-title-overlay {
             position: absolute;
-            bottom: 0;
-            left: 0;
+            bottom: 0; left: 0;
             width: 100%;
-            padding: 16px 12px 12px;
-            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0) 100%);
-            color: #e0e0e0;
+            padding: 18px 12px 12px;
+            background: linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0) 100%);
+            color: #e5e5e5;
             font-weight: 600;
             font-size: 0.9rem;
             line-height: 1.2;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.9);
+            text-shadow: 0 1px 5px rgba(0,0,0,0.95);
             pointer-events: none;
             white-space: nowrap;
             overflow: hidden;
@@ -358,23 +371,18 @@
             transition: transform 0.3s ease, padding 0.3s ease;
         }
 
-        .card:hover .card-title-overlay {
-            transform: translateY(-3px);
-            padding-bottom: 16px;
-        }
+        .card:hover .card-title-overlay { transform: translateY(-3px); padding-bottom: 16px; }
 
-        /* Badges - mantienen colores */
         .card-badge {
             position: absolute;
-            top: 10px;
-            left: 10px;
+            top: 10px; left: 10px;
             font-size: 10px;
             font-weight: 700;
             padding: 4px 12px;
             border-radius: 6px;
             letter-spacing: 0.5px;
             text-transform: uppercase;
-            box-shadow: 0 0 20px rgba(0,0,0,0.6);
+            box-shadow: 0 0 22px rgba(0,0,0,0.7);
             z-index: 2;
             text-shadow: 0 0 5px currentColor;
             animation: pulseBadge 2.5s ease-in-out infinite;
@@ -382,27 +390,27 @@
 
         @keyframes pulseBadge {
             0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.08); }
+            50% { opacity: 0.85; transform: scale(1.08); }
         }
 
-        .badge-hot { background: #ff4757; color: #fff; box-shadow: 0 0 25px rgba(255, 71, 87, 0.5); }
-        .badge-new { background: #2ed573; color: #fff; box-shadow: 0 0 25px rgba(46, 213, 115, 0.4); }
+        .badge-hot { background: #ff4757; color: #fff; box-shadow: 0 0 26px rgba(255, 71, 87, 0.55); }
+        .badge-new { background: #2ed573; color: #fff; box-shadow: 0 0 26px rgba(46, 213, 115, 0.45); }
 
-        /* ===== BARRA DE NAVEGACIÓN LIQUID GLASS CON ICONOS ACTUALIZADOS ===== */
+        /* ===== BARRA DE NAVEGACIÓN ===== */
         .bottom-nav {
             position: fixed;
             bottom: 25px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(30, 30, 30, 0.8);
-            backdrop-filter: blur(16px) saturate(180%);
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            background: rgba(28, 28, 28, 0.82);
+            backdrop-filter: blur(18px) saturate(180%);
+            -webkit-backdrop-filter: blur(18px) saturate(180%);
             padding: 6px;
             border-radius: 60px;
             display: flex;
             gap: 4px;
-            border: 1px solid rgba(200, 200, 200, 0.15);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(200, 200, 200, 0.16);
+            box-shadow: 0 10px 38px rgba(0, 0, 0, 0.7);
             z-index: 1000;
             min-width: 280px;
             max-width: 90%;
@@ -430,9 +438,7 @@
             overflow: hidden;
         }
 
-        .nav-btn:active {
-            animation: clickPulse 0.3s ease;
-        }
+        .nav-btn:active { animation: clickPulse 0.3s ease; }
 
         @keyframes clickPulse {
             0% { transform: scale(1); }
@@ -442,8 +448,7 @@
         }
 
         .nav-btn svg {
-            width: 22px;
-            height: 22px;
+            width: 22px; height: 22px;
             fill: none;
             stroke: currentColor;
             stroke-width: 1.8;
@@ -453,8 +458,7 @@
         }
 
         .nav-icon-img {
-            width: 22px;
-            height: 22px;
+            width: 22px; height: 22px;
             filter: brightness(0) invert(0.7);
             opacity: 0.7;
             transition: all 0.3s ease;
@@ -470,9 +474,9 @@
         }
 
         .nav-btn:hover {
-            color: #e0e0e0;
+            color: #e5e5e5;
             transform: translateY(-3px);
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.04);
         }
 
         .nav-btn:hover .nav-icon-img {
@@ -482,55 +486,42 @@
         }
 
         .nav-btn.active {
-            background: rgba(200, 200, 200, 0.1);
+            background: rgba(200, 200, 200, 0.12);
             backdrop-filter: blur(4px);
-            color: #e0e0e0;
-            border: 1px solid rgba(200, 200, 200, 0.2);
-            box-shadow: 0 0 25px rgba(200, 200, 200, 0.05);
+            color: #e5e5e5;
+            border: 1px solid rgba(200, 200, 200, 0.22);
+            box-shadow: 0 0 28px rgba(200, 200, 200, 0.06);
             transform: translateY(-3px);
         }
 
-        .nav-btn.active .nav-icon-img {
-            opacity: 1;
-            filter: brightness(0) invert(1);
-        }
+        .nav-btn.active .nav-icon-img { opacity: 1; filter: brightness(0) invert(1); }
+        .nav-btn.active .label { color: #e5e5e5; }
 
-        .nav-btn.active .label {
-            color: #e0e0e0;
-        }
-
-        /* Animación de entrada de la barra */
         @keyframes fadeUp {
             from { opacity: 0; transform: translateX(-50%) translateY(20px); }
             to   { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
-        /* Efecto de onda (ripple) más suave */
         .nav-btn .ripple {
             position: absolute;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.12);
             transform: scale(0);
             animation: rippleAnim 0.5s linear;
             pointer-events: none;
         }
 
         @keyframes rippleAnim {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
+            to { transform: scale(4); opacity: 0; }
         }
 
-        /* ===== MODAL MEJORADO CON ANIMACIONES DE ENTRADA Y SALIDA ===== */
+        /* ===== MODAL ===== */
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.92);
-            backdrop-filter: blur(12px);
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.93);
+            backdrop-filter: blur(14px);
             z-index: 2000;
             display: none;
             align-items: center;
@@ -540,26 +531,19 @@
             transition: opacity 0.4s ease;
         }
 
-        .modal-overlay.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .modal-overlay.closing {
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-overlay.closing { opacity: 0; transition: opacity 0.4s ease; }
 
         .modal-content {
-            background: #1a1a1a;
-            border: 1px solid #333;
+            background: linear-gradient(160deg, #1e1e1e, #141414);
+            border: 1px solid #3a3a3a;
             width: 100%;
             max-width: 850px;
             max-height: 90vh;
             overflow-y: auto;
             padding: 30px 25px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+            border-radius: 22px;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.95), inset 0 1px 0 rgba(255,255,255,0.04);
             animation: modalIn 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
             display: flex;
             flex-direction: column;
@@ -569,13 +553,8 @@
             opacity: 0;
         }
 
-        .modal-overlay.active .modal-content {
-            animation: modalIn 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-        }
-
-        .modal-overlay.closing .modal-content {
-            animation: modalOut 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-        }
+        .modal-overlay.active .modal-content { animation: modalIn 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
+        .modal-overlay.closing .modal-content { animation: modalOut 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
 
         @keyframes modalIn {
             from { opacity: 0; transform: scale(0.95) translateY(30px); }
@@ -589,11 +568,10 @@
 
         .modal-close {
             position: absolute;
-            top: 15px;
-            right: 20px;
+            top: 15px; right: 20px;
             font-size: 2rem;
             cursor: pointer;
-            color: #555;
+            color: #666;
             transition: all 0.3s ease;
             background: none;
             border: none;
@@ -601,18 +579,15 @@
             z-index: 10;
         }
 
-        .modal-close:hover {
-            color: #e0e0e0;
-            transform: rotate(90deg) scale(1.2);
-        }
+        .modal-close:hover { color: #e5e5e5; transform: rotate(90deg) scale(1.2); }
 
         .modal-title {
             font-size: 2rem;
             font-weight: 700;
             margin-top: 5px;
             margin-bottom: 15px;
-            color: #e0e0e0;
-            text-shadow: 0 0 20px rgba(255,255,255,0.02);
+            color: #ececec;
+            text-shadow: 0 0 20px rgba(255,255,255,0.03);
             text-align: center;
             letter-spacing: -0.5px;
         }
@@ -620,37 +595,35 @@
         .modal-img {
             width: 100%;
             max-width: 700px;
-            border-radius: 12px;
+            border-radius: 14px;
             margin-bottom: 20px;
             object-fit: contain;
             max-height: 60vh;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+            box-shadow: 0 10px 35px rgba(0,0,0,0.7);
             transition: transform 0.4s ease;
         }
 
-        .modal-img:hover {
-            transform: scale(1.02);
-        }
+        .modal-img:hover { transform: scale(1.02); }
 
         .modal-desc {
             font-size: 1rem;
-            color: #b0b0b0;
+            color: #b5b5b5;
             margin-bottom: 20px;
-            line-height: 1.6;
+            line-height: 1.65;
             max-width: 650px;
             text-align: center;
-            background: rgba(255,255,255,0.02);
-            padding: 12px 18px;
-            border-radius: 10px;
-            border-left: 3px solid #444;
+            background: rgba(255,255,255,0.025);
+            padding: 14px 20px;
+            border-radius: 12px;
+            border-left: 3px solid #555;
         }
 
         .modal-reqs {
             font-size: 0.85rem;
-            color: #999;
+            color: #a5a5a5;
             margin-bottom: 20px;
             padding: 10px 16px;
-            background: #2a2a2a;
+            background: #262626;
             border-radius: 8px;
             border: 1px solid #444;
             white-space: pre-wrap;
@@ -677,7 +650,7 @@
             text-align: center;
             padding: 14px 20px;
             background: #2a2a2a;
-            color: #d0d0d0;
+            color: #d5d5d5;
             text-decoration: none;
             border-radius: 12px;
             font-weight: 600;
@@ -691,71 +664,58 @@
         }
 
         .modal-link-btn:hover {
-            background: #444;
+            background: #3d3d3d;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-            border-color: #666;
+            box-shadow: 0 6px 22px rgba(0,0,0,0.5);
+            border-color: #777;
         }
 
-        .modal-link-btn.primary {
-            background: #888;
-            color: #111;
-            border-color: #888;
-        }
+        .modal-link-btn.primary { background: #999; color: #111; border-color: #999; }
+        .modal-link-btn.primary:hover { background: #bbb; }
 
-        .modal-link-btn.primary:hover {
-            background: #aaa;
-        }
+        .flag-icon { font-size: 1.2rem; }
 
-        .flag-icon {
-            font-size: 1.2rem;
-        }
-
-        /* --- FORMULARIO DE PETICIONES --- */
+        /* --- PETICIONES --- */
         #requests-container {
             display: none;
             margin: 20px auto;
             max-width: 500px;
-            padding: 24px;
-            background: rgba(25, 25, 25, 0.85);
+            padding: 26px;
+            background: linear-gradient(160deg, rgba(28,28,28,0.9), rgba(18,18,18,0.9));
             backdrop-filter: blur(8px);
-            border-radius: 20px;
-            border: 1px solid rgba(200, 200, 200, 0.15);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            border-radius: 22px;
+            border: 1px solid rgba(200, 200, 200, 0.16);
+            box-shadow: 0 12px 45px rgba(0,0,0,0.7);
             animation: fadeUp 0.4s ease;
         }
 
         #requests-container.active { display: block; }
-        #requests-container h3 { color: #d0d0d0; margin-bottom: 15px; font-weight: 400; letter-spacing: 1px; }
+        #requests-container h3 { color: #d5d5d5; margin-bottom: 15px; font-weight: 400; letter-spacing: 1px; }
         #requests-container textarea {
-            width: 100%; padding: 14px; background: rgba(255, 255, 255, 0.03);
+            width: 100%; padding: 14px; background: rgba(255, 255, 255, 0.04);
             border: 1px solid #444; border-radius: 12px;
-            color: #d0d0d0; font-size: 1rem; resize: vertical; min-height: 100px;
+            color: #d5d5d5; font-size: 1rem; resize: vertical; min-height: 100px;
             transition: border-color 0.3s; font-family: inherit;
         }
         #requests-container textarea:focus {
-            outline: none; border-color: #888; background: rgba(255, 255, 255, 0.05);
+            outline: none; border-color: #999; background: rgba(255, 255, 255, 0.06);
         }
         #requests-container textarea::placeholder { color: #777; }
         #requests-container .submit-btn {
-            margin-top: 12px; width: 100%; padding: 12px; background: #888;
+            margin-top: 12px; width: 100%; padding: 12px; background: #999;
             border: none; border-radius: 12px; color: #111; font-weight: 700;
             font-size: 1rem; cursor: pointer; transition: all 0.3s ease;
         }
-        #requests-container .submit-btn:hover {
-            background: #aaa; transform: scale(1.03);
-        }
+        #requests-container .submit-btn:hover { background: #bbb; transform: scale(1.03); }
         #request-status { margin-top: 10px; font-size: 0.9rem; color: #aaa; text-align: center; }
 
-        /* --- FOOTER SIN TEMÁTICA PARAGUAYA --- */
         .footer {
-            text-align: center; margin-top: 50px; padding: 20px;
+            text-align: center; margin-top: 50px; padding: 22px;
             color: #777; font-size: 0.9rem; letter-spacing: 0.5px;
             border-top: 1px solid #333;
             animation: fadeUp 1s ease;
         }
 
-        /* ===== ANIMACIONES ADICIONALES ===== */
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-5px); }
@@ -765,15 +725,12 @@
             animation: pulseBadge 2.5s ease-in-out infinite, float 4s ease-in-out infinite;
         }
 
-        /* Efecto de brillo sutil en las tarjetas al hacer hover */
         .card:hover .card-img-wrapper::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.05), transparent 70%);
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.06), transparent 70%);
             pointer-events: none;
             animation: shimmer 1s ease-out;
         }
@@ -825,9 +782,7 @@
         </div>
     </div>
 
-    <!-- ===== BARRA DE NAVEGACIÓN LIQUID GLASS CON ICONOS ACTUALIZADOS ===== -->
     <div class="bottom-nav">
-        <!-- Botón 1: Todo -->
         <button class="nav-btn active" data-filter="all">
             <svg viewBox="0 0 24 24">
                 <rect x="3" y="3" width="7" height="7" rx="1"></rect>
@@ -838,19 +793,16 @@
             <span class="label">Todo</span>
         </button>
 
-        <!-- Botón 2: Juegos (con imagen) -->
         <button class="nav-btn" data-filter="games">
             <img src="https://icones.pro/wp-content/uploads/2022/07/icone-jeux-et-jeux-video-gris.png" alt="Juegos" class="nav-icon-img">
             <span class="label">Juegos</span>
         </button>
 
-        <!-- Botón 3: Películas (con imagen) -->
         <button class="nav-btn" data-filter="movies">
             <img src="https://images.icon-icons.com/3250/PNG/512/movies_and_tv_filled_icon_202065.png" alt="Películas" class="nav-icon-img">
             <span class="label">películas</span>
         </button>
 
-        <!-- Botón 4: APP -->
         <button class="nav-btn" data-filter="app">
             <svg viewBox="0 0 24 24">
                 <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
@@ -859,7 +811,6 @@
             <span class="label">APP</span>
         </button>
 
-        <!-- Botón 5: Peticiones -->
         <button class="nav-btn" data-filter="requests">
             <svg viewBox="0 0 24 24">
                 <path d="M21 11.5C21 16.194 16.194 20 12 20c-1.8 0-3.5-.5-5-1.5l-4 1 1-4c-1-1.5-1.5-3.2-1.5-5C2.5 6.806 7.806 2 12 2s9.5 4.806 9.5 9.5z"></path>
@@ -883,7 +834,7 @@
     </div>
 
     <script>
-        // ==================== DATOS ORIGINALES + NUEVOS ====================
+        // ==================== DATOS ====================
 
         const fromSeasons = [
             { season: 1, title: 'From (T1)', poster: 'https://es.web.img3.acsta.net/img/7f/5b/7f5b275c23162a85b46befa8bba36176.jpg', links: { mex: 'https://latino.solo-latino.com/es/detail/drama/v3HBgSbGMGBfDZO6EzXza-From-Season-1', usa: 'https://ww1.123flmsfree.com/es/detail/drama/nRRZcrKnaBBl0le9LW69P-From' }, desc: 'Temporada 1 de la serie de terror y misterio.', reqs: ["1080p", "Lat/Eng", "Serie", "T1"] },
@@ -893,30 +844,109 @@
         ];
 
         const movies = [
-            // ========== NUEVA SERIE AGREGADA (con etiqueta NEW) ==========
+            // ========== 6 NUEVAS PELÍCULAS (con etiqueta NEW) ==========
             {
-                id: 'thementalist_s1',
-                title: 'El Mentalista (T1)',
-                poster: 'https://n.uguu.se/MsulCJQg.jpeg',
-                screen: 'https://pics.filmaffinity.com/El_mentalista_Serie_de_TV-184904864-large.jpg',
-                links: { mex: 'https://es.cuevana4br.com/es/detail/drama/TuPRcG1aDXlnKO2vn9M67-The-Mentalist-Season-1', usa: null },
-                desc: 'Patrick Jane, un ex falso médium, trabaja como consultor para el CBI (Oficina de Investigación de California) utilizando su increíble capacidad de observación y su aguda inteligencia para resolver casos. Aunque su don para leer a las personas y su carisma lo convierten en un activo invaluable, su pasado trágico —la muerte de su esposa e hija a manos del asesino en serie Red John— lo atormenta y lo impulsa a buscar venganza. Esta primera temporada presenta casos intrigantes mientras Jane y el equipo del CBI, liderado por la agente Teresa Lisbon, se enfrentan a criminales complejos y a sus propias tensiones internas.',
-                reqs: ["1080p", "Latino", "Serie", "T1"],
+                id: 'enfrentadosmarfil',
+                title: 'Enfrentados Marfil',
+                poster: 'https://i.postimg.cc/s2SHbGSL/77d05469ada294bbdecd91c4ea6497633085e93d546c20e62874a97352f626e3.jpg',
+                screen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxJFjnZ0bIO-1ivHKiPj7jkyJfmxdlwj7OCCXnbHD-eNnvsTya_TUPcO8&s=10',
+                links: { mex: 'https://ver.123pelicula.com/es/detail/movie/tz0PbP6mXohawaB6jQu2C-Drawn-Together', usa: null },
+                desc: 'Enfrentados Marfil (Drawn Together) es una historia intensa donde los lazos familiares y la traición se entrelazan en un conflicto inevitable. Cuando viejas rencillas salen a la luz, los protagonistas deberán enfrentarse a sus propios demonios y decidir hasta dónde están dispuestos a llegar para proteger lo que más quieren.',
+                reqs: ["1080p", "Latino", "Acción", "2025"],
+                showNewBadge: true,
+                type: 'movie',
+                multiVersion: true,
+                noEnglish: true
+            },
+            {
+                id: 'coyotevsacme',
+                title: 'Coyote vs Acme',
+                poster: 'https://i.postimg.cc/HsqQRZ2k/e2894640-fce9-4134-9436-e3f510dca8cb.jpg',
+                screen: 'https://s.yimg.com/lo/mysterio/api/d2fd5c2a24fb1587bba98fb877f3fa82da025ccd492db46a88943c740d327ace/lightyear_networkapi/resizefill_w976%3Bquality_80%3Bformat_webp/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fvariety.com%2F9bde10208ddae28f8c7b4c66fb9e29b6',
+                links: { mex: 'https://www3.dramasfree.com/es/detail/movie/bl8biK80WV1HctHblK1uA-Coyote-vs-ACME', usa: null },
+                desc: 'Después de décadas persiguiendo al Correcaminos sin éxito, Wile E. Coyote decide demandar a la empresa ACME por todos los productos defectuosos que le han arruinado sus planes. Una comedia animada llena de humor, ingenio y un juicio que cambiará para siempre el mundo de los dibujos animados.',
+                reqs: ["1080p", "Latino", "Animación", "2025"],
+                showNewBadge: true,
+                type: 'movie',
+                multiVersion: true,
+                noEnglish: true
+            },
+            {
+                id: 'exit8',
+                title: 'Exit 8',
+                poster: 'https://i.postimg.cc/KzjkRBNp/ffeba836-3343-4501-bbaf-860920e6a63f.jpg',
+                screen: 'https://i.postimg.cc/x1QPqpbc/8a72f01b-03b6-4bc7-9739-f0842db1ee82.jpg',
+                links: { mex: 'https://ww1.123flmsfree.com/es/detail/movie/lRYnfpCrHHEeooKokIU5E-Exit-8', usa: null },
+                desc: 'Atrapado en un bucle infinito dentro del metro de Tokio, un hombre debe encontrar la salida identificando las anomalías que aparecen en cada pasillo. Un thriller psicológico basado en el aclamado videojuego que juega con la percepción y el miedo a lo desconocido.',
+                reqs: ["1080p", "Latino", "Terror", "2025"],
+                showNewBadge: true,
+                type: 'movie',
+                multiVersion: true,
+                noEnglish: true
+            },
+            {
+                id: 'vertigo2',
+                title: 'Vértigo 2: Punto Muerto',
+                poster: 'https://i.postimg.cc/k4SVQ90G/733c26e1-79bc-42b8-a5aa-49729d8f7c72.jpg',
+                screen: 'https://i.postimg.cc/qM4t3PjN/78ca9a01-3377-46bf-8612-6f4c94436614.jpg',
+                links: { mex: 'https://play.cuevana19.com/es/detail/movie/HTvAMKs139kEwxctTzUBM-Fall-2', usa: null },
+                desc: 'La secuela de la angustiosa "Fall" lleva a un nuevo grupo de escaladores a enfrentarse a un desafío aún más extremo. Atrapados en una estructura a kilómetros de altura, deberán superar sus miedos y trabajar en equipo para sobrevivir. Tensión, vértigo y adrenalina en estado puro.',
+                reqs: ["1080p", "Latino", "Suspenso", "2025"],
+                showNewBadge: true,
+                type: 'movie',
+                multiVersion: true,
+                noEnglish: true
+            },
+            {
+                id: 'guerradelossultimos',
+                title: 'La Guerra de los Últimos',
+                poster: 'https://i.postimg.cc/yY28T2TQ/PVQIQFUR55BCLORUTURPW5UPJI.jpg',
+                screen: 'https://www.lanacion.com.ar/resizer/v2/la-guerra-de-los-ultimos-una-distopia-MB4Y62JBL5C5JCWBMB3ABAVIWI.JPG?auth=4e96b24684875fda17cea6a3da3af5a59e77a2e62e00adb552e96c36c14c27d7&width=1200&height=800&quality=70&smart=true',
+                links: { mex: 'https://ww1.123flmsfree.com/es/detail/movie/7cGJ0MtsEfHpC0XuqY0iw-The-Dog-Stars', usa: null },
+                desc: 'En un futuro post-apocalíptico, un piloto solitario sobrevuela un mundo devastado intentando sobrevivir tras el colapso de la civilización. Una historia distópica sobre la soledad, la esperanza y la lucha por mantenerse humano cuando todo lo demás se ha perdido.',
+                reqs: ["1080p", "Latino", "Ciencia Ficción", "2026"],
+                showNewBadge: true,
+                type: 'movie',
+                multiVersion: true,
+                noEnglish: true
+            },
+            {
+                id: 'nochedeldemonio',
+                title: 'La Noche del Demonio',
+                poster: 'https://i.postimg.cc/bvVysMdt/c3c91ae4-2187-4c38-b7ff-61c35db239aa.jpg',
+                screen: 'https://laestatuilla.com/wp-content/uploads/2026/08/la-noche-del-demonio-estan-entre-nosotros.jpg',
+                links: { mex: 'https://es.cuevana4br.com/es/detail/movie/rzfXIC9RfHkQY2e2rNOL2-Insidious-Out-of-the-Further', usa: null },
+                desc: 'El terror regresa con una nueva entrega de la aclamada saga Insidious. Una familia deberá enfrentarse a fuerzas sobrenaturales que acechan desde el Más Allá, en una noche donde los demonios están más cerca que nunca. Terror psicológico y sustos garantizados.',
+                reqs: ["1080p", "Latino", "Terror", "2025"],
                 showNewBadge: true,
                 type: 'movie',
                 multiVersion: true,
                 noEnglish: true
             },
 
-            // ========== LAS DEMÁS PELÍCULAS/SERIES (sin etiqueta New) ==========
-            // Spider-Man (YA NO ES NUEVO)
+            // ========== EL MENTALISTA (SIN NEW, con portada actualizada) ==========
+            {
+                id: 'thementalist_s1',
+                title: 'El Mentalista (T1)',
+                poster: 'https://i.postimg.cc/sgwyN8PF/MV5BMTQ5OTgz-OTcz-M15BMl5Ban-Bn-Xk-Ft-ZTcw-MDM2OTY4MQ-V1.jpg',
+                screen: 'https://pics.filmaffinity.com/El_mentalista_Serie_de_TV-184904864-large.jpg',
+                links: { mex: 'https://es.cuevana4br.com/es/detail/drama/TuPRcG1aDXlnKO2vn9M67-The-Mentalist-Season-1', usa: null },
+                desc: 'Patrick Jane, un ex falso médium, trabaja como consultor para el CBI (Oficina de Investigación de California) utilizando su increíble capacidad de observación y su aguda inteligencia para resolver casos. Aunque su don para leer a las personas y su carisma lo convierten en un activo invaluable, su pasado trágico —la muerte de su esposa e hija a manos del asesino en serie Red John— lo atormenta y lo impulsa a buscar venganza. Esta primera temporada presenta casos intrigantes mientras Jane y el equipo del CBI, liderado por la agente Teresa Lisbon, se enfrentan a criminales complejos y a sus propias tensiones internas.',
+                reqs: ["1080p", "Latino", "Serie", "T1"],
+                showNewBadge: false,
+                type: 'movie',
+                multiVersion: true,
+                noEnglish: true
+            },
+
+            // Spider-Man
             {
                 id: 'spiderman_nowayhome',
                 title: 'Spider-Man: Sin camino a casa',
                 poster: 'https://www.ecartelera.com/images/noticias/fotos/70100/70190/1.jpg',
                 screen: 'https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/019b29a9-3cf3-7339-ad8e-513baa325095/compose?format=webp&width=2560',
                 links: { mex: 'https://play.cuevana.life/es/detail/movie/mMtxCySrAv62Pou8OY32l-Spider-Man-No-Way-Home', usa: null },
-                desc: 'Peter Parker, desesperado por la revelación de su identidad secreta, pide ayuda al Doctor Strange para restaurar su anonimato. Pero un hechizo sale mal y abre el multiverso, trayendo a villanos de otras realidades que pondrán a prueba al joven héroe. Una aventura épica donde Spider-Man enfrenta las consecuencias de sus actos y descubre lo que realmente significa ser un héroe.',
+                desc: 'Peter Parker, desesperado por la revelación de su identidad secreta, pide ayuda al Doctor Strange para restaurar su anonimato. Pero un hechizo sale mal y abre el multiverso, trayendo a villanos de otras realidades que pondrán a prueba al joven héroe.',
                 reqs: ["4K", "Latino", "Acción", "2021"],
                 showNewBadge: false,
                 type: 'movie',
@@ -930,7 +960,7 @@
                 poster: 'https://m.media-amazon.com/images/M/MV5BN2FkMTRkNTUtYTI0NC00ZjI4LWI5MzUtMDFmOGY0NmU2OGY1XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
                 screen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxz3iNjPh41-7wtHfU8XLhqeomCbYwMkoKZ3boUGlChRz6R95FKRcmNRDk&s=10',
                 links: { mex: 'https://ww20.321moviesfree.com/es/detail/movie/GYCE7CN7NaKvd1HLQkALS-Shrek-1', usa: null },
-                desc: 'Shrek, un ogro solitario y gruñón, ve su tranquilidad invadida cuando un montón de personajes de cuentos de hadas son desterrados a su pantano. Para recuperar su hogar, hace un trato con el malvado Lord Farquaad: rescatar a la princesa Fiona a cambio de su pantano. Pero Fiona guarda un secreto que cambiará su vida para siempre. Una divertida y conmovedora aventura que parodia los cuentos de hadas tradicionales.',
+                desc: 'Shrek, un ogro solitario y gruñón, ve su tranquilidad invadida cuando un montón de personajes de cuentos de hadas son desterrados a su pantano. Para recuperar su hogar, hace un trato con el malvado Lord Farquaad: rescatar a la princesa Fiona a cambio de su pantano.',
                 reqs: ["1080p", "Latino", "Animación", "2001"],
                 showNewBadge: false,
                 type: 'movie',
@@ -944,21 +974,21 @@
                 poster: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRn04I4S1S6RZy3Mt5Z6lD1He5pgHLSKPmv2tt8Qrc4kAaAjU2UeAuzu638&s=10',
                 screen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHtn8Je06AiS4OrFIZKteskLn3GB_BgKqy2MwIBNiTToNISmZEu79N-KTA&s=10',
                 links: { mex: 'https://video.playspelis.com/es/detail/movie/tL0vvE124qUEYQiXJP6BO-Shrek-2', usa: 'https://www3.dramasfree.com/es/detail/movie/J7fnJCf9SEgvL5ZdRl112-Shrek-2' },
-                desc: 'Shrek y Fiona regresan de su luna de miel y reciben una invitación del reino de Muy Muy Lejano, donde los padres de Fiona, el Rey Harold y la Reina Lilian, esperan conocer al nuevo esposo de su hija. Pero el Rey no está contento con que su hija se haya casado con un ogro y contrata al famoso Cazador de Ogros, el Gato con Botas, para deshacerse de Shrek.',
+                desc: 'Shrek y Fiona regresan de su luna de miel y reciben una invitación del reino de Muy Muy Lejano, donde los padres de Fiona esperan conocer al nuevo esposo de su hija. Pero el Rey no está contento con que su hija se haya casado con un ogro.',
                 reqs: ["1080p", "Lat/Eng", "Animación", "2004"],
                 showNewBadge: false,
                 type: 'movie',
                 multiVersion: true,
                 noEnglish: false
             },
-            // Shrek 3 (portada actualizada)
+            // Shrek 3
             {
                 id: 'shrek3',
                 title: 'Shrek 3',
                 poster: 'https://m.media-amazon.com/images/S/pv-target-images/5b38695d4ad8fd3f6d59c9dec6e58dcce5113dbe58ba079a5c6034104fad7a84.jpg',
                 screen: 'https://images.mubicdn.net/images/film/8790/cache-11430-1745489624/image-w1280.jpg?size=800x',
                 links: { mex: 'https://www3.dramasfree.com/es/detail/movie/dhKJjyRSBB8OsfOMBDx8M-Shrek-the-Third', usa: null },
-                desc: 'El Rey Harold está enfermo y Shrek debe asumir el trono de Muy Muy Lejano. Pero él no quiere ser rey, así que junto con Asno y el Gato con Botas emprende un viaje para encontrar al legítimo heredero: Arturo, un adolescente que no tiene idea de que es el próximo rey. Mientras tanto, el malvado Lord Farquaad y otros villanos planean tomar el control.',
+                desc: 'El Rey Harold está enfermo y Shrek debe asumir el trono de Muy Muy Lejano. Pero él no quiere ser rey, así que junto con Asno y el Gato con Botas emprende un viaje para encontrar al legítimo heredero: Arturo.',
                 reqs: ["1080p", "Latino", "Animación", "2007"],
                 showNewBadge: false,
                 type: 'movie',
@@ -972,21 +1002,21 @@
                 poster: 'https://m.media-amazon.com/images/M/MV5BNjQ3YWM1ZWUtNzAxNy00ZDE1LWExNWYtNmZiZjk0ZWZkNTM4XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
                 screen: 'https://cloudfront-us-east-1.images.arcpublishing.com/abccolor/NNK5JZWQF5B4XOWMNR6W6N2IVA.jpg',
                 links: { mex: 'https://flixlat.com/es/detail/movie/KbBstwx247XkFI9FFX1Ws-Shrek-4', usa: 'https://play.cuevana.life/es/detail/movie/V2hAjlrTyUKdLY1PKbGah-Shrek-Forever-After' },
-                desc: 'Shrek está harto de su vida familiar y firma un contrato con el duende Rumpelstiltskin para que le conceda un día como un ogro salvaje de nuevo. Pero el trato sale mal y Shrek se encuentra en una realidad alternativa donde nunca existió, y debe encontrar la manera de romper el hechizo y recuperar su vida original.',
+                desc: 'Shrek está harto de su vida familiar y firma un contrato con el duende Rumpelstiltskin para que le conceda un día como un ogro salvaje de nuevo. Pero el trato sale mal y Shrek se encuentra en una realidad alternativa.',
                 reqs: ["1080p", "Lat/Eng", "Animación", "2010"],
                 showNewBadge: false,
                 type: 'movie',
                 multiVersion: true,
                 noEnglish: false
             },
-            // Harry Potter 1 (portada actualizada)
+            // Harry Potter 1
             {
                 id: 'harry1',
                 title: 'Harry Potter y la piedra filosofal',
                 poster: 'https://play-lh.googleusercontent.com/AX7s9Y3EyhUCRwp_OUymBZhno9CFNl_h9KfLj64bHzQ1wBT-1HbI27ovhkL9RFsq0RRX52vAs7oALlLf8RU',
                 screen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9rA-suU-lVVA6nEeUpTavdbe1bCnvhvxlFTa1BeGStB-90urewHIvMExo&s=10',
                 links: { mex: 'https://es.cuevana4br.com/es/detail/movie/MnPWUfrY9W6hT56Qlqy4P-Harry-Potter-and-the-Sorcerers-Stone', usa: 'https://peliculaplay.com/es/detail/movie/c8JMIdiUaaD8iexKGncPS-Harry-Potter-and-the-Sorcerers-Stone' },
-                desc: 'Harry Potter, un huérfano que vive con sus crueles tíos, descubre en su undécimo cumpleaños que es un mago y que ha sido aceptado en el Colegio Hogwarts de Magia y Hechicería. Allí hará amigos, aprenderá magia y se enfrentará a un misterioso peligro relacionado con una piedra filosofal que otorga la inmortalidad.',
+                desc: 'Harry Potter, un huérfano que vive con sus crueles tíos, descubre en su undécimo cumpleaños que es un mago y que ha sido aceptado en el Colegio Hogwarts de Magia y Hechicería.',
                 reqs: ["1080p", "Lat/Eng", "Fantasía", "2001"],
                 showNewBadge: false,
                 type: 'movie',
@@ -1000,7 +1030,7 @@
                 poster: 'https://m.media-amazon.com/images/M/MV5BMDE2ZjlmZGItODBiZS00NTVmLWI4YjItNzZmN2ZiMjg3NzI4XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
                 screen: 'https://m.media-amazon.com/images/S/pv-target-images/b283611632325363f0860e8ff884645765177968e6c1908df707048d0c31b588._SX1080_FMjpg_.jpg',
                 links: { mex: 'https://video.playspelis.com/es/detail/movie/7IGD9nHAxejzYstx8oauA-Harry-Potter-and-the-Chamber-of-Secrets', usa: 'https://play.cuevana.life/es/detail/movie/0dQbe7KK7cluKhxlBXaLI-Harry-Potter-and-the-Chamber-of-Secrets' },
-                desc: 'Harry regresa a Hogwarts para su segundo año y descubre que la Cámara de los Secretos ha sido abierta, liberando una criatura que petrifica a los estudiantes. Con la ayuda de sus amigos Ron y Hermione, Harry debe encontrar la cámara y enfrentar al heredero de Slytherin antes de que el colegio sea cerrado.',
+                desc: 'Harry regresa a Hogwarts para su segundo año y descubre que la Cámara de los Secretos ha sido abierta, liberando una criatura que petrifica a los estudiantes.',
                 reqs: ["1080p", "Lat/Eng", "Fantasía", "2002"],
                 showNewBadge: false,
                 type: 'movie',
@@ -1014,21 +1044,21 @@
                 poster: 'https://m.media-amazon.com/images/M/MV5BMTY4NTIwODg0N15BMl5BanBnXkFtZTcwOTc0MjEzMw@@._V1_FMjpg_UX1000_.jpg',
                 screen: 'https://megustaelcine.com/wp-content/uploads/2024/06/Harry-Potter-3-1.jpg',
                 links: { mex: 'https://play.cuevana.life/es/detail/movie/Lx07zhenmquqkwnRIaX43-Harry-Potter-and-the-Prisoner-of-Azkaban', usa: 'https://ww20.321moviesfree.com/es/detail/movie/Q1VyGg3x2uCXLdMmmEcIA-Harry-Potter-and-the-Prisoner-of-Azkaban' },
-                desc: 'En su tercer año, Harry descubre que Sirius Black, un peligroso prisionero fugado de Azkaban, está tras él. Pero pronto descubre que Sirius no es quien parece ser y que su pasado está más conectado con Harry de lo que imaginaba. Con la ayuda de un nuevo profesor, Remus Lupin, Harry aprenderá a enfrentar sus miedos.',
+                desc: 'En su tercer año, Harry descubre que Sirius Black, un peligroso prisionero fugado de Azkaban, está tras él.',
                 reqs: ["1080p", "Lat/Eng", "Fantasía", "2004"],
                 showNewBadge: false,
                 type: 'movie',
                 multiVersion: true,
                 noEnglish: false
             },
-            // Harry Potter 4 (portada actualizada)
+            // Harry Potter 4
             {
                 id: 'harry4',
                 title: 'Harry Potter y el cáliz de fuego',
                 poster: 'https://es.web.img2.acsta.net/pictures/14/04/30/11/29/268191.jpg',
                 screen: 'https://hips.hearstapps.com/hmg-prod/images/dumbledore-harry-potter-el-caliz-de-fuego-650b3bca70df4.jpg?crop=0.75xw:1xh;center,top&resize=1200:*',
                 links: { mex: 'https://es.cuevana4br.com/es/detail/movie/5PSbbDMj2q0fMrUFqUl7h-Harry-Potter-and-the-Goblet-of-Fire', usa: 'https://video.playspelis.com/es/detail/movie/OmsAaK53c8PFYtc4aIe2J-Harry-Potter-and-the-Goblet-of-Fire' },
-                desc: 'Harry es seleccionado para participar en el Torneo de los Tres Magos, una peligrosa competencia entre las tres escuelas de magia más importantes de Europa. Pero la competición es más siniestra de lo que parece, ya que alguien ha planeado que Harry participe para llevarlo a una trampa mortal.',
+                desc: 'Harry es seleccionado para participar en el Torneo de los Tres Magos, una peligrosa competencia entre las tres escuelas de magia más importantes de Europa.',
                 reqs: ["1080p", "Lat/Eng", "Fantasía", "2005"],
                 showNewBadge: false,
                 type: 'movie',
@@ -1042,7 +1072,7 @@
                 poster: 'https://m.media-amazon.com/images/M/MV5BYWJmM2M1YzItMjY1Ni00YzRmLTg5YWYtNDFmNTJjNzQ0ODkyXkEyXkFqcGc@._V1_.jpg',
                 screen: 'https://imagenes.20minutos.es/files/image_640_auto/uploads/imagenes/2022/07/16/harry-potter-y-la-orden-del-fenix-2007-11.jpeg',
                 links: { mex: 'https://www3.dramasfree.com/es/detail/movie/GH3Uf9dwLwcPBYa0UVDrt-Harry-Potter-and-the-Order-of-the-Phoenix', usa: 'https://ver.123pelicula.com/es/detail/movie/XIx88XJuKyoU7PM6R4et4-Harry-Potter-and-the-Order-of-the-Phoenix' },
-                desc: 'Harry se enfrenta a un nuevo año en Hogwarts mientras el Ministerio de Magia se niega a creer que Lord Voldemort ha regresado. Con la ayuda de sus amigos y la Orden del Fénix, Harry deberá luchar contra la opresión del Ministerio y entrenar a sus compañeros para la batalla que se avecina.',
+                desc: 'Harry se enfrenta a un nuevo año en Hogwarts mientras el Ministerio de Magia se niega a creer que Lord Voldemort ha regresado.',
                 reqs: ["1080p", "Lat/Eng", "Fantasía", "2007"],
                 showNewBadge: false,
                 type: 'movie',
@@ -1056,7 +1086,7 @@
                 poster: 'https://m.media-amazon.com/images/M/MV5BMGMyYzQ0ZTgtYmM0NS00NzY3LWI2ODAtNTEyNjc3NTNmMWJkXkEyXkFqcGc@._V1_.jpg',
                 screen: 'https://occ-0-8407-114.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABTynjP3yLojCjCLdbcmb-L_3MFug8kY73RCyrZlatkI44N1d3com7I7TDjqb8hwHMcyWpJg4gSSGyaH6XISTORjr8lmgg3TVHYkJ.jpg?r=4a8',
                 links: { mex: 'https://ver.123pelicula.com/es/detail/movie/SJfkmmdAfMXm35sriguDA-Harry-Potter-and-the-Half-Blood-Prince', usa: 'https://play.cuevana.life/es/detail/movie/VLekybiM5kJtI49Q1hhQ1-Harry-Potter-and-the-Half-Blood-Prince' },
-                desc: 'En su sexto año, Harry descubre un antiguo libro de pociones que perteneció al misterioso "Príncipe Mestizo". Con la ayuda de Dumbledore, Harry explora los recuerdos de Voldemort para descubrir sus debilidades, mientras la amenaza del Señor Oscuro se intensifica.',
+                desc: 'En su sexto año, Harry descubre un antiguo libro de pociones que perteneció al misterioso "Príncipe Mestizo".',
                 reqs: ["1080p", "Lat/Eng", "Fantasía", "2009"],
                 showNewBadge: false,
                 type: 'movie',
@@ -1070,7 +1100,7 @@
                 poster: 'https://es.web.img2.acsta.net/medias/nmedia/18/82/10/76/19599753.jpg',
                 screen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTarofPW-eFi_uhvVGMLIaF34GDHRfXeKbaw1z64mGZc5sR7LwpYfYaaNA&s=10',
                 links: { mex: 'https://play.cuevana.life/es/detail/movie/UCV40uuETMLjTemd6EAkj-Harry-Potter-and-the-Deathly-Hallows-Part-1', usa: 'https://ver.123pelicula.com/es/detail/movie/4PsYjzNuNkHVbvdhnI8in-Harry-Potter-and-the-Deathly-Hallows-Part-1' },
-                desc: 'Harry, Ron y Hermione abandonan Hogwarts para buscar y destruir los Horrocruxes de Voldemort. En su peligroso viaje, descubren la existencia de las Reliquias de la Muerte y luchan por sobrevivir mientras el mundo mágico cae bajo el control del Señor Oscuro.',
+                desc: 'Harry, Ron y Hermione abandonan Hogwarts para buscar y destruir los Horrocruxes de Voldemort.',
                 reqs: ["1080p", "Lat/Eng", "Fantasía", "2010"],
                 showNewBadge: false,
                 type: 'movie',
@@ -1084,7 +1114,7 @@
                 poster: 'https://m.media-amazon.com/images/M/MV5BNDgxOTEyYzktOTg1NC00OWZmLWEzOTAtZTRhZGRkZTQzYWE5XkEyXkFqcGc@._V1_.jpg',
                 screen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMvO0iGLNMgAVdk5NztngjSRzCicsXuu1U_PTr5YKyNSkCJPSPlkyholA&s=10',
                 links: { mex: 'https://es.cuevana4br.com/es/detail/movie/PH8TgYolOk8zn1gvDTllG-Harry-Potter-and-the-Deathly-Hallows-Part-2', usa: 'https://www3.dramasfree.com/es/detail/movie/N8ouk4YIGNZ6DlZq5Y8kc-Harry-Potter-and-the-Deathly-Hallows-Part-2' },
-                desc: 'La batalla final por Hogwarts comienza. Harry debe enfrentarse a Voldemort en una última confrontación mientras intenta destruir los Horrocruxes restantes. El destino del mundo mágico depende del resultado de esta épica batalla.',
+                desc: 'La batalla final por Hogwarts comienza. Harry debe enfrentarse a Voldemort en una última confrontación.',
                 reqs: ["1080p", "Lat/Eng", "Fantasía", "2011"],
                 showNewBadge: false,
                 type: 'movie',
@@ -1098,7 +1128,7 @@
                 poster: 'https://m.media-amazon.com/images/S/pv-target-images/34b2d39ed55f6df09da8871919da835dba6e86d68af01079ab75635836f00200.jpg',
                 screen: 'https://images.mubicdn.net/images/film/37096/cache-26971-1745490171/image-w1280.jpg?size=800x',
                 links: { mex: 'https://www3.dramasfree.com/es/detail/movie/6AWoQRYo5hNh5YsCGoCym-White-Chicks', usa: 'https://play.cuevana.life/es/detail/movie/JnrGwP4UdgulNjymq3Bo2-White-Chicks' },
-                desc: 'Dos agentes del FBI, Marcus y Kevin, se disfrazan de dos hermanas rubias y adineradas para protegerlas de un secuestro. Pero su misión se complica cuando deben mantener el disfraz mientras investigan un caso de secuestro y se enfrentan a situaciones cómicas y peligrosas.',
+                desc: 'Dos agentes del FBI, Marcus y Kevin, se disfrazan de dos hermanas rubias y adineradas para protegerlas de un secuestro.',
                 reqs: ["1080p", "Lat/Eng", "Comedia", "2004"],
                 showNewBadge: false,
                 type: 'movie',
@@ -1112,7 +1142,7 @@
                 poster: 'https://m.media-amazon.com/images/M/MV5BMWY0NWE0ZjUtNjRlOS00ZDViLTgxNTQtMGMwN2FhNDY1YTg2XkEyXkFqcGc@._V1_.jpg',
                 screen: 'https://www.abc.com.py/resizer/v2/https%3A%2F%2Farc-anglerfish-arc2-prod-abccolor.s3.amazonaws.com%2Fpublic%2FXVKTAPPJENH7ZLMGAFBSH2A5YU.jpg?auth=92dfc7cafd167c03f77e3fc3d1e9288d34c55199e23d7739628ccd933685194a&width=1920&smart=true',
                 links: { mex: 'https://ver.123pelicula.com/es/detail/movie/JTvoQuLUeUj46kaAYwgcJ-King-Kong', usa: null },
-                desc: 'Un grupo de exploradores liderados por el director de cine Carl Denham viaja a una isla misteriosa donde encuentran a King Kong, un gigantesco gorila que se enamora de la actriz Ann Darrow. Kong es capturado y llevado a Nueva York, donde debe enfrentarse a la civilización moderna.',
+                desc: 'Un grupo de exploradores liderados por el director de cine Carl Denham viaja a una isla misteriosa donde encuentran a King Kong.',
                 reqs: ["1080p", "Latino", "Aventura", "2005"],
                 showNewBadge: false,
                 type: 'movie',
@@ -1126,161 +1156,168 @@
                 poster: 'https://m.media-amazon.com/images/M/MV5BMTQ1OTQ2Y2UtMzllNS00ODFiLWFkNGItNGRjOWRlMjIwNTRlXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
                 screen: 'https://cnbl-cdn.bamgrid.com/assets/8ca59ca1aa1cd2d7e9d6d6b4fae341a75076ae2fa941b5ee8375ddbb46e258db/original',
                 links: { mex: 'https://play.cuevana.life/es/detail/movie/dGWohgBn4Hm9pf9yyOcVc-Moana', usa: null },
-                desc: 'Adaptación en acción real de la historia de Moana, una valiente joven que navega por el océano para salvar a su aldea. Acompañada por el semidiós Maui, deberá devolver el corazón de Te Fiti y restaurar el equilibrio de la naturaleza.',
+                desc: 'Adaptación en acción real de la historia de Moana, una valiente joven que navega por el océano para salvar a su aldea.',
                 reqs: ["1080p", "Latino", "Aventura", "2026"],
                 showNewBadge: false,
                 type: 'movie',
                 multiVersion: true,
                 noEnglish: true
             },
-            // Godzilla vs Kong (portada actualizada)
+            // Godzilla vs Kong
             {
                 id: 'godzilla_vs_kong',
                 title: 'Godzilla vs Kong',
                 poster: 'https://chathamcommunique.com/wp-content/uploads/2021/04/dedtzt7-90a09188-c61a-418e-9f16-8e05244c7051.png',
                 screen: 'https://i.blogs.es/f7a706/godzilla-vs-kong/1366_2000.jpg',
                 links: { mex: 'https://ww1.123flmsfree.com/es/detail/movie/r2C3s7qjuMCcX2aNXUXmi-Godzilla-vs-Kong', usa: 'https://video.playspelis.com/es/detail/movie/u2Z4dtRvNIDYNqRYL5T9L-Godzilla-vs-Kong' },
-                desc: 'Dos de los más poderosos titanes del planeta se enfrentan en una batalla épica. Mientras las organizaciones humanas intentan controlar a estas bestias, Godzilla y Kong luchan por la supremacía, y sus destinos están entrelazados con un misterio que amenaza al mundo.',
+                desc: 'Dos de los más poderosos titanes del planeta se enfrentan en una batalla épica.',
                 reqs: ["4K", "Lat/Eng", "Acción", "2021"],
                 showNewBadge: false,
                 type: 'movie',
                 multiVersion: true,
                 noEnglish: false
             },
-
-            // ========== LAS 10 ANTERIORES CON "NEW" AHORA PASAN A FALSE (ya lo están) ==========
+            // The Originals
             {
                 id: 'theoriginals',
                 title: 'The Originals (T3)',
                 poster: 'https://i.postimg.cc/76vBfH2P/do-you-think-the-originals-is-worth-watching-especially-v0-ywu6f4w796ke1.jpg',
                 screen: 'https://fotografias.antena3.com/clipping/cmsimages01/2019/04/05/252F45EA-AF72-41EE-A0D4-7F81D2C5B389/69.jpg?crop=1280,720,x0,y0&width=1280&height=720&optimize=low&format=jpg',
                 links: { mex: 'https://video.playspelis.com/es/detail/drama/HPvmpcHWI9wpDbQGWIvza-The-Originals-Season-3', usa: null },
-                desc: 'La tercera temporada de "The Originals" sigue la épica lucha de los vampiros originales por el control de Nueva Orleans. Klaus, Elijah y Rebekah deben enfrentarse a nuevas amenazas sobrenaturales mientras protegen a la familia y descubren oscuros secretos del pasado.',
+                desc: 'La tercera temporada de "The Originals" sigue la épica lucha de los vampiros originales por el control de Nueva Orleans.',
                 reqs: ["1080p", "Latino", "Serie", "T3"],
                 showNewBadge: false,
                 type: 'movie',
                 multiVersion: true,
                 noEnglish: true
             },
+            // Las ovejas detectives
             {
                 id: 'sheepdetectives',
                 title: 'Las ovejas detectives',
                 poster: 'https://www.sonypictures.es/statics/large_Cartel_poster_4x5_6af96cc09e.png',
                 screen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFPjArGf4DoU1NjUWFfLd3Kg9H_m3ZhbPBYmB82lxG9LqjDmzFk37_L-LFbZ2WTUOchipNC0v3ybknJfhCovU9r422370YBRQNnwk6Zw&s=10',
                 links: { mex: 'https://ver.123pelicula.com/es/detail/movie/3cq8RA7W579HKWvzpDhEJ-The-Sheep-Detectives', usa: 'https://www3.dramasfree.com/es/detail/movie/KU9VPjgr1SznVFItJDNl8-The-Sheep-Detectives' },
-                desc: 'Un grupo de ovejas decide convertirse en detectives para resolver misterios en su granja. Con humor y astucia, descubren que el culpable de los extraños sucesos es más cercano de lo que creen.',
+                desc: 'Un grupo de ovejas decide convertirse en detectives para resolver misterios en su granja.',
                 reqs: ["1080p", "Lat/Eng", "Animación", "2025"],
                 showNewBadge: false,
                 type: 'movie',
                 multiVersion: true,
                 noEnglish: false
             },
+            // Corporate Retreat
             {
                 id: 'corporateretreat',
                 title: 'Corporate Retreat',
                 poster: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRUU0quXsTpgeDXKCqBfiKVIBBTVU2hPkYOvKWLrKMLcmHfiWTiWfupXgv&s=10',
                 screen: 'https://cdn.prod.website-files.com/5c729f15fd0819dbaf8e66c6/638e5abfb5884073203d791d_Mount-Lofty-House%20(1).jpeg',
                 links: { mex: 'https://play.cuevana.life/es/detail/movie/bbUp1M7Vi62k29iyBIhx3-Corporate-Retreat', usa: null },
-                desc: 'Un grupo de empleados de una empresa asiste a un retiro corporativo en una mansión remota. Pronto descubren que el retiro es una trampa mortal donde deben luchar por sobrevivir mientras sus jefes los observan.',
+                desc: 'Un grupo de empleados de una empresa asiste a un retiro corporativo en una mansión remota.',
                 reqs: ["1080p", "Latino", "Suspenso", "2025"],
                 showNewBadge: false,
                 type: 'movie',
                 multiVersion: true,
                 noEnglish: true
             },
+            // Strung
             {
                 id: 'strung',
                 title: 'Strung',
                 poster: 'https://m.media-amazon.com/images/M/MV5BNWRjNzNiMGEtNjgzMi00ZGRkLTk4YWYtOTQ5YWJjOWExOTM1XkEyXkFqcGc@._V1_.jpg',
                 screen: 'https://static01.nyt.com/images/2026/06/26/multimedia/26cul-strung-review-tkcq/26cul-strung-review-tkcq-articleLarge.jpg?quality=75&auto=webp&disable=upscale',
                 links: { mex: 'https://www3.dramasfree.com/es/detail/movie/TeQhq046yMeyHVSJFuVFU-Strung', usa: null },
-                desc: 'Un violinista prodigio descubre que su talento está vinculado a un oscuro pacto sobrenatural. Atrapado entre el éxito y la maldición, deberá encontrar una salida antes de que su alma sea consumida.',
+                desc: 'Un violinista prodigio descubre que su talento está vinculado a un oscuro pacto sobrenatural.',
                 reqs: ["1080p", "Latino", "Terror", "2025"],
                 showNewBadge: false,
                 type: 'movie',
                 multiVersion: true,
                 noEnglish: true
             },
+            // Backwoods Blood Feud
             {
                 id: 'backwoodsbloodfeud',
                 title: 'Backwoods Blood Feud',
                 poster: 'https://m.media-amazon.com/images/M/MV5BM2RhYzVhMzAtZjk1MC00YzIwLTk5NDQtY2YwMmY1YzY4MzA0XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
                 screen: 'https://m.media-amazon.com/images/M/MV5BZTM2ODE5MzItMWQ4NC00NDYzLWJjYjMtNTYwMDcxOWUwOGJlXkEyXkFqcGc@._V1_.jpg',
                 links: { mex: 'https://latino.solo-latino.com/es/detail/movie/xX0AvCZddOYBP6Ph9GO2z-Backwoods-Blood-Feud', usa: null },
-                desc: 'Dos familias rivales en el bosque se enfrentan en una violenta disputa por un territorio. La venganza y la sangre marcan el destino de todos los involucrados en esta lucha sin cuartel.',
+                desc: 'Dos familias rivales en el bosque se enfrentan en una violenta disputa por un territorio.',
                 reqs: ["1080p", "Latino", "Acción", "2025"],
                 showNewBadge: false,
                 type: 'movie',
                 multiVersion: true,
                 noEnglish: true
             },
+            // Supergirl
             {
                 id: 'supergirl',
                 title: 'Supergirl',
                 poster: 'https://m.media-amazon.com/images/M/MV5BMmJkOTE0MWUtY2E5OS00NzEyLWI4NjEtYzQzYzFmMjk5ODE3XkEyXkFqcGc@._V1_.jpg',
                 screen: 'https://m.media-amazon.com/images/M/MV5BY2FkNDhhMzItM2JjMi00ODEwLWEzYjgtNmMzN2ZhODkxOWQ2XkEyXkFqcGdeQWFybm8@._V1_.jpg',
                 links: { mex: 'https://ver.123pelicula.com/es/detail/movie/EZLC1KgqiOOZuezJgXlHd-Supergirl-Woman-of-Tomorrow', usa: 'https://peliculaplay.com/es/detail/movie/FU9lFcFOWsKMsiOt2i2XQ-Supergirl-Woman-of-Tomorrow' },
-                desc: 'Supergirl enfrenta una nueva amenaza cósmica que pone en peligro la Tierra. Con su poder y determinación, deberá aliarse con viejos y nuevos héroes para salvar el planeta.',
+                desc: 'Supergirl enfrenta una nueva amenaza cósmica que pone en peligro la Tierra.',
                 reqs: ["4K", "Lat/Eng", "Superhéroes", "2025"],
                 showNewBadge: false,
                 type: 'movie',
                 multiVersion: true,
                 noEnglish: false
             },
+            // La invitación
             {
                 id: 'theinvite',
                 title: 'La invitación',
                 poster: 'https://m.media-amazon.com/images/M/MV5BMjI0MzJjMjctNmQzZi00Y2U4LWEwZGItMmE3NDUzNzk1YzY3XkEyXkFqcGc@._V1_.jpg',
                 screen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-rywgvpuRD8nR5FBeilF6Af-DRx1_LB0fsfMX8GLn00ahzvWj0WQr1Bo&s=10',
                 links: { mex: 'https://peliculaplay.com/es/detail/movie/qGfsKmcBgxieiQX7KlKTZ-The-Invite', usa: null },
-                desc: 'Una joven recibe una misteriosa invitación a una fiesta exclusiva en una mansión. Pronto descubre que los anfitriones tienen oscuros planes y que ella es la pieza clave de un ritual ancestral.',
+                desc: 'Una joven recibe una misteriosa invitación a una fiesta exclusiva en una mansión.',
                 reqs: ["1080p", "Latino", "Terror", "2025"],
                 showNewBadge: false,
                 type: 'movie',
                 multiVersion: true,
                 noEnglish: true
             },
+            // Alerta Extinción
             {
                 id: 'alertextincion',
                 title: 'Alerta Extinción',
                 poster: 'https://m.media-amazon.com/images/M/MV5BMDc4MzM3NTAtZWJiYy00MWVmLThkZDgtNTQxMTE1ZTI4ZGRkXkEyXkFqcGc@._V1_.jpg',
                 screen: 'https://m.media-amazon.com/images/S/pv-target-images/acff787a9c51759c3c7fefc4e28e1aebb14347fc2fb46f9c04aff10f2b16bb59._SX1080_FMpng_.png',
                 links: { mex: 'https://ver.123pelicula.com/es/detail/movie/XT6YWTS9m1DQsqB6oGQ4q-Cold-Storage', usa: 'https://play.cuevana.life/es/detail/movie/XQiuUI8NqbVzytdyvrQzW-Cold-Storage' },
-                desc: 'Un grupo de científicos en una base remota descubre un virus letal que amenaza con extinguir a la humanidad. Con el tiempo en su contra, deberán encontrar una cura antes de que sea demasiado tarde.',
+                desc: 'Un grupo de científicos en una base remota descubre un virus letal que amenaza con extinguir a la humanidad.',
                 reqs: ["4K", "Lat/Eng", "Ciencia Ficción", "2025"],
                 showNewBadge: false,
                 type: 'movie',
                 multiVersion: true,
                 noEnglish: false
             },
+            // WormTown
             {
                 id: 'wormtown',
                 title: 'WormTown',
                 poster: 'https://m.media-amazon.com/images/M/MV5BYjYzYWQ2MjAtMjA3My00NDE0LWJmYTctOTFjOThmODNjZWNhXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
                 screen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxiOSuG8aNQIvQr0TgOOnNeeQfat_pq-2_HKAuDvq7S-s6YQWDE3woMgnH&s=10',
                 links: { mex: 'https://play.cuevana.life/es/detail/movie/UFEhST5wCAg2IeRz7S8ep-Wormtown', usa: 'https://ver.123pelicula.com/es/detail/movie/avtf1xXGUIYRvvpqELr0N-Wormtown' },
-                desc: 'En un pequeño pueblo, extraños gusanos mutantes comienzan a atacar a los habitantes. Un grupo de supervivientes debe descubrir el origen de la plaga y detenerla antes de que se extienda.',
+                desc: 'En un pequeño pueblo, extraños gusanos mutantes comienzan a atacar a los habitantes.',
                 reqs: ["1080p", "Lat/Eng", "Terror", "2025"],
                 showNewBadge: false,
                 type: 'movie',
                 multiVersion: true,
                 noEnglish: false
             },
+            // Exterminio
             {
                 id: 'exterminio',
                 title: 'Exterminio: El templo de los huesos',
                 poster: 'https://m.media-amazon.com/images/M/MV5BZGU2M2Y1YTItMWYxNS00NDYxLThhOTYtNjNhOWUzNjA3MTYwXkEyXkFqcGc@._V1_.jpg',
                 screen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrI0lpHobFiNjF-u64KTpROl_ZThC7Gh_NKh8_sffzPpKH0eJcIW2qZf18&s=10',
                 links: { mex: 'https://ww20.321moviesfree.com/es/detail/movie/YB8nbAjwPHSiwGP4aCLNQ-28-Years-Later-The-Bone-Temple', usa: 'https://flixlat.com/es/detail/movie/F2UE6GVr2Qn4fQeCWxrci-28-Years-Later-The-Bone-Temple' },
-                desc: '28 años después del brote del virus de la ira, un grupo de soldados se adentra en las ruinas de un templo sagrado donde los infectados se han convertido en una amenaza aún más peligrosa. La lucha por la supervivencia se intensifica.',
+                desc: '28 años después del brote del virus de la ira, un grupo de soldados se adentra en las ruinas de un templo sagrado.',
                 reqs: ["4K", "Lat/Eng", "Terror", "2025"],
                 showNewBadge: false,
                 type: 'movie',
                 multiVersion: true,
                 noEnglish: false
             },
-
-            // ========== RESTO DE PELÍCULAS (sin etiqueta New) ==========
+            // La vida de Pi
             {
                 id: 'lifeofpi',
                 title: 'La vida de Pi',
@@ -1294,6 +1331,7 @@
                 multiVersion: true,
                 noEnglish: false
             },
+            // Minions & Monster
             {
                 id: 'minionsmonster',
                 title: 'Minions & Monster',
@@ -1307,6 +1345,7 @@
                 multiVersion: true,
                 noEnglish: false
             },
+            // Obsession
             {
                 id: 'obsession',
                 title: 'Obsession',
@@ -1320,6 +1359,7 @@
                 multiVersion: true,
                 noEnglish: true
             },
+            // La posesión de la Momia
             {
                 id: 'mummypossession',
                 title: 'La posesión de la Momia',
@@ -1333,6 +1373,7 @@
                 multiVersion: true,
                 noEnglish: true
             },
+            // Legalmente Rubia
             {
                 id: 'legallyblonde',
                 title: 'Legalmente Rubia',
@@ -1346,6 +1387,7 @@
                 multiVersion: true,
                 noEnglish: false
             },
+            // Chum
             {
                 id: 'chum',
                 title: 'Chum',
@@ -1359,6 +1401,7 @@
                 multiVersion: true,
                 noEnglish: true
             },
+            // 50 Sombras de Grey
             {
                 id: 'fiftyshades',
                 title: '50 Sombras de Grey',
@@ -1372,6 +1415,7 @@
                 multiVersion: true,
                 noEnglish: false
             },
+            // Te van a matar
             {
                 id: 'theywillkillyou',
                 title: 'Te van a matar',
@@ -1385,6 +1429,7 @@
                 multiVersion: true,
                 noEnglish: false
             },
+            // Miraculous 6
             {
                 id: 'miraculous6',
                 title: 'Miraculous 6',
@@ -1398,6 +1443,7 @@
                 multiVersion: true,
                 noEnglish: true
             },
+            // Enola Holmes 1
             {
                 id: 'enolaholmes1',
                 title: 'Enola Holmes',
@@ -1411,6 +1457,7 @@
                 multiVersion: true,
                 noEnglish: true
             },
+            // Enola Holmes 2
             {
                 id: 'enolaholmes2',
                 title: 'Enola Holmes 2',
@@ -1424,6 +1471,7 @@
                 multiVersion: true,
                 noEnglish: true
             },
+            // Enola Holmes 3
             {
                 id: 'enolaholmes3',
                 title: 'Enola Holmes 3',
@@ -1437,6 +1485,7 @@
                 multiVersion: true,
                 noEnglish: true
             },
+            // Backrooms
             {
                 id: 'backrooms',
                 title: 'Backrooms',
@@ -1452,6 +1501,7 @@
                 hasWarning: false,
                 noEnglish: false
             },
+            // FNAF 1
             {
                 id: 'fnaf_movie',
                 title: 'Five Nights at Freddy\'s (2023)',
@@ -1464,6 +1514,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // FNAF 2
             {
                 id: 'fnaf2_movie',
                 title: 'Five Nights at Freddy\'s 2',
@@ -1476,6 +1527,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // Cassandra
             {
                 id: 'cassandra',
                 title: 'Cassandra',
@@ -1488,6 +1540,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // Intensamente 2
             {
                 id: 'insideout2',
                 title: 'Intensamente 2',
@@ -1500,6 +1553,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // Avatar 2
             {
                 id: 'avatar2',
                 title: 'Avatar: El sentido del agua',
@@ -1512,6 +1566,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // Cars
             {
                 id: 'cars',
                 title: 'Cars',
@@ -1524,6 +1579,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // Kung Fu Panda
             {
                 id: 'kungfupanda',
                 title: 'Kung Fu Panda (2008)',
@@ -1536,6 +1592,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // El Conjuro
             {
                 id: 'conjuring',
                 title: 'El Conjuro',
@@ -1548,6 +1605,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // Merlina
             {
                 id: 'merlina',
                 title: 'Merlina (T1)',
@@ -1560,6 +1618,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // Across the Spider-Verse
             {
                 id: 'spiderman_miles',
                 title: 'Across the Spider-Verse',
@@ -1572,6 +1631,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // La Sustancia
             {
                 id: 'substance',
                 title: 'La Sustancia (2024)',
@@ -1584,6 +1644,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // Minecraft
             {
                 id: 'minecraft_movie',
                 title: 'Minecraft (2025)',
@@ -1596,6 +1657,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // Interstellar
             {
                 id: 'interstellar',
                 title: 'Interstellar (2014)',
@@ -1608,6 +1670,7 @@
                 showNewBadge: false,
                 type: 'movie'
             },
+            // Toy Story 1
             {
                 id: 'toystory1',
                 title: 'Toy Story 1 (1995)',
@@ -1620,6 +1683,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // Intercambio
             {
                 id: 'swapped',
                 title: 'Intercambio',
@@ -1632,6 +1696,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // Flow
             {
                 id: 'flow',
                 title: 'Flow',
@@ -1644,6 +1709,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // Hoppers
             {
                 id: 'hoppers',
                 title: 'Hoppers',
@@ -1656,6 +1722,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // Moana
             {
                 id: 'moana',
                 title: 'Moana',
@@ -1668,6 +1735,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // The Purge
             {
                 id: 'thepurge',
                 title: 'The Purge (T1)',
@@ -1680,6 +1748,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // Fast and Furious 1
             {
                 id: 'fastfurious1',
                 title: 'Fast And Furious 1',
@@ -1693,6 +1762,7 @@
                 multiVersion: true,
                 noEnglish: true
             },
+            // Super Mario Galaxy
             {
                 id: 'supermariogalaxy',
                 title: 'Super Mario Galaxy',
@@ -1705,6 +1775,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // Zootopia 2
             {
                 id: 'zootopia2',
                 title: 'Zootopia 2',
@@ -1717,6 +1788,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // Kpop Demon Hunters
             {
                 id: 'kpopdemon',
                 title: 'Kpop Demon Hunters',
@@ -1729,6 +1801,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // Garfield 2
             {
                 id: 'garfield2',
                 title: 'Garfield 2',
@@ -1741,6 +1814,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // Us
             {
                 id: 'us',
                 title: 'Us',
@@ -1753,6 +1827,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // Michael Jackson
             {
                 id: 'michaeljackson',
                 title: 'Michael Jackson',
@@ -1765,6 +1840,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // From serie completa
             {
                 id: 'from_series',
                 title: 'From (Serie Completa)',
@@ -1777,6 +1853,7 @@
                 isSeries: true,
                 seasons: fromSeasons
             },
+            // Duck Duck Goose
             {
                 id: 'duckduckgoose',
                 title: 'Duck Duck Goose',
@@ -1789,6 +1866,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // Elio
             {
                 id: 'elio',
                 title: 'Elio',
@@ -1801,6 +1879,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // El ritual del nahual
             {
                 id: 'nahual',
                 title: 'El ritual del nahual',
@@ -1814,6 +1893,7 @@
                 multiVersion: true,
                 noEnglish: true
             },
+            // Embestida
             {
                 id: 'thrash',
                 title: 'Embestida',
@@ -1826,6 +1906,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // Stuart Little
             {
                 id: 'stuartlittle',
                 title: 'Stuart Little',
@@ -1839,6 +1920,7 @@
                 multiVersion: true,
                 noEnglish: true
             },
+            // Un gran dinosaurio
             {
                 id: 'gooddinosaur',
                 title: 'Un gran dinosaurio',
@@ -1851,6 +1933,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // Mamá
             {
                 id: 'mama',
                 title: 'Mamá',
@@ -1863,6 +1946,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // IT
             {
                 id: 'it',
                 title: 'IT',
@@ -1875,6 +1959,7 @@
                 type: 'movie',
                 multiVersion: true
             },
+            // Fall
             {
                 id: 'fall',
                 title: 'Fall',
@@ -1888,7 +1973,7 @@
                 multiVersion: true,
                 noEnglish: false
             },
-            // Laberinto del fauno (portada actualizada)
+            // El laberinto del fauno
             {
                 id: 'pans_labyrinth',
                 title: 'El laberinto del fauno',
@@ -1902,6 +1987,7 @@
                 multiVersion: true,
                 noEnglish: true
             },
+            // Matrix
             {
                 id: 'matrix',
                 title: 'Matrix',
@@ -1915,6 +2001,7 @@
                 multiVersion: true,
                 noEnglish: false
             },
+            // Ready or Not 2
             {
                 id: 'ready_or_not_2',
                 title: 'Ready or Not 2',
@@ -1928,6 +2015,7 @@
                 multiVersion: true,
                 noEnglish: false
             },
+            // Sueño de fuga
             {
                 id: 'shawshank',
                 title: 'Sueño de fuga',
@@ -1941,6 +2029,7 @@
                 multiVersion: true,
                 noEnglish: false
             },
+            // Toy Story 5
             {
                 id: 'toystory5',
                 title: 'Toy Story 5',
@@ -2020,7 +2109,6 @@
             });
             games.forEach(item => { allItems.push({ ...item, type: 'game' }); });
 
-            // Nueva prioridad: New (100) > Hot (25) > Resto (0)
             allItems.sort((a, b) => {
                 const getWeight = (item) => {
                     if (item.showNewBadge) return 100;
@@ -2089,7 +2177,6 @@
 
             if (!modal || !title || !img || !desc || !reqs || !links) { return; }
 
-            // Remover clases previas
             modal.classList.remove('closing');
             modal.classList.add('active');
 
@@ -2139,10 +2226,7 @@
             }
 
             modal.style.display = 'flex';
-            // Asegurar que la animación de entrada se ejecute
-            setTimeout(() => {
-                modal.classList.add('active');
-            }, 10);
+            setTimeout(() => { modal.classList.add('active'); }, 10);
             document.body.style.overflow = 'hidden';
         }
 
@@ -2150,15 +2234,12 @@
             const modal = document.getElementById('modal');
             modal.classList.remove('active');
             modal.classList.add('closing');
-            // Esperar a que termine la animación para ocultar
             setTimeout(() => {
                 modal.style.display = 'none';
                 modal.classList.remove('closing');
             }, 400);
             document.body.style.overflow = '';
         }
-
-        // ==================== FILTROS Y BÚSQUEDA ====================
 
         function filterCards() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
@@ -2198,7 +2279,6 @@
                     return;
                 }
 
-                // Efecto de onda (ripple) más suave
                 const ripple = document.createElement('span');
                 ripple.classList.add('ripple');
                 const rect = this.getBoundingClientRect();
@@ -2209,14 +2289,11 @@
                 this.appendChild(ripple);
                 setTimeout(() => ripple.remove(), 500);
 
-                // Cambiar estado activo
                 document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 filterCards();
             });
         });
-
-        // ==================== PETICIONES ====================
 
         document.getElementById('sendRequestBtn').addEventListener('click', function() {
             const text = document.getElementById('requestText').value.trim();
@@ -2244,24 +2321,17 @@
             setTimeout(() => { status.textContent = ''; }, 4000);
         });
 
-        // ==================== MODAL CLOSE ====================
-
         document.getElementById('modalClose').addEventListener('click', closeModal);
 
         document.getElementById('modal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
-            }
+            if (e.target === this) { closeModal(); }
         });
-
-        // ==================== INICIALIZACIÓN ====================
 
         document.addEventListener('DOMContentLoaded', function() {
             renderContent();
             filterCards();
         });
 
-        // Restaurar scroll
         window.addEventListener('beforeunload', () => {
             sessionStorage.setItem('scrollPosition', window.scrollY);
         });
@@ -2275,4 +2345,4 @@
         });
     </script>
 </body>
-</html>
+    </html>
